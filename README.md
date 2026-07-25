@@ -26,10 +26,13 @@ Two properties drive the whole policy:
 
 ## What lives in this repo
 
-| File          | Purpose                                                              |
-| ------------- | -------------------------------------------------------------------- |
-| `index.html`  | The entire policy. Arabic and English in one self-contained page.    |
-| `README.md`   | This file. Maintenance notes for the policy.                         |
+| File          | Purpose                                                                     |
+| ------------- | --------------------------------------------------------------------------- |
+| `index.html`  | The entire policy. Arabic and English in one self-contained page.           |
+| `404.html`    | Redirects any wrong path to the policy, so an old link never dead-ends.     |
+| `robots.txt`  | Allows indexing, points at the sitemap.                                     |
+| `sitemap.xml` | One URL. Keep `lastmod` in step with the policy date.                       |
+| `README.md`   | This file. Maintenance notes for the policy.                                |
 
 Nothing else. No build step, no dependencies, no package.json, no CI.
 
@@ -61,12 +64,17 @@ Single `index.html`, no framework, no build.
 - **Light and dark** via `prefers-color-scheme`, and reduced-motion is respected.
 - Tables scroll horizontally inside their own container on narrow screens, so the page
   body never scrolls sideways on a phone.
+- **Print and save-as-PDF** are styled: the header, language switch and table of contents
+  drop out, colors go to plain black on white, and every link prints its URL. Play does
+  not accept a PDF as the policy URL, but users and reviewers do print pages.
+- `application/ld+json` describes the page as a `PrivacyPolicy` with the app and the
+  developer, so search results and link previews identify it correctly.
 
 ## What the policy covers
 
 | Section | Topic                                                                          |
 | ------- | ------------------------------------------------------------------------------ |
-| 1       | Who we are, scope, the keyless and serverless principle                        |
+| 1       | Who we are, scope, the keyless and serverless principle, the in-app link       |
 | 2       | What stays on device: vault, goals, alerts, price history, settings, photos    |
 | 3       | Every outbound host, its purpose, and exactly what is sent                     |
 | 4       | Location: optional, one-shot, reverse-geocoded, never tracked in background    |
@@ -75,13 +83,14 @@ Single `index.html`, no framework, no build.
 | 7       | Analytics and crash reporting: what is sent, and what is never sent            |
 | 8       | Backups and sharing: user-initiated, goes only where the user sends it         |
 | 9       | App updates over EAS Update                                                    |
-| 10      | Android permissions table with required vs optional                            |
-| 11      | Retention and deletion                                                         |
-| 12      | Rights (GDPR, UK GDPR, CCPA) and the legal basis for analytics                 |
-| 13      | Children's privacy                                                             |
-| 14      | Third-party policy links                                                       |
-| 15      | Change policy                                                                  |
-| 16      | Contact                                                                        |
+| 10      | Android permissions: the complete merged-manifest list, with what is not asked |
+| 11      | Security: HTTPS, app-private storage, no secrets, unencrypted backups warning  |
+| 12      | Retention and deletion                                                         |
+| 13      | Rights (GDPR, UK GDPR, CCPA) and the legal basis for analytics                 |
+| 14      | Children's privacy                                                             |
+| 15      | Third-party policy links                                                       |
+| 16      | Change policy                                                                  |
+| 17      | Contact                                                                        |
 
 ### Outbound hosts disclosed (keep this in sync with the app)
 
@@ -96,6 +105,30 @@ EAS services (updates, performance and crash metrics), `play.google.com` (store 
 and review prompt).
 
 Google News was dropped from the app and is no longer listed.
+
+### Permissions disclosed
+
+Section 10 lists the **merged release manifest**, not the app's own manifest, because that
+is what Play shows users. As of the 1.18.0 cleanup that is 15 permissions: location
+(coarse and fine), camera, notifications, internet, network state, wifi state, vibrate,
+app badge, foreground service, wake lock, receive boot completed, scheduled alarm
+(`maxSdkVersion 32`), and read/write external storage (`maxSdkVersion 32`).
+
+Four permissions were removed in that pass, all of them dragged in by libraries and never
+used by the app: `RECORD_AUDIO` (expo-image-picker, blocked with
+`microphonePermission: false`), `SYSTEM_ALERT_WINDOW` (Expo's template, blocked via
+`android.blockedPermissions`; the debug flavor keeps its own copy so the dev overlay still
+works), and `USE_BIOMETRIC` plus `USE_FINGERPRINT` (androidx.biometric behind
+expo-secure-store, which was an unused dependency and is gone).
+
+To re-derive the real list after a dependency change:
+
+```bash
+npx expo prebuild --platform android
+cd android && ./gradlew :app:processReleaseMainManifest
+grep -oE 'android:name="android.permission.[A-Z_]+"' \
+  app/build/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml | sort -u
+```
 
 ## Maintaining it
 
@@ -127,12 +160,32 @@ The app-side sources of truth: `lib/rates/sources.ts`, `lib/news/sources.ts`,
 
 ## Google Play
 
-The Play Console **Data safety** form must match this page. In particular the app
-declares approximate and precise location (optional), photos (optional), app activity
-and diagnostics (analytics and crash reports), with no data sold and no data shared for
-advertising.
+Play's User Data policy sets requirements for the policy **URL and its content**, not for
+how the page looks. A styled, bilingual HTML page is fine; a plain white page has no
+advantage. What Play actually requires, and where this page satisfies it:
 
-Set the Play Console privacy policy URL to <https://vette1123.github.io/nafis-privacy/>.
+| Play requirement                                            | Where                                   |
+| ----------------------------------------------------------- | --------------------------------------- |
+| Active, publicly accessible, non-geofenced URL, not a PDF   | GitHub Pages, static HTML               |
+| Non-editable by users                                       | Static page, no form, no CMS            |
+| Clearly labeled as a privacy policy                         | Page title and `<h1>`                   |
+| Developer or app named in the policy                        | Sections 1 and 17, plus the JSON-LD     |
+| Privacy contact or inquiry mechanism                        | Section 17                              |
+| Data accessed, collected, used and shared, and with whom    | Sections 2, 3, 7                        |
+| Secure data handling procedures                             | Section 11                              |
+| Retention and deletion policy                               | Section 12                              |
+| A privacy link or text inside the app itself                | Settings, then Privacy Policy           |
+
+Two things to keep true, because both break silently:
+
+1. The Play Console privacy policy URL must be
+   <https://vette1123.github.io/nafis-privacy/>.
+2. The in-app link (`PRIVACY_URL` in `app/settings/index.tsx`) must point at the same
+   page. It pointed at the dead app-repo Pages URL until 2026-07-25.
+
+The Play Console **Data safety** form must match this page: approximate and precise
+location (optional), photos (optional), app activity and diagnostics (analytics and crash
+reports), nothing sold, nothing shared for advertising.
 
 ## License
 

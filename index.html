@@ -9,6 +9,8 @@
       content="سياسة خصوصية تطبيق نفيس (Nafis) بالعربية والإنجليزية. Privacy policy for the Nafis app: what stays on your device, what leaves it, and why."
     />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#100e0b" media="(prefers-color-scheme: dark)" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://vette1123.github.io/nafis-privacy/" />
     <meta property="og:title" content="Nafis · Privacy Policy · سياسة الخصوصية" />
@@ -351,9 +353,90 @@
         display: inline-block;
         padding: 8px 12px;
       }
+
+      /* Print and save-as-PDF: the visible language prints as a plain document. Link
+         targets are spelled out, since a printed hyperlink is otherwise a dead end. */
+      @media print {
+        :root {
+          --bg: #ffffff;
+          --surface: #ffffff;
+          --surface-2: #ffffff;
+          --text: #000000;
+          --muted: #333333;
+          --line: #999999;
+          --accent: #000000;
+          --accent-soft: #ffffff;
+        }
+        body {
+          font-size: 11pt;
+          line-height: 1.5;
+        }
+        .top,
+        .switch,
+        .skip,
+        nav.toc {
+          display: none;
+        }
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+        h1 {
+          margin-top: 0;
+        }
+        h2 {
+          margin-top: 20pt;
+          break-after: avoid;
+        }
+        p,
+        li {
+          orphans: 3;
+          widows: 3;
+        }
+        .table-scroll,
+        table {
+          overflow: visible;
+          min-width: 0;
+          break-inside: auto;
+        }
+        tr {
+          break-inside: avoid;
+        }
+        a[href^="http"]::after {
+          content: " (" attr(href) ")";
+          font-size: 9pt;
+          color: #333;
+          word-break: break-all;
+        }
+      }
     </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "PrivacyPolicy",
+        "name": "Nafis Privacy Policy",
+        "alternateName": "سياسة الخصوصية لتطبيق نفيس",
+        "url": "https://vette1123.github.io/nafis-privacy/",
+        "inLanguage": ["ar", "en"],
+        "dateModified": "2026-07-25",
+        "about": {
+          "@type": "MobileApplication",
+          "name": "Nafis",
+          "alternateName": "نفيس",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Android",
+          "identifier": "com.mohamedgado.nafis"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Mohamed Gado",
+          "email": "boogado@yahoo.com"
+        }
+      }
+    </script>
   </head>
   <body>
+    <a class="skip" href="#main">تخطي إلى المحتوى / Skip to content</a>
     <header class="top">
       <div class="top-inner">
         <span class="brand">
@@ -377,7 +460,7 @@
       </div>
     </header>
 
-    <main class="wrap">
+    <main class="wrap" id="main">
       <!-- ================================ ARABIC ================================ -->
       <section id="doc-ar" lang="ar" dir="rtl">
         <h1>سياسة الخصوصية لتطبيق نفيس</h1>
@@ -387,8 +470,8 @@
           وبياناتك المالية لا تغادر جهازك.
         </p>
         <p class="meta">
-          آخر تحديث: <b>٢٥ يوليو ٢٠٢٦</b> · إصدار التطبيق <b>1.18.0</b> · معرّف الحزمة
-          <code>com.mohamedgado.nafis</code>
+          آخر تحديث: <b><time datetime="2026-07-25">٢٥ يوليو ٢٠٢٦</time></b> · تغطي الإصدار
+          <b>1.18.0</b> وما بعده · معرّف الحزمة <code>com.mohamedgado.nafis</code>
         </p>
 
         <div class="glance">
@@ -420,12 +503,13 @@
             <li><a href="#ar-8">النسخ الاحتياطي والمشاركة</a></li>
             <li><a href="#ar-9">التحديثات</a></li>
             <li><a href="#ar-10">أذونات أندرويد</a></li>
-            <li><a href="#ar-11">الاحتفاظ بالبيانات وحذفها</a></li>
-            <li><a href="#ar-12">حقوقك</a></li>
-            <li><a href="#ar-13">خصوصية الأطفال</a></li>
-            <li><a href="#ar-14">روابط خارجية وخدمات الغير</a></li>
-            <li><a href="#ar-15">تعديلات السياسة</a></li>
-            <li><a href="#ar-16">التواصل</a></li>
+            <li><a href="#ar-11">تأمين البيانات</a></li>
+            <li><a href="#ar-12">الاحتفاظ بالبيانات وحذفها</a></li>
+            <li><a href="#ar-13">حقوقك</a></li>
+            <li><a href="#ar-14">خصوصية الأطفال</a></li>
+            <li><a href="#ar-15">روابط خارجية وخدمات الغير</a></li>
+            <li><a href="#ar-16">تعديلات السياسة</a></li>
+            <li><a href="#ar-17">التواصل</a></li>
           </ol>
         </nav>
 
@@ -434,6 +518,10 @@
           نفيس (<code>com.mohamedgado.nafis</code>) تطبيق يطوّره ويشغّله فرد واحد: محمد جادو.
           تغطي هذه السياسة تطبيق نفيس على أندرويد وأي إصدار مستقبلي على iOS، وتغطي كذلك هذه
           الصفحة نفسها. الصفحة لا تضع كوكيز ولا تحمّل أي ملف من خادم آخر.
+        </p>
+        <p>
+          يمكنك فتح هذه الصفحة في أي وقت من داخل التطبيق: <strong>الإعدادات ← سياسة
+          الخصوصية</strong>.
         </p>
         <p>
           مبدأ التصميم الأساسي: <strong>بلا مفاتيح وبلا خادم</strong>. كل مصادر البيانات عامة
@@ -615,7 +703,7 @@
         <div class="note">
           <p>
             لا يتضمن الإصدار الحالي مفتاحًا لإيقاف القياسات داخل التطبيق. إن رغبت في إيقافها أو
-            في حذف بياناتك المجهولة، راسلنا على البريد في القسم ١٦ وسننفّذ الطلب. نخطط لإضافة
+            في حذف بياناتك المجهولة، راسلنا على البريد في القسم ١٧ وسننفّذ الطلب. نخطط لإضافة
             مفتاح إيقاف داخل الإعدادات في إصدار قادم.
           </p>
         </div>
@@ -650,50 +738,101 @@
             </thead>
             <tbody>
               <tr>
-                <td>الإنترنت</td>
-                <td>نعم</td>
-                <td>جلب الأسعار والأخبار والتحديثات</td>
-              </tr>
-              <tr>
                 <td>الموقع (تقريبي ودقيق)</td>
-                <td>لا</td>
+                <td>يطلب منك</td>
                 <td>تحديد الدولة لاختيار العملة والأسعار المحلية</td>
               </tr>
               <tr>
-                <td>الكاميرا ومعرض الصور</td>
-                <td>لا</td>
-                <td>إضافة صورة لقطعة في الخزنة، وتبقى على الجهاز</td>
+                <td>الكاميرا</td>
+                <td>يطلب منك</td>
+                <td>تصوير قطعة لإضافتها للخزنة، وتبقى الصورة على الجهاز</td>
               </tr>
               <tr>
                 <td>الإشعارات</td>
-                <td>لا</td>
+                <td>يطلب منك</td>
                 <td>تنبيهات الأسعار والملخّص اليومي والأسبوعي</td>
               </tr>
               <tr>
+                <td>الإنترنت وحالة الشبكة والواي فاي</td>
+                <td>تلقائي</td>
+                <td>جلب الأسعار والأخبار، ومعرفة أنك دون اتصال لعرض شارة عدم الاتصال</td>
+              </tr>
+              <tr>
                 <td>الاهتزاز</td>
-                <td>نعم</td>
+                <td>تلقائي</td>
                 <td>تنبيه لمسي مع الإشعار</td>
               </tr>
               <tr>
-                <td>تشغيل مهمة في الخلفية</td>
-                <td>نعم</td>
-                <td>فحص الأسعار دوريًا لإطلاق التنبيهات</td>
+                <td>تنبيه التطبيقات (شارة العداد)</td>
+                <td>تلقائي</td>
+                <td>عرض عدد الإشعارات على أيقونة التطبيق في المشغّلات التي تدعمها</td>
+              </tr>
+              <tr>
+                <td>خدمة تعمل في المقدمة وإبقاء المعالج مستيقظًا</td>
+                <td>تلقائي</td>
+                <td>إتمام فحص الأسعار في الخلفية قبل أن ينام الجهاز</td>
+              </tr>
+              <tr>
+                <td>التشغيل بعد إعادة التشغيل</td>
+                <td>تلقائي</td>
+                <td>إعادة جدولة تنبيهاتك بعد إعادة تشغيل الجهاز</td>
               </tr>
               <tr>
                 <td>منبّه مجدول (أندرويد ١٢ فأقل)</td>
-                <td>نعم</td>
+                <td>تلقائي</td>
                 <td>ضبط موعد الملخّص اليومي</td>
               </tr>
               <tr>
                 <td>قراءة وكتابة التخزين (أندرويد ١٢ فأقل)</td>
-                <td>لا</td>
+                <td>يطلب منك</td>
                 <td>اختيار صورة من المعرض على الإصدارات القديمة</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <div class="note">
+          <p>
+            هذه هي القائمة الكاملة. لا يطلب نفيس الميكروفون، ولا الرسم فوق التطبيقات الأخرى،
+            ولا البصمة، ولا جهات الاتصال، ولا قائمة تطبيقاتك، ولا الموقع في الخلفية. الإصدارات
+            حتى 1.18.0 كانت تُعلن أذونات الميكروفون والرسم فوق التطبيقات والبصمة لأنها دخلت مع
+            مكتبات، ولم يستخدمها التطبيق أبدًا؛ وقد أُزيلت اعتبارًا من الإصدار التالي.
+          </p>
+        </div>
 
-        <h2 id="ar-11">١١. الاحتفاظ بالبيانات وحذفها</h2>
+        <h2 id="ar-11">١١. تأمين البيانات</h2>
+        <p>
+          ما لا يُجمع لا يمكن أن يُسرَّب. هذا هو الإجراء الأمني الأول في نفيس: لا خادم، ولا
+          حساب، ولا كلمة مرور، ولا قاعدة بيانات مركزية فيها بيانات مستخدمين يمكن اختراقها.
+          إضافة إلى ذلك:
+        </p>
+        <ul>
+          <li>
+            كل الاتصالات تتم عبر <strong>HTTPS</strong> مع التحقق من الشهادات، ولا يسمح إصدار
+            الإنتاج بأي اتصال غير مشفّر.
+          </li>
+          <li>
+            خزنتك وإعداداتك تُحفظ في تخزين خاص بالتطبيق (<code>app-private storage</code>)
+            يعزله نظام أندرويد عن بقية التطبيقات، ولا تُكتب في مجلدات عامة يقرأها غيرك.
+          </li>
+          <li>
+            لا يحتوي التطبيق على مفاتيح أو أسرار، لأن كل المصادر عامة ومجانية. لا يوجد ما
+            يُسرق من داخل الحزمة.
+          </li>
+          <li>
+            النسخة الاحتياطية التي تصدّرها أنت غير مشفّرة عمدًا لتبقى قابلة للقراءة والاستعادة،
+            لذلك احفظها في مكان تثق به، فهي تحتوي على تفاصيل خزنتك.
+          </li>
+          <li>
+            صلاحيات الجهاز مقصورة على أقل ما يلزم، وقد أُزيلت الأذونات التي أضافتها المكتبات
+            دون حاجة فعلية (القسم ١٠).
+          </li>
+        </ul>
+        <p>
+          لا يمكن لأي شخص، بمن فيهم المطوّر، الاطلاع على محتوى خزنتك عن بُعد. إن وجدت ثغرة
+          أمنية، راسلنا على البريد في القسم ١٧ قبل نشرها.
+        </p>
+
+        <h2 id="ar-12">١٢. الاحتفاظ بالبيانات وحذفها</h2>
         <ul>
           <li>
             <strong>بيانات الجهاز:</strong> تبقى ما دام التطبيق مثبّتًا. حذف التطبيق أو مسح
@@ -709,7 +848,7 @@
           </li>
         </ul>
 
-        <h2 id="ar-12">١٢. حقوقك</h2>
+        <h2 id="ar-13">١٣. حقوقك</h2>
         <p>
           إن كنت داخل الاتحاد الأوروبي أو المملكة المتحدة أو كاليفورنيا، فلك حقوق الوصول
           والتصحيح والحذف والاعتراض على المعالجة. عمليًا:
@@ -721,16 +860,16 @@
             الأساس القانوني لقياسات الاستخدام هو <em>المصلحة المشروعة</em> في تشغيل التطبيق
             وتحسينه وإصلاح أعطاله، وهي مجهولة الهوية.
           </li>
-          <li>لممارسة أي حق أو لطلب الحذف، راسلنا على البريد في القسم ١٦.</li>
+          <li>لممارسة أي حق أو لطلب الحذف، راسلنا على البريد في القسم ١٧.</li>
         </ul>
 
-        <h2 id="ar-13">١٣. خصوصية الأطفال</h2>
+        <h2 id="ar-14">١٤. خصوصية الأطفال</h2>
         <p>
           نفيس تطبيق مالي موجّه للبالغين، وهو غير مخصص للأطفال دون ١٣ عامًا، ولا نجمع عن قصد
           أي بيانات شخصية منهم. إن اعتقدت أن طفلًا أرسل بيانات إلينا، راسلنا وسنتصرف.
         </p>
 
-        <h2 id="ar-14">١٤. روابط خارجية وخدمات الغير</h2>
+        <h2 id="ar-15">١٥. روابط خارجية وخدمات الغير</h2>
         <p>
           عند فتح مقال في المتصفح أو زيارة موقع ناشر، تنطبق سياسة ذلك الموقع. سياسات الخدمات
           المذكورة أعلاه:
@@ -758,14 +897,14 @@
           <li><a href="https://policies.google.com/privacy" rel="noopener">Google Play</a></li>
         </ul>
 
-        <h2 id="ar-15">١٥. تعديلات السياسة</h2>
+        <h2 id="ar-16">١٦. تعديلات السياسة</h2>
         <p>
           قد نحدّث هذه السياسة عند إضافة ميزة أو تغيير مصدر بيانات. يظهر تاريخ آخر تحديث أعلى
           الصفحة، وسجل التغييرات كاملًا متاح في مستودع الصفحة على GitHub. التغييرات الجوهرية
           سنشير إليها في ملاحظات إصدار التطبيق.
         </p>
 
-        <h2 id="ar-16">١٦. التواصل</h2>
+        <h2 id="ar-17">١٧. التواصل</h2>
         <div class="contact">
           <p>
             لأي سؤال عن الخصوصية، أو طلب حذف بيانات، أو ممارسة أي من حقوقك:
@@ -791,8 +930,8 @@
           server of ours. Your financial data never leaves your device.
         </p>
         <p class="meta">
-          Last updated: <b>25 July 2026</b> · App version <b>1.18.0</b> · Package
-          <code>com.mohamedgado.nafis</code>
+          Last updated: <b><time datetime="2026-07-25">25 July 2026</time></b> · Covers app
+          version <b>1.18.0</b> and later · Package <code>com.mohamedgado.nafis</code>
         </p>
 
         <div class="glance">
@@ -825,12 +964,13 @@
             <li><a href="#en-8">Backups and sharing</a></li>
             <li><a href="#en-9">App updates</a></li>
             <li><a href="#en-10">Android permissions</a></li>
-            <li><a href="#en-11">Retention and deletion</a></li>
-            <li><a href="#en-12">Your rights</a></li>
-            <li><a href="#en-13">Children's privacy</a></li>
-            <li><a href="#en-14">External links and third parties</a></li>
-            <li><a href="#en-15">Changes to this policy</a></li>
-            <li><a href="#en-16">Contact</a></li>
+            <li><a href="#en-11">How we secure data</a></li>
+            <li><a href="#en-12">Retention and deletion</a></li>
+            <li><a href="#en-13">Your rights</a></li>
+            <li><a href="#en-14">Children's privacy</a></li>
+            <li><a href="#en-15">External links and third parties</a></li>
+            <li><a href="#en-16">Changes to this policy</a></li>
+            <li><a href="#en-17">Contact</a></li>
           </ol>
         </nav>
 
@@ -839,6 +979,10 @@
           Nafis (<code>com.mohamedgado.nafis</code>) is built and operated by one person, Mohamed
           Gado. This policy covers the Nafis Android app, any future iOS release, and this page
           itself. The page sets no cookies and loads nothing from another host.
+        </p>
+        <p>
+          You can open this page from inside the app at any time:
+          <strong>Settings, then Privacy Policy</strong>.
         </p>
         <p>
           The core design principle is <strong>keyless and serverless</strong>. Every data source
@@ -1040,7 +1184,7 @@
         <div class="note">
           <p>
             The current release has no in-app switch to turn analytics off. If you want it
-            disabled, or want your anonymous data deleted, email us (section 16) and we will do
+            disabled, or want your anonymous data deleted, email us (section 17) and we will do
             it. An in-app opt-out is planned for a future release.
           </p>
         </div>
@@ -1074,50 +1218,102 @@
             </thead>
             <tbody>
               <tr>
-                <td>Internet</td>
-                <td>Yes</td>
-                <td>Fetch prices, news and updates</td>
-              </tr>
-              <tr>
                 <td>Location (coarse and fine)</td>
-                <td>No</td>
+                <td>You are asked</td>
                 <td>Detect your country to pick currency and local prices</td>
               </tr>
               <tr>
-                <td>Camera and photo library</td>
-                <td>No</td>
-                <td>Attach a photo to a vault piece, kept on device</td>
+                <td>Camera</td>
+                <td>You are asked</td>
+                <td>Photograph a vault piece. The photo stays on the device</td>
               </tr>
               <tr>
                 <td>Notifications</td>
-                <td>No</td>
+                <td>You are asked</td>
                 <td>Price alerts, daily digest and weekly recap</td>
               </tr>
               <tr>
+                <td>Internet, network and wifi state</td>
+                <td>Granted at install</td>
+                <td>Fetch prices and news, and detect that you are offline</td>
+              </tr>
+              <tr>
                 <td>Vibrate</td>
-                <td>Yes</td>
+                <td>Granted at install</td>
                 <td>Haptic feedback with a notification</td>
               </tr>
               <tr>
-                <td>Background task</td>
-                <td>Yes</td>
-                <td>Check prices periodically so alerts can fire</td>
+                <td>App badge</td>
+                <td>Granted at install</td>
+                <td>Show a notification count on the icon, on launchers that support it</td>
+              </tr>
+              <tr>
+                <td>Foreground service and wake lock</td>
+                <td>Granted at install</td>
+                <td>Finish a background price check before the device sleeps</td>
+              </tr>
+              <tr>
+                <td>Run after boot</td>
+                <td>Granted at install</td>
+                <td>Reschedule your alerts after a restart</td>
               </tr>
               <tr>
                 <td>Scheduled alarm (Android 12 and below)</td>
-                <td>Yes</td>
+                <td>Granted at install</td>
                 <td>Schedule the daily digest at your chosen hour</td>
               </tr>
               <tr>
                 <td>Read and write storage (Android 12 and below)</td>
-                <td>No</td>
+                <td>You are asked</td>
                 <td>Pick a gallery image on older Android versions</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <div class="note">
+          <p>
+            That is the complete list. Nafis does not request the microphone, drawing over other
+            apps, biometrics, contacts, your installed app list, or background location. Builds up
+            to 1.18.0 did declare microphone, overlay and biometric permissions that arrived with
+            libraries. The app never used them, and they are removed from the next release
+            onward.
+          </p>
+        </div>
 
-        <h2 id="en-11">11. Retention and deletion</h2>
+        <h2 id="en-11">11. How we secure data</h2>
+        <p>
+          Data that is never collected cannot leak. That is the first security measure in Nafis:
+          no server, no account, no password, and no central user database to breach. Beyond
+          that:
+        </p>
+        <ul>
+          <li>
+            All network traffic uses <strong>HTTPS</strong> with certificate validation. The
+            production build does not permit cleartext connections.
+          </li>
+          <li>
+            Your vault and settings live in <code>app-private storage</code>, which Android
+            isolates from other apps. Nothing is written to a shared or world-readable folder.
+          </li>
+          <li>
+            The app ships no API keys or secrets, because every source is a free public API.
+            There is nothing inside the package worth extracting.
+          </li>
+          <li>
+            A backup you export is deliberately unencrypted so it stays readable and
+            restorable. Store it somewhere you trust, since it contains your vault details.
+          </li>
+          <li>
+            Device permissions are kept to the minimum, and permissions that libraries added
+            without a real use were removed (section 10).
+          </li>
+        </ul>
+        <p>
+          Nobody, including the developer, can inspect your vault remotely. If you find a
+          security issue, please email us (section 17) before disclosing it.
+        </p>
+
+        <h2 id="en-12">12. Retention and deletion</h2>
         <ul>
           <li>
             <strong>On-device data:</strong> kept as long as the app is installed. Uninstalling it,
@@ -1134,7 +1330,7 @@
           </li>
         </ul>
 
-        <h2 id="en-12">12. Your rights</h2>
+        <h2 id="en-13">13. Your rights</h2>
         <p>
           If you are in the EU, the UK or California, you have rights of access, correction,
           deletion and objection to processing. In practice:
@@ -1149,17 +1345,17 @@
             The legal basis for usage analytics is <em>legitimate interest</em> in operating,
             improving and debugging the app, and the data is anonymous.
           </li>
-          <li>To exercise any right or request deletion, email us (section 16).</li>
+          <li>To exercise any right or request deletion, email us (section 17).</li>
         </ul>
 
-        <h2 id="en-13">13. Children's privacy</h2>
+        <h2 id="en-14">14. Children's privacy</h2>
         <p>
           Nafis is a finance app intended for adults. It is not directed at children under 13 and
           we do not knowingly collect personal information from them. If you believe a child sent
           us data, contact us and we will act on it.
         </p>
 
-        <h2 id="en-14">14. External links and third parties</h2>
+        <h2 id="en-15">15. External links and third parties</h2>
         <p>
           When you open an article in your browser or visit a publisher site, that site's own
           policy applies. Policies of the services named above:
@@ -1187,7 +1383,7 @@
           <li><a href="https://policies.google.com/privacy" rel="noopener">Google Play</a></li>
         </ul>
 
-        <h2 id="en-15">15. Changes to this policy</h2>
+        <h2 id="en-16">16. Changes to this policy</h2>
         <p>
           We update this policy when a feature or a data source changes. The date at the top of
           the page reflects the latest version, and the full change history is public in this
@@ -1195,7 +1391,7 @@
           notes.
         </p>
 
-        <h2 id="en-16">16. Contact</h2>
+        <h2 id="en-17">17. Contact</h2>
         <div class="contact">
           <p>
             For any privacy question, deletion request, or to exercise your rights:

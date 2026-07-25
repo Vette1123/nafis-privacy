@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vette1123.github.io/nafis-privacy/sitemap.xml
