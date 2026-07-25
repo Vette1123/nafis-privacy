@@ -1,128 +1,1273 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Nafis — Privacy Policy</title>
+    <title>Nafis · سياسة الخصوصية · Privacy Policy</title>
+    <meta
+      name="description"
+      content="سياسة خصوصية تطبيق نفيس (Nafis) بالعربية والإنجليزية. Privacy policy for the Nafis app: what stays on your device, what leaves it, and why."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://vette1123.github.io/nafis-privacy/" />
+    <meta property="og:title" content="Nafis · Privacy Policy · سياسة الخصوصية" />
+    <meta
+      property="og:description"
+      content="What Nafis keeps on your device, what it sends, and to whom. Arabic and English."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vette1123.github.io/nafis-privacy/" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E0B07'/%3E%3Cpath d='M9 22V10l14 12V10' stroke='%23E0B044' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
     <style>
+      /* Self-contained on purpose: no web fonts, no scripts from other hosts, no
+         cookies, no analytics. A privacy page should not be the thing that tracks you. */
+      :root {
+        --bg: #fbfaf8;
+        --surface: #ffffff;
+        --surface-2: #f4f1ec;
+        --text: #1c1a17;
+        --muted: #5f5a52;
+        --line: #e3ded5;
+        --accent: #9a6b16;
+        --accent-soft: #f6efe0;
+        --radius: 14px;
+        --maxw: 780px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #100e0b;
+          --surface: #17140f;
+          --surface-2: #1e1a14;
+          --text: #efeae1;
+          --muted: #a49c8f;
+          --line: #2c261e;
+          --accent: #e0b044;
+          --accent-soft: #241d12;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        max-width: 720px;
-        margin: 40px auto;
-        padding: 0 20px;
-        line-height: 1.65;
-        color: #1a1a1a;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          sans-serif;
+        font-size: 17px;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
       }
+      [dir="rtl"] body,
+      [lang="ar"] {
+        font-family: "Noto Sans Arabic", "Segoe UI", Tahoma, system-ui, -apple-system, Arial,
+          sans-serif;
+      }
+      .wrap {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 0 20px 96px;
+      }
+
+      /* Header */
+      .top {
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .top-inner {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 60px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .brand svg {
+        display: block;
+      }
+      .switch {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 3px;
+        background: var(--surface-2);
+      }
+      .switch button {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background-color 0.18s ease, color 0.18s ease;
+      }
+      .switch button[aria-pressed="true"] {
+        background: var(--accent);
+        color: #14110c;
+      }
+      @media (prefers-color-scheme: dark) {
+        .switch button[aria-pressed="true"] {
+          color: #14110c;
+        }
+      }
+      .switch button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      /* Hero */
       h1 {
-        font-size: 1.8rem;
+        font-size: clamp(1.9rem, 5vw, 2.5rem);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        margin: 40px 0 10px;
       }
+      .lede {
+        color: var(--muted);
+        font-size: 1.05rem;
+        margin: 0 0 8px;
+        max-width: 62ch;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 0.86rem;
+        margin: 0 0 28px;
+      }
+      .meta b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* At a glance */
+      .glance {
+        background: var(--accent-soft);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px 22px;
+        margin: 0 0 36px;
+      }
+      .glance h2 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+      }
+      .glance ul {
+        margin: 0;
+        padding-inline-start: 20px;
+      }
+      .glance li {
+        margin: 6px 0;
+      }
+
+      /* TOC */
+      nav.toc {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 22px;
+        margin: 0 0 44px;
+        background: var(--surface);
+      }
+      nav.toc h2 {
+        margin: 0 0 8px;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-inline-start: 20px;
+        columns: 2;
+        column-gap: 28px;
+        font-size: 0.95rem;
+      }
+      @media (max-width: 620px) {
+        nav.toc ol {
+          columns: 1;
+        }
+      }
+      nav.toc li {
+        margin: 3px 0;
+        break-inside: avoid;
+      }
+
       h2 {
-        font-size: 1.2rem;
-        margin-top: 2rem;
+        font-size: 1.32rem;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        margin: 44px 0 12px;
+        scroll-margin-top: 80px;
+      }
+      h3 {
+        font-size: 1.02rem;
+        margin: 26px 0 8px;
+      }
+      p {
+        margin: 0 0 14px;
+        max-width: 68ch;
+      }
+      ul,
+      ol {
+        max-width: 68ch;
+      }
+      li {
+        margin: 5px 0;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+      }
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 3px;
+      }
+      strong {
+        font-weight: 700;
       }
       code {
-        background: #f0f0f0;
-        padding: 1px 5px;
-        border-radius: 4px;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.86em;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        padding: 1px 6px;
+        border-radius: 6px;
+        direction: ltr;
+        unicode-bidi: embed;
+        display: inline-block;
       }
-      .muted {
-        color: #666;
-        font-size: 0.9rem;
+
+      /* Tables */
+      .table-scroll {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin: 18px 0 24px;
+        background: var(--surface);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 560px;
+        font-size: 0.92rem;
+      }
+      caption {
+        caption-side: top;
+        text-align: start;
+        color: var(--muted);
+        font-size: 0.86rem;
+        padding: 12px 16px 0;
+      }
+      th,
+      td {
+        text-align: start;
+        padding: 11px 16px;
+        vertical-align: top;
+      }
+      thead th {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      tbody tr + tr {
+        border-top: 1px solid var(--line);
+      }
+      td code {
+        white-space: nowrap;
+      }
+
+      .note {
+        border-inline-start: 3px solid var(--accent);
+        background: var(--surface-2);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        padding: 12px 18px;
+        margin: 20px 0;
+        color: var(--text);
+      }
+      [dir="rtl"] .note {
+        border-radius: var(--radius) 0 0 var(--radius);
+      }
+      .note p:last-child {
+        margin-bottom: 0;
+      }
+
+      .contact {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        background: var(--surface);
+        margin-top: 20px;
+      }
+      .contact p:last-child {
+        margin-bottom: 0;
+      }
+
+      footer.page {
+        border-top: 1px solid var(--line);
+        margin-top: 56px;
+        padding-top: 20px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+      .lang-hidden {
+        display: none;
+      }
+      .skip {
+        position: absolute;
+        inset-inline-start: -9999px;
+      }
+      .skip:focus {
+        position: static;
+        display: inline-block;
+        padding: 8px 12px;
       }
     </style>
   </head>
   <body>
-    <h1>Privacy Policy for Nafis</h1>
-    <p class="muted">Last updated: 11 July 2026</p>
+    <header class="top">
+      <div class="top-inner">
+        <span class="brand">
+          <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="8" fill="#0E0B07" />
+            <path
+              d="M9 22V10l14 12V10"
+              stroke="#E0B044"
+              stroke-width="2.6"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Nafis
+        </span>
+        <div class="switch" role="group" aria-label="Language / اللغة">
+          <button type="button" id="btn-ar" aria-pressed="true" lang="ar">العربية</button>
+          <button type="button" id="btn-en" aria-pressed="false" lang="en">English</button>
+        </div>
+      </div>
+    </header>
 
-    <p>
-      Nafis ("the app") is a private price tracker for precious metals, currencies, and crypto —
-      showing local retail prices, a personal portfolio, zakat, alerts, and per-country news. We
-      respect your privacy. This policy explains what data the app handles and why.
-    </p>
+    <main class="wrap">
+      <!-- ================================ ARABIC ================================ -->
+      <section id="doc-ar" lang="ar" dir="rtl">
+        <h1>سياسة الخصوصية لتطبيق نفيس</h1>
+        <p class="lede">
+          نفيس تطبيق لمتابعة أسعار الذهب والفضة والعملات والعملات الرقمية، مع خزنة شخصية
+          لممتلكاتك وتنبيهات أسعار وحاسبة زكاة وأخبار. التطبيق بلا حسابات وبلا خادم خاص بنا،
+          وبياناتك المالية لا تغادر جهازك.
+        </p>
+        <p class="meta">
+          آخر تحديث: <b>٢٥ يوليو ٢٠٢٦</b> · إصدار التطبيق <b>1.18.0</b> · معرّف الحزمة
+          <code>com.mohamedgado.nafis</code>
+        </p>
 
-    <h2>Our core principle</h2>
-    <p>
-      Nafis has <strong>no user accounts, no advertising, and no analytics</strong>. We do not
-      operate any servers, and we do not collect, transmit, or store any personal information about
-      you. All of your settings, holdings, and portfolio data are stored
-      <strong>locally on your device</strong>. The only information that ever leaves your device is
-      the anonymous network requests for public market data and news described below.
-    </p>
+        <div class="glance">
+          <h2>باختصار</h2>
+          <ul>
+            <li>لا توجد حسابات، ولا إعلانات، ولا بيع بيانات، ولا خادم يملكه نفيس.</li>
+            <li>
+              خزنتك وأسعارك المسجّلة وأهدافك وصورك وإعداداتك محفوظة <strong>على جهازك فقط</strong>.
+            </li>
+            <li>
+              يستخدم التطبيق قياسات استخدام مجهولة الهوية (PostHog و EAS) لتحسين التطبيق، وهي
+              <strong>لا تتضمن أي مبالغ أو ممتلكات</strong>.
+            </li>
+            <li>الموقع والكاميرا والصور اختيارية تمامًا، والتطبيق يعمل كاملًا بدونها.</li>
+            <li>حذف التطبيق يمحو كل بياناتك المخزّنة على الجهاز.</li>
+          </ul>
+        </div>
 
-    <h2>Your portfolio and holdings</h2>
-    <p>
-      The assets you add (metals, coins, crypto, weights, quantities, making charges, and prices)
-      are stored <strong>only on your device</strong> in a local database. They are never uploaded,
-      synced, or shared. If you uninstall the app, this data is removed with it.
-    </p>
+        <nav class="toc" aria-label="محتويات الصفحة">
+          <h2>المحتويات</h2>
+          <ol>
+            <li><a href="#ar-1">من نحن ونطاق السياسة</a></li>
+            <li><a href="#ar-2">ما يبقى على جهازك</a></li>
+            <li><a href="#ar-3">ما يغادر جهازك</a></li>
+            <li><a href="#ar-4">بيانات الموقع</a></li>
+            <li><a href="#ar-5">الكاميرا والصور</a></li>
+            <li><a href="#ar-6">الإشعارات والتنبيهات</a></li>
+            <li><a href="#ar-7">قياسات الاستخدام وتقارير الأعطال</a></li>
+            <li><a href="#ar-8">النسخ الاحتياطي والمشاركة</a></li>
+            <li><a href="#ar-9">التحديثات</a></li>
+            <li><a href="#ar-10">أذونات أندرويد</a></li>
+            <li><a href="#ar-11">الاحتفاظ بالبيانات وحذفها</a></li>
+            <li><a href="#ar-12">حقوقك</a></li>
+            <li><a href="#ar-13">خصوصية الأطفال</a></li>
+            <li><a href="#ar-14">روابط خارجية وخدمات الغير</a></li>
+            <li><a href="#ar-15">تعديلات السياسة</a></li>
+            <li><a href="#ar-16">التواصل</a></li>
+          </ol>
+        </nav>
 
-    <h2>Location data</h2>
-    <p>
-      If you grant location permission, the app uses your device location to determine your country
-      so it can show the right local prices (for example, the Egyptian صاغة gold price) and
-      localized news. Your coordinates are sent to
-      <strong>BigDataCloud</strong> (<code>api.bigdatacloud.net</code>) to convert them into a
-      country and city name for display. These coordinates are used only to fulfil that request —
-      they are not stored by Nafis, are not linked to your identity, and are never used for
-      advertising. If you deny location permission, you can still choose your country and currency
-      manually and use the app fully.
-    </p>
+        <h2 id="ar-1">١. من نحن ونطاق السياسة</h2>
+        <p>
+          نفيس (<code>com.mohamedgado.nafis</code>) تطبيق يطوّره ويشغّله فرد واحد: محمد جادو.
+          تغطي هذه السياسة تطبيق نفيس على أندرويد وأي إصدار مستقبلي على iOS، وتغطي كذلك هذه
+          الصفحة نفسها. الصفحة لا تضع كوكيز ولا تحمّل أي ملف من خادم آخر.
+        </p>
+        <p>
+          مبدأ التصميم الأساسي: <strong>بلا مفاتيح وبلا خادم</strong>. كل مصادر البيانات عامة
+          ومجانية، ولا يوجد خادم وسيط يملكه نفيس تمرّ منه طلباتك. يعني ذلك أننا لا نستطيع
+          تقنيًا رؤية محفظتك أو أرصدتك، لأنها لا تُرسل إلى أي مكان.
+        </p>
 
-    <h2>Market data and news requests</h2>
-    <p>
-      To show live prices and headlines, the app fetches public data from the services below. These
-      requests contain <strong>no personal information</strong> about you — only the asset or topic
-      being looked up:
-    </p>
-    <ul>
-      <li>Precious-metal spot prices — <code>api.gold-api.com</code></li>
-      <li>Currency exchange rates — <code>open.er-api.com</code></li>
-      <li>Cryptocurrency prices — <code>api.coingecko.com</code></li>
-      <li>City search (manual location) — <code>geocoding-api.open-meteo.com</code></li>
-      <li>News headlines — Google News RSS (<code>news.google.com</code>)</li>
-    </ul>
+        <h2 id="ar-2">٢. ما يبقى على جهازك</h2>
+        <p>
+          البيانات التالية تُخزَّن محليًا على جهازك فقط (قاعدة بيانات SQLite، وذاكرة تفضيلات
+          مشفّرة الوصول داخل التطبيق، ومجلد ملفات التطبيق)، ولا تُرفع ولا تُزامَن مع أي خادم:
+        </p>
+        <ul>
+          <li><strong>الخزنة:</strong> القطع والمعادن والعيارات والأوزان وأسعار الشراء والمصنعية والمبيعات المسجّلة.</li>
+          <li><strong>الأهداف وخطط الادخار:</strong> المبالغ المستهدفة والمساهمات والدورية.</li>
+          <li><strong>التنبيهات:</strong> حدود الأسعار التي تضبطها، وتنبيهات الخزنة، ومواعيد الملخّص اليومي.</li>
+          <li><strong>سجل الأسعار:</strong> سجل يومي على الجهاز يُستخدم لرسم المخططات وحساب النِسب.</li>
+          <li><strong>الإعدادات:</strong> اللغة، السمة، العملة، عيار الذهب، الدولة، تخصيص الشاشة الرئيسية، قائمة المتابعة.</li>
+          <li><strong>صور القطع:</strong> الصور التي تضيفها لقطع الخزنة تُنسخ إلى مجلد التطبيق على جهازك.</li>
+        </ul>
+        <p>
+          لا يوجد تسجيل دخول، ولا مزامنة سحابية، ولا نسخة احتياطية تلقائية لدينا. أنت المالك
+          الوحيد لهذه البيانات.
+        </p>
 
-    <h2>Notifications</h2>
-    <p>
-      Price alerts you set are evaluated and delivered <strong>entirely on your device</strong>. The
-      app does not use remote push notifications and does not send your device token to any server.
-    </p>
+        <h2 id="ar-3">٣. ما يغادر جهازك</h2>
+        <p>
+          لعرض الأسعار والأخبار يتصل التطبيق مباشرة بخدمات عامة. هذه الطلبات لا تحمل هويتك ولا
+          محتوى خزنتك، بل تحمل فقط ما يلزم لجلب المعلومة (رمز الأصل أو كلمة البحث الإخبارية
+          مثلًا). ككل اتصال إنترنت، يرى الخادم المستقبِل عنوان IP الخاص بجهازك ونوع العميل، وهو
+          أمر لا يمكن لأي تطبيق تجنّبه عند جلب بيانات من الشبكة.
+        </p>
+        <div class="table-scroll">
+          <table>
+            <caption>الخدمات التي يتصل بها التطبيق وما يُرسل إليها</caption>
+            <thead>
+              <tr>
+                <th scope="col">الخدمة</th>
+                <th scope="col">الغرض</th>
+                <th scope="col">ما يُرسل</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>api.gold-api.com</code></td>
+                <td>أسعار المعادن الفورية</td>
+                <td>رمز المعدن فقط</td>
+              </tr>
+              <tr>
+                <td><code>open.er-api.com</code></td>
+                <td>أسعار صرف العملات</td>
+                <td>رمز العملة الأساسية</td>
+              </tr>
+              <tr>
+                <td><code>api.coingecko.com</code></td>
+                <td>أسعار العملات الرقمية</td>
+                <td>معرّفات العملات المطلوبة</td>
+              </tr>
+              <tr>
+                <td><code>query1.finance.yahoo.com</code></td>
+                <td>السلاسل التاريخية للمخططات</td>
+                <td>رمز الأصل والمدة الزمنية</td>
+              </tr>
+              <tr>
+                <td><code>egrates.com</code> و <code>banklive.net</code></td>
+                <td>أسعار البنوك المحلية للعملات</td>
+                <td>رمز العملة</td>
+              </tr>
+              <tr>
+                <td><code>api.bigdatacloud.net</code></td>
+                <td>تحويل الإحداثيات إلى اسم دولة ومدينة</td>
+                <td>إحداثيات تقريبية (فقط عند منحك إذن الموقع)</td>
+              </tr>
+              <tr>
+                <td><code>geocoding-api.open-meteo.com</code></td>
+                <td>البحث اليدوي عن مدينة</td>
+                <td>نص المدينة الذي تكتبه</td>
+              </tr>
+              <tr>
+                <td><code>bing.com</code> (خلاصات RSS)</td>
+                <td>عناوين الأخبار</td>
+                <td>كلمات الموضوع ورمز الدولة واللغة</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>skynewsarabia.com</code>، <code>arabic.rt.com</code>،
+                  <code>youm7.com</code>، <code>dailynewsegypt.com</code>
+                </td>
+                <td>خلاصات أخبار مختارة</td>
+                <td>طلب الخلاصة فقط</td>
+              </tr>
+              <tr>
+                <td><code>r.jina.ai</code></td>
+                <td>استخراج نص المقال عند فشل الاستخراج المباشر</td>
+                <td>رابط المقال الذي فتحته</td>
+              </tr>
+              <tr>
+                <td><code>eu.i.posthog.com</code></td>
+                <td>قياسات الاستخدام وتقارير الأخطاء (خوادم الاتحاد الأوروبي)</td>
+                <td>معرّف مجهول وأسماء أحداث وخصائص عامة (القسم ٧)</td>
+              </tr>
+              <tr>
+                <td><code>u.expo.dev</code> وخدمات EAS</td>
+                <td>تحديثات التطبيق وقياسات الأداء والأعطال</td>
+                <td>إصدار التطبيق ونوع الجهاز ونظام التشغيل وأزمنة التشغيل</td>
+              </tr>
+              <tr>
+                <td><code>play.google.com</code></td>
+                <td>فتح صفحة المتجر أو نافذة التقييم</td>
+                <td>لا شيء سوى فتح الرابط بطلب منك</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <p>
+            لا يستخدم قارئ الأخبار في نفيس متصفحًا مدمجًا (WebView)، لذلك لا تعمل سكربتات
+            الناشرين ولا تُحفظ كوكيز تتبّع عند قراءة مقال داخل التطبيق.
+          </p>
+        </div>
 
-    <h2>Children's privacy</h2>
-    <p>
-      Nafis does not knowingly collect personal information from children and is not directed at
-      children under 13.
-    </p>
+        <h2 id="ar-4">٤. بيانات الموقع</h2>
+        <p>
+          إذن الموقع <strong>اختياري</strong> ويُطلب فقط أثناء استخدام التطبيق. عند منحه،
+          يستخدم نفيس إحداثياتك مرة واحدة لتحديد دولتك، ثم يرسلها إلى BigDataCloud لتحويلها
+          إلى اسم دولة ومدينة، ليختار العملة وعيارات الذهب وأسعار الصاغة المناسبة لك.
+        </p>
+        <ul>
+          <li>الإحداثيات لا تُخزَّن على خوادمنا، ببساطة لأنه لا توجد خوادم لنا.</li>
+          <li>لا تُربط الإحداثيات بأي هوية ولا تُستخدم للإعلانات.</li>
+          <li>ما يُحفظ على جهازك هو اسم الدولة والمدينة والعملة المختارة فقط.</li>
+          <li>لا يوجد تتبّع للموقع في الخلفية ولا تسجيل لمسارك.</li>
+          <li>إن رفضت الإذن، يمكنك اختيار دولتك يدويًا واستخدام التطبيق بالكامل.</li>
+        </ul>
 
-    <h2>Third-party services</h2>
-    <p>
-      The third-party services listed above process the requests described. Their handling of
-      network requests is governed by their own privacy policies:
-    </p>
-    <ul>
-      <li>
-        BigDataCloud —
-        <a href="https://www.bigdatacloud.com/privacy-and-cookie-policy">bigdatacloud.com</a>
-      </li>
-      <li>Gold-API — <a href="https://gold-api.com">gold-api.com</a></li>
-      <li>
-        ExchangeRate-API — <a href="https://www.exchangerate-api.com/terms">exchangerate-api.com</a>
-      </li>
-      <li>CoinGecko — <a href="https://www.coingecko.com/en/privacy">coingecko.com</a></li>
-      <li>Open-Meteo — <a href="https://open-meteo.com/en/terms">open-meteo.com</a></li>
-      <li>
-        Google News — <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>
-      </li>
-    </ul>
+        <h2 id="ar-5">٥. الكاميرا والصور</h2>
+        <p>
+          يمكنك إضافة صورة لأي قطعة في الخزنة، من الكاميرا أو من معرض الصور. تُنسخ الصورة إلى
+          مجلد التطبيق على جهازك ويُحفظ مسارها في قاعدة البيانات المحلية.
+          <strong>الصور لا تُرفع ولا تُحلَّل ولا تُشارك</strong>، ولا يُطلب إذن الكاميرا أو
+          الصور إلا في اللحظة التي تختار فيها إضافة صورة.
+        </p>
 
-    <h2>Changes to this policy</h2>
-    <p>
-      We may update this policy from time to time. The "Last updated" date above reflects the latest
-      version.
-    </p>
+        <h2 id="ar-6">٦. الإشعارات والتنبيهات</h2>
+        <p>
+          كل التنبيهات (حدود الأسعار، تنبيهات الحركة، الملخّص اليومي، الملخّص الأسبوعي،
+          تنبيهات الخزنة) تُحسب وتُطلق <strong>على جهازك</strong> عبر إشعارات محلية. لا يوجد
+          إشعار دفع من خادم، ولا يُرسل رمز جهاز (push token) إلى أي طرف. تتم مقارنة الأسعار
+          محليًا بعد كل تحديث ناجح، وكذلك عبر مهمة خلفية دورية.
+        </p>
 
-    <h2>Contact</h2>
-    <p>For any questions about this privacy policy, contact: <strong>boogado@yahoo.com</strong></p>
+        <h2 id="ar-7">٧. قياسات الاستخدام وتقارير الأعطال</h2>
+        <p>
+          لتحسين التطبيق ومعرفة الشاشات التي تُستخدم فعلًا وأين يحدث خلل، يرسل نفيس أحداث
+          استخدام مجهولة الهوية إلى <strong>PostHog</strong> (خوادم الاتحاد الأوروبي) وإلى
+          <strong>EAS Observe / Expo Insights</strong> من Expo.
+        </p>
+        <h3>ما يُرسل</h3>
+        <ul>
+          <li>معرّف عشوائي يُنشأ على الجهاز، غير مرتبط باسمك أو بريدك أو حسابك.</li>
+          <li>
+            أسماء أحداث محدودة ومعرّفة مسبقًا: فتح التطبيق، عرض شاشة، تغيير لغة أو سمة أو
+            عملة، إنشاء تنبيه، فتح أداة، إتمام التهيئة، وما شابه.
+          </li>
+          <li>
+            خصائص منخفضة التنوّع مع الحدث: رمز الأصل أو اسم الأداة أو نوع الإعداد وقيمته
+            (مثل: اللغة = ar).
+          </li>
+          <li>بيانات تقنية: إصدار التطبيق، نظام التشغيل، طراز الجهاز، أزمنة الإقلاع والتنقل.</li>
+          <li>تقارير الأخطاء والأعطال: نوع الخطأ وأثر التنفيذ (stack trace) وسياق تقني مختصر.</li>
+        </ul>
+        <h3>ما لا يُرسل أبدًا</h3>
+        <ul>
+          <li>أي مبلغ مالي، أو وزن، أو محتوى خزنة، أو قيمة محفظة، أو ربح وخسارة.</li>
+          <li>نص البحث الذي تكتبه، أو أسماء القطع، أو صورها.</li>
+          <li>إحداثياتك، أو اسمك، أو بريدك، أو دفتر عناوينك، أو قائمة تطبيقاتك.</li>
+          <li>لا يوجد تسجيل للشاشة (Session Replay)، وهو معطّل صراحة في التطبيق.</li>
+        </ul>
+        <div class="note">
+          <p>
+            لا يتضمن الإصدار الحالي مفتاحًا لإيقاف القياسات داخل التطبيق. إن رغبت في إيقافها أو
+            في حذف بياناتك المجهولة، راسلنا على البريد في القسم ١٦ وسننفّذ الطلب. نخطط لإضافة
+            مفتاح إيقاف داخل الإعدادات في إصدار قادم.
+          </p>
+        </div>
+
+        <h2 id="ar-8">٨. النسخ الاحتياطي والمشاركة</h2>
+        <p>
+          يتيح نفيس تصدير نسخة احتياطية كاملة (JSON) أو تصدير الخزنة كملف CSV، ومشاركة صور
+          للأسعار أو الحاسبة. كل ذلك يبدأ بطلب منك، ويُكتب الملف في مجلد مؤقت على جهازك ثم
+          يُفتح لك اختيار المشاركة الخاص بالنظام. <strong>الملف يذهب حيث ترسله أنت فقط</strong>
+          (درايف، واتساب، الملفات)، ولا نستلم نسخة منه. بعد ذلك تحكمه سياسة الخصوصية للتطبيق
+          الذي اخترته.
+        </p>
+
+        <h2 id="ar-9">٩. التحديثات</h2>
+        <p>
+          يستخدم نفيس تحديثات Expo (EAS Update) لتوصيل إصلاحات سريعة دون انتظار المتجر. يتصل
+          التطبيق بخوادم Expo ليسأل: هل يوجد تحديث لهذا الإصدار؟ ويُرسل في الطلب إصدار التطبيق
+          وقناة التحديث ونظام التشغيل ونوع الجهاز. لا تُرسل أي بيانات شخصية أو مالية في هذه
+          العملية.
+        </p>
+
+        <h2 id="ar-10">١٠. أذونات أندرويد</h2>
+        <div class="table-scroll">
+          <table>
+            <caption>لماذا يطلب التطبيق كل إذن</caption>
+            <thead>
+              <tr>
+                <th scope="col">الإذن</th>
+                <th scope="col">إلزامي؟</th>
+                <th scope="col">السبب</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>الإنترنت</td>
+                <td>نعم</td>
+                <td>جلب الأسعار والأخبار والتحديثات</td>
+              </tr>
+              <tr>
+                <td>الموقع (تقريبي ودقيق)</td>
+                <td>لا</td>
+                <td>تحديد الدولة لاختيار العملة والأسعار المحلية</td>
+              </tr>
+              <tr>
+                <td>الكاميرا ومعرض الصور</td>
+                <td>لا</td>
+                <td>إضافة صورة لقطعة في الخزنة، وتبقى على الجهاز</td>
+              </tr>
+              <tr>
+                <td>الإشعارات</td>
+                <td>لا</td>
+                <td>تنبيهات الأسعار والملخّص اليومي والأسبوعي</td>
+              </tr>
+              <tr>
+                <td>الاهتزاز</td>
+                <td>نعم</td>
+                <td>تنبيه لمسي مع الإشعار</td>
+              </tr>
+              <tr>
+                <td>تشغيل مهمة في الخلفية</td>
+                <td>نعم</td>
+                <td>فحص الأسعار دوريًا لإطلاق التنبيهات</td>
+              </tr>
+              <tr>
+                <td>منبّه مجدول (أندرويد ١٢ فأقل)</td>
+                <td>نعم</td>
+                <td>ضبط موعد الملخّص اليومي</td>
+              </tr>
+              <tr>
+                <td>قراءة وكتابة التخزين (أندرويد ١٢ فأقل)</td>
+                <td>لا</td>
+                <td>اختيار صورة من المعرض على الإصدارات القديمة</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="ar-11">١١. الاحتفاظ بالبيانات وحذفها</h2>
+        <ul>
+          <li>
+            <strong>بيانات الجهاز:</strong> تبقى ما دام التطبيق مثبّتًا. حذف التطبيق أو مسح
+            بياناته من إعدادات النظام يمحوها نهائيًا. يمكنك أيضًا حذف أي قطعة أو تنبيه أو هدف
+            من داخل التطبيق في أي وقت.
+          </li>
+          <li>
+            <strong>أحداث الاستخدام:</strong> تُحفظ لدى PostHog وExpo وفق سياسات الاحتفاظ لديهم،
+            مرتبطة بمعرّف مجهول لا يشير إليك. راسلنا لطلب حذفها.
+          </li>
+          <li>
+            <strong>نسخك الاحتياطية:</strong> تحت سيطرتك أنت، لأنك من اختار مكان حفظها.
+          </li>
+        </ul>
+
+        <h2 id="ar-12">١٢. حقوقك</h2>
+        <p>
+          إن كنت داخل الاتحاد الأوروبي أو المملكة المتحدة أو كاليفورنيا، فلك حقوق الوصول
+          والتصحيح والحذف والاعتراض على المعالجة. عمليًا:
+        </p>
+        <ul>
+          <li>معظم بياناتك موجودة على جهازك، ولك سيطرة مباشرة وكاملة عليها.</li>
+          <li>لا نبيع بياناتك ولا نشاركها لأغراض إعلانية أو تسويقية، ولا نستخدمها لبناء ملف إعلاني.</li>
+          <li>
+            الأساس القانوني لقياسات الاستخدام هو <em>المصلحة المشروعة</em> في تشغيل التطبيق
+            وتحسينه وإصلاح أعطاله، وهي مجهولة الهوية.
+          </li>
+          <li>لممارسة أي حق أو لطلب الحذف، راسلنا على البريد في القسم ١٦.</li>
+        </ul>
+
+        <h2 id="ar-13">١٣. خصوصية الأطفال</h2>
+        <p>
+          نفيس تطبيق مالي موجّه للبالغين، وهو غير مخصص للأطفال دون ١٣ عامًا، ولا نجمع عن قصد
+          أي بيانات شخصية منهم. إن اعتقدت أن طفلًا أرسل بيانات إلينا، راسلنا وسنتصرف.
+        </p>
+
+        <h2 id="ar-14">١٤. روابط خارجية وخدمات الغير</h2>
+        <p>
+          عند فتح مقال في المتصفح أو زيارة موقع ناشر، تنطبق سياسة ذلك الموقع. سياسات الخدمات
+          المذكورة أعلاه:
+        </p>
+        <ul>
+          <li><a href="https://posthog.com/privacy" rel="noopener">PostHog</a></li>
+          <li><a href="https://expo.dev/privacy" rel="noopener">Expo (EAS Update و Observe)</a></li>
+          <li>
+            <a href="https://www.bigdatacloud.com/privacy-and-cookie-policy" rel="noopener"
+              >BigDataCloud</a
+            >
+          </li>
+          <li><a href="https://gold-api.com" rel="noopener">Gold-API</a></li>
+          <li>
+            <a href="https://www.exchangerate-api.com/terms" rel="noopener">ExchangeRate-API</a>
+          </li>
+          <li><a href="https://www.coingecko.com/en/privacy" rel="noopener">CoinGecko</a></li>
+          <li><a href="https://open-meteo.com/en/terms" rel="noopener">Open-Meteo</a></li>
+          <li>
+            <a href="https://privacy.microsoft.com/privacystatement" rel="noopener"
+              >Microsoft Bing</a
+            >
+          </li>
+          <li><a href="https://jina.ai/legal/#privacy-policy" rel="noopener">Jina AI Reader</a></li>
+          <li><a href="https://policies.google.com/privacy" rel="noopener">Google Play</a></li>
+        </ul>
+
+        <h2 id="ar-15">١٥. تعديلات السياسة</h2>
+        <p>
+          قد نحدّث هذه السياسة عند إضافة ميزة أو تغيير مصدر بيانات. يظهر تاريخ آخر تحديث أعلى
+          الصفحة، وسجل التغييرات كاملًا متاح في مستودع الصفحة على GitHub. التغييرات الجوهرية
+          سنشير إليها في ملاحظات إصدار التطبيق.
+        </p>
+
+        <h2 id="ar-16">١٦. التواصل</h2>
+        <div class="contact">
+          <p>
+            لأي سؤال عن الخصوصية، أو طلب حذف بيانات، أو ممارسة أي من حقوقك:
+            <a href="mailto:boogado@yahoo.com">boogado@yahoo.com</a>
+          </p>
+          <p>المطوّر: محمد جادو · التطبيق: نفيس (<code>com.mohamedgado.nafis</code>)</p>
+        </div>
+
+        <footer class="page">
+          <p>
+            هذه الصفحة ثابتة ومستضافة على GitHub Pages. لا تضع كوكيز، ولا تشغّل أي قياس، ولا
+            تحمّل خطوطًا أو سكربتات من خوادم أخرى.
+          </p>
+        </footer>
+      </section>
+
+      <!-- ================================ ENGLISH ================================ -->
+      <section id="doc-en" lang="en" dir="ltr" class="lang-hidden">
+        <h1>Privacy Policy for Nafis</h1>
+        <p class="lede">
+          Nafis tracks prices for gold, silver, currencies and crypto, and adds a personal
+          holdings vault, price alerts, a zakat calculator and news. It has no accounts and no
+          server of ours. Your financial data never leaves your device.
+        </p>
+        <p class="meta">
+          Last updated: <b>25 July 2026</b> · App version <b>1.18.0</b> · Package
+          <code>com.mohamedgado.nafis</code>
+        </p>
+
+        <div class="glance">
+          <h2>At a glance</h2>
+          <ul>
+            <li>No accounts, no ads, no data selling, no server owned by Nafis.</li>
+            <li>
+              Your vault, price history, goals, photos and settings stay
+              <strong>on your device only</strong>.
+            </li>
+            <li>
+              Anonymous usage analytics (PostHog and EAS) help improve the app and
+              <strong>never include amounts or holdings</strong>.
+            </li>
+            <li>Location, camera and photos are optional. The app works fully without them.</li>
+            <li>Uninstalling the app deletes everything it stored on your device.</li>
+          </ul>
+        </div>
+
+        <nav class="toc" aria-label="Contents">
+          <h2>Contents</h2>
+          <ol>
+            <li><a href="#en-1">Who we are and what this covers</a></li>
+            <li><a href="#en-2">What stays on your device</a></li>
+            <li><a href="#en-3">What leaves your device</a></li>
+            <li><a href="#en-4">Location data</a></li>
+            <li><a href="#en-5">Camera and photos</a></li>
+            <li><a href="#en-6">Notifications and alerts</a></li>
+            <li><a href="#en-7">Analytics and crash reporting</a></li>
+            <li><a href="#en-8">Backups and sharing</a></li>
+            <li><a href="#en-9">App updates</a></li>
+            <li><a href="#en-10">Android permissions</a></li>
+            <li><a href="#en-11">Retention and deletion</a></li>
+            <li><a href="#en-12">Your rights</a></li>
+            <li><a href="#en-13">Children's privacy</a></li>
+            <li><a href="#en-14">External links and third parties</a></li>
+            <li><a href="#en-15">Changes to this policy</a></li>
+            <li><a href="#en-16">Contact</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="en-1">1. Who we are and what this covers</h2>
+        <p>
+          Nafis (<code>com.mohamedgado.nafis</code>) is built and operated by one person, Mohamed
+          Gado. This policy covers the Nafis Android app, any future iOS release, and this page
+          itself. The page sets no cookies and loads nothing from another host.
+        </p>
+        <p>
+          The core design principle is <strong>keyless and serverless</strong>. Every data source
+          is a free public API, and there is no Nafis backend that your requests pass through. As
+          a direct consequence, we cannot see your portfolio or balances, because they are never
+          transmitted anywhere.
+        </p>
+
+        <h2 id="en-2">2. What stays on your device</h2>
+        <p>
+          The following is stored locally only (a SQLite database, an app-private preferences
+          store, and the app's own file directory). None of it is uploaded or synced:
+        </p>
+        <ul>
+          <li>
+            <strong>Vault:</strong> pieces, metals, karats, weights, purchase prices, making
+            charges and recorded sales.
+          </li>
+          <li><strong>Goals and savings plans:</strong> targets, contributions and cadence.</li>
+          <li>
+            <strong>Alerts:</strong> the thresholds you set, vault alerts, and digest schedules.
+          </li>
+          <li>
+            <strong>Price history:</strong> an on-device daily log used to draw charts and compute
+            changes.
+          </li>
+          <li>
+            <strong>Settings:</strong> language, theme, currency, karat, country, home layout and
+            watchlist.
+          </li>
+          <li>
+            <strong>Item photos:</strong> photos you attach to vault pieces are copied into the
+            app's folder on your device.
+          </li>
+        </ul>
+        <p>
+          There is no sign-in, no cloud sync and no automatic backup on our side. You are the only
+          holder of this data.
+        </p>
+
+        <h2 id="en-3">3. What leaves your device</h2>
+        <p>
+          To show live prices and headlines, the app talks directly to public services. Those
+          requests carry no identity and no vault contents, only what is needed to fetch the
+          information (an asset symbol, a news topic). As with any internet request, the receiving
+          server sees your device IP address and client type. No app can avoid that when fetching
+          data from a network.
+        </p>
+        <div class="table-scroll">
+          <table>
+            <caption>Services the app contacts, and what is sent</caption>
+            <thead>
+              <tr>
+                <th scope="col">Service</th>
+                <th scope="col">Purpose</th>
+                <th scope="col">What is sent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>api.gold-api.com</code></td>
+                <td>Precious metal spot prices</td>
+                <td>Metal symbol only</td>
+              </tr>
+              <tr>
+                <td><code>open.er-api.com</code></td>
+                <td>Currency exchange rates</td>
+                <td>Base currency code</td>
+              </tr>
+              <tr>
+                <td><code>api.coingecko.com</code></td>
+                <td>Cryptocurrency prices</td>
+                <td>Requested coin ids</td>
+              </tr>
+              <tr>
+                <td><code>query1.finance.yahoo.com</code></td>
+                <td>Historical series for charts</td>
+                <td>Symbol and time range</td>
+              </tr>
+              <tr>
+                <td><code>egrates.com</code> and <code>banklive.net</code></td>
+                <td>Local bank buy and sell rates</td>
+                <td>Currency code</td>
+              </tr>
+              <tr>
+                <td><code>api.bigdatacloud.net</code></td>
+                <td>Turn coordinates into a country and city name</td>
+                <td>Approximate coordinates (only if you grant location)</td>
+              </tr>
+              <tr>
+                <td><code>geocoding-api.open-meteo.com</code></td>
+                <td>Manual city search</td>
+                <td>The city text you type</td>
+              </tr>
+              <tr>
+                <td><code>bing.com</code> (RSS feeds)</td>
+                <td>News headlines</td>
+                <td>Topic keywords, country and language code</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>skynewsarabia.com</code>, <code>arabic.rt.com</code>,
+                  <code>youm7.com</code>, <code>dailynewsegypt.com</code>
+                </td>
+                <td>Curated publisher feeds</td>
+                <td>The feed request only</td>
+              </tr>
+              <tr>
+                <td><code>r.jina.ai</code></td>
+                <td>Article text fallback when direct extraction fails</td>
+                <td>The URL of the article you opened</td>
+              </tr>
+              <tr>
+                <td><code>eu.i.posthog.com</code></td>
+                <td>Product analytics and error reports (EU servers)</td>
+                <td>Anonymous id, event names, coarse properties (section 7)</td>
+              </tr>
+              <tr>
+                <td><code>u.expo.dev</code> and EAS services</td>
+                <td>App updates, performance and crash metrics</td>
+                <td>App version, device model, OS, launch and navigation timings</td>
+              </tr>
+              <tr>
+                <td><code>play.google.com</code></td>
+                <td>Opening the store listing or the review prompt</td>
+                <td>Nothing beyond the link you chose to open</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <p>
+            The Nafis reader never uses a WebView, so publisher scripts do not run and no tracking
+            cookies are stored when you read an article inside the app.
+          </p>
+        </div>
+
+        <h2 id="en-4">4. Location data</h2>
+        <p>
+          Location is <strong>optional</strong> and requested only while you use the app. When
+          granted, Nafis reads your coordinates once to work out your country, then sends them to
+          BigDataCloud to resolve a country and city name, so it can pick the right currency,
+          karat set and local retail prices.
+        </p>
+        <ul>
+          <li>Coordinates are not stored on our servers, simply because we run none.</li>
+          <li>They are not linked to any identity and are never used for advertising.</li>
+          <li>What is saved on your device is the resulting country, city and currency.</li>
+          <li>There is no background location tracking and no location history.</li>
+          <li>If you decline, you can pick your country manually and use the app fully.</li>
+        </ul>
+
+        <h2 id="en-5">5. Camera and photos</h2>
+        <p>
+          You can attach a photo to a vault piece, from the camera or your gallery. The image is
+          copied into the app's own folder and its path is saved in the local database.
+          <strong>Photos are never uploaded, analysed or shared</strong>, and the camera or photo
+          permission is requested only at the moment you choose to add one.
+        </p>
+
+        <h2 id="en-6">6. Notifications and alerts</h2>
+        <p>
+          Every alert (price targets, move alerts, the daily digest, the weekly recap, vault
+          alerts) is evaluated and delivered <strong>on your device</strong> as a local
+          notification. There are no remote push notifications and no device push token is sent to
+          anyone. Prices are compared locally after each successful refresh and in a periodic
+          background task.
+        </p>
+
+        <h2 id="en-7">7. Analytics and crash reporting</h2>
+        <p>
+          To improve the app, see which screens are actually used and find what breaks, Nafis
+          sends anonymous usage events to <strong>PostHog</strong> (EU servers) and to
+          <strong>EAS Observe / Expo Insights</strong> from Expo.
+        </p>
+        <h3>What is sent</h3>
+        <ul>
+          <li>A random id generated on the device, not tied to your name, email or any account.</li>
+          <li>
+            A fixed, predefined set of event names: app opened, screen viewed, language or theme
+            or currency changed, alert created, tool opened, onboarding completed, and similar.
+          </li>
+          <li>
+            Low-cardinality properties alongside an event: an asset code, a tool name, a setting
+            key and its value (for example language = ar).
+          </li>
+          <li>
+            Technical data: app version, OS, device model, startup and navigation timings.
+          </li>
+          <li>Error and crash reports: error type, stack trace and short technical context.</li>
+        </ul>
+        <h3>What is never sent</h3>
+        <ul>
+          <li>Any amount, weight, vault content, portfolio value, or profit and loss figure.</li>
+          <li>The text you type into search, item names, or item photos.</li>
+          <li>Your coordinates, name, email, contacts, or list of installed apps.</li>
+          <li>No session replay or screen recording. It is explicitly disabled in the app.</li>
+        </ul>
+        <div class="note">
+          <p>
+            The current release has no in-app switch to turn analytics off. If you want it
+            disabled, or want your anonymous data deleted, email us (section 16) and we will do
+            it. An in-app opt-out is planned for a future release.
+          </p>
+        </div>
+
+        <h2 id="en-8">8. Backups and sharing</h2>
+        <p>
+          Nafis can export a full backup (JSON), export the vault as CSV, and share price or
+          calculator images. Each one starts with your action. The file is written to a temporary
+          folder on your device and handed to the system share sheet.
+          <strong>It goes only where you send it</strong> (Drive, WhatsApp, Files), and we never
+          receive a copy. From that point the receiving app's own privacy policy applies.
+        </p>
+
+        <h2 id="en-9">9. App updates</h2>
+        <p>
+          Nafis uses Expo updates (EAS Update) to ship fixes without waiting for a store review.
+          The app asks Expo's servers whether an update exists for its version, sending the app
+          version, update channel, OS and device type. No personal or financial data is involved.
+        </p>
+
+        <h2 id="en-10">10. Android permissions</h2>
+        <div class="table-scroll">
+          <table>
+            <caption>Why each permission is requested</caption>
+            <thead>
+              <tr>
+                <th scope="col">Permission</th>
+                <th scope="col">Required?</th>
+                <th scope="col">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Internet</td>
+                <td>Yes</td>
+                <td>Fetch prices, news and updates</td>
+              </tr>
+              <tr>
+                <td>Location (coarse and fine)</td>
+                <td>No</td>
+                <td>Detect your country to pick currency and local prices</td>
+              </tr>
+              <tr>
+                <td>Camera and photo library</td>
+                <td>No</td>
+                <td>Attach a photo to a vault piece, kept on device</td>
+              </tr>
+              <tr>
+                <td>Notifications</td>
+                <td>No</td>
+                <td>Price alerts, daily digest and weekly recap</td>
+              </tr>
+              <tr>
+                <td>Vibrate</td>
+                <td>Yes</td>
+                <td>Haptic feedback with a notification</td>
+              </tr>
+              <tr>
+                <td>Background task</td>
+                <td>Yes</td>
+                <td>Check prices periodically so alerts can fire</td>
+              </tr>
+              <tr>
+                <td>Scheduled alarm (Android 12 and below)</td>
+                <td>Yes</td>
+                <td>Schedule the daily digest at your chosen hour</td>
+              </tr>
+              <tr>
+                <td>Read and write storage (Android 12 and below)</td>
+                <td>No</td>
+                <td>Pick a gallery image on older Android versions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="en-11">11. Retention and deletion</h2>
+        <ul>
+          <li>
+            <strong>On-device data:</strong> kept as long as the app is installed. Uninstalling it,
+            or clearing its data in system settings, removes it permanently. You can also delete
+            any item, alert or goal from inside the app at any time.
+          </li>
+          <li>
+            <strong>Usage events:</strong> held by PostHog and Expo under their own retention
+            policies, attached to an anonymous id that does not identify you. Email us to have
+            them deleted.
+          </li>
+          <li>
+            <strong>Your backups:</strong> under your control, since you chose where to store them.
+          </li>
+        </ul>
+
+        <h2 id="en-12">12. Your rights</h2>
+        <p>
+          If you are in the EU, the UK or California, you have rights of access, correction,
+          deletion and objection to processing. In practice:
+        </p>
+        <ul>
+          <li>Most of your data lives on your device, under your direct and complete control.</li>
+          <li>
+            We do not sell your data or share it for advertising or marketing, and we do not build
+            an ad profile from it.
+          </li>
+          <li>
+            The legal basis for usage analytics is <em>legitimate interest</em> in operating,
+            improving and debugging the app, and the data is anonymous.
+          </li>
+          <li>To exercise any right or request deletion, email us (section 16).</li>
+        </ul>
+
+        <h2 id="en-13">13. Children's privacy</h2>
+        <p>
+          Nafis is a finance app intended for adults. It is not directed at children under 13 and
+          we do not knowingly collect personal information from them. If you believe a child sent
+          us data, contact us and we will act on it.
+        </p>
+
+        <h2 id="en-14">14. External links and third parties</h2>
+        <p>
+          When you open an article in your browser or visit a publisher site, that site's own
+          policy applies. Policies of the services named above:
+        </p>
+        <ul>
+          <li><a href="https://posthog.com/privacy" rel="noopener">PostHog</a></li>
+          <li><a href="https://expo.dev/privacy" rel="noopener">Expo (EAS Update and Observe)</a></li>
+          <li>
+            <a href="https://www.bigdatacloud.com/privacy-and-cookie-policy" rel="noopener"
+              >BigDataCloud</a
+            >
+          </li>
+          <li><a href="https://gold-api.com" rel="noopener">Gold-API</a></li>
+          <li>
+            <a href="https://www.exchangerate-api.com/terms" rel="noopener">ExchangeRate-API</a>
+          </li>
+          <li><a href="https://www.coingecko.com/en/privacy" rel="noopener">CoinGecko</a></li>
+          <li><a href="https://open-meteo.com/en/terms" rel="noopener">Open-Meteo</a></li>
+          <li>
+            <a href="https://privacy.microsoft.com/privacystatement" rel="noopener"
+              >Microsoft Bing</a
+            >
+          </li>
+          <li><a href="https://jina.ai/legal/#privacy-policy" rel="noopener">Jina AI Reader</a></li>
+          <li><a href="https://policies.google.com/privacy" rel="noopener">Google Play</a></li>
+        </ul>
+
+        <h2 id="en-15">15. Changes to this policy</h2>
+        <p>
+          We update this policy when a feature or a data source changes. The date at the top of
+          the page reflects the latest version, and the full change history is public in this
+          page's GitHub repository. Material changes will also be called out in the app's release
+          notes.
+        </p>
+
+        <h2 id="en-16">16. Contact</h2>
+        <div class="contact">
+          <p>
+            For any privacy question, deletion request, or to exercise your rights:
+            <a href="mailto:boogado@yahoo.com">boogado@yahoo.com</a>
+          </p>
+          <p>Developer: Mohamed Gado · App: Nafis (<code>com.mohamedgado.nafis</code>)</p>
+        </div>
+
+        <footer class="page">
+          <p>
+            This page is static and hosted on GitHub Pages. It sets no cookies, runs no analytics,
+            and loads no fonts or scripts from other servers.
+          </p>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      // Both languages ship in the DOM so crawlers and reader modes see the full policy.
+      // The toggle only flips visibility plus the document lang/dir.
+      (function () {
+        var docs = { ar: document.getElementById("doc-ar"), en: document.getElementById("doc-en") };
+        var btns = { ar: document.getElementById("btn-ar"), en: document.getElementById("btn-en") };
+        var root = document.documentElement;
+
+        function apply(lang, remember) {
+          var other = lang === "ar" ? "en" : "ar";
+          docs[lang].classList.remove("lang-hidden");
+          docs[other].classList.add("lang-hidden");
+          btns[lang].setAttribute("aria-pressed", "true");
+          btns[other].setAttribute("aria-pressed", "false");
+          root.lang = lang;
+          root.dir = lang === "ar" ? "rtl" : "ltr";
+          if (remember) {
+            try {
+              localStorage.setItem("nafis-privacy-lang", lang);
+            } catch (e) {
+              // Private browsing can block storage. The toggle still works for this visit.
+            }
+          }
+        }
+
+        // A deep link to a section anchor wins over the stored choice, so a shared
+        // section link always lands on the section it names.
+        function langFromHash(hash) {
+          if (/^#en-/.test(hash)) return "en";
+          if (/^#ar-/.test(hash)) return "ar";
+          return null;
+        }
+
+        function storedLang() {
+          try {
+            return localStorage.getItem("nafis-privacy-lang");
+          } catch (e) {
+            return null; // private browsing can block storage
+          }
+        }
+
+        function browserLang() {
+          var tag = (navigator.language || "ar").toLowerCase();
+          return tag.indexOf("ar") === 0 ? "ar" : "en";
+        }
+
+        apply(langFromHash(location.hash) || storedLang() || browserLang(), false);
+
+        btns.ar.addEventListener("click", function () {
+          apply("ar", true);
+        });
+        btns.en.addEventListener("click", function () {
+          apply("en", true);
+        });
+      })();
+    </script>
   </body>
 </html>
