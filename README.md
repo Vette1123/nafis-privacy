@@ -3,9 +3,14 @@
 Public privacy policy for the **Nafis** app (نفيس), served as a single static page on
 GitHub Pages.
 
+**App on Google Play:** <https://play.google.com/store/apps/details?id=com.mohamedgado.nafis>
 **Live page:** <https://vette1123.github.io/nafis-privacy/>
-**App:** Nafis, package `com.mohamedgado.nafis`, Google Play
+**Package:** `com.mohamedgado.nafis`
 **Contact:** boogado@yahoo.com
+
+The Play URL is the canonical listing for the package and is what the store, the app and
+this policy all point at. It only resolves once the production listing is live: while the
+app is on a testing track it returns 404 to anyone outside the tester list.
 
 ---
 
@@ -159,6 +164,10 @@ The app-side sources of truth: `lib/rates/sources.ts`, `lib/news/sources.ts`,
 `lib/analytics/` and `android/app/src/main/AndroidManifest.xml`.
 
 ## Google Play
+
+- Store listing: `https://play.google.com/store/apps/details?id=com.mohamedgado.nafis`
+- Privacy policy URL: `https://vette1123.github.io/nafis-privacy/`
+- Data deletion URL: not applicable, no accounts
 
 Play's User Data policy sets requirements for the policy **URL and its content**, not for
 how the page looks. A styled, bilingual HTML page is fine; a plain white page has no
