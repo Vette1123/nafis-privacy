@@ -33,7 +33,10 @@ Two properties drive the whole policy:
 
 | File          | Purpose                                                                     |
 | ------------- | --------------------------------------------------------------------------- |
-| `index.html`  | The entire policy. Arabic and English in one self-contained page.           |
+| `index.html`  | The entire policy. Arabic and English in one document.                      |
+| `delete-data.html` | The Play "delete data" URL: how to erase on-device data, and how to request deletion of analytics. Bilingual, same shell. |
+| `nafis.css`   | The styles both pages share. Extracted when the second page arrived.        |
+| `nafis.js`    | The language toggle both pages share.                                       |
 | `404.html`    | Redirects any wrong path to the policy, so an old link never dead-ends.     |
 | `robots.txt`  | Allows indexing, points at the sitemap.                                     |
 | `sitemap.xml` | One URL. Keep `lastmod` in step with the policy date.                       |
@@ -53,7 +56,8 @@ that noise for good.
 
 ## How the page works
 
-Single `index.html`, no framework, no build.
+Two pages — `index.html` (the policy) and `delete-data.html` (the deletion request) —
+sharing `nafis.css` and `nafis.js`. No framework, no build.
 
 - **Bilingual in one document.** Both the Arabic (`#doc-ar`, RTL) and English
   (`#doc-en`, LTR) versions are always present in the DOM, so crawlers, reader modes and
@@ -137,7 +141,7 @@ grep -oE 'android:name="android.permission.[A-Z_]+"' \
 
 ## Maintaining it
 
-Edit `index.html` directly, commit, push. GitHub Pages redeploys from `main` within about
+Edit the page directly, commit, push. GitHub Pages redeploys from `main` within about
 a minute.
 
 Every substantive edit must:
@@ -167,7 +171,7 @@ The app-side sources of truth: `lib/rates/sources.ts`, `lib/news/sources.ts`,
 
 - Store listing: `https://play.google.com/store/apps/details?id=com.mohamedgado.nafis`
 - Privacy policy URL: `https://vette1123.github.io/nafis-privacy/`
-- Data deletion URL: not applicable, no accounts
+- Data deletion URL: `https://vette1123.github.io/nafis-privacy/delete-data.html`
 
 Play's User Data policy sets requirements for the policy **URL and its content**, not for
 how the page looks. A styled, bilingual HTML page is fine; a plain white page has no
