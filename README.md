@@ -25,8 +25,10 @@ Two properties drive the whole policy:
 
 1. **Keyless.** Every data source is a free public API. There are no API keys and no
    secrets in the app.
-2. **Serverless.** There is no Nafis backend. The app talks to public services directly,
-   so financial data cannot reach us even in principle. Holdings live in an on-device
+2. **Serverless for the free app.** The free tier talks to public services directly and
+   keeps everything on-device. The optional Pro account (Google or Apple sign-in) stores a
+   vault snapshot on Nafis's own server for cloud sync, deletable per `delete-account.html`.
+   Holdings live in an on-device
    SQLite database; preferences live in on-device storage.
 
 ## What lives in this repo
