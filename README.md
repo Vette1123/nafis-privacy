@@ -35,6 +35,7 @@ Two properties drive the whole policy:
 | ------------- | --------------------------------------------------------------------------- |
 | `index.html`  | The entire policy. Arabic and English in one document.                      |
 | `delete-data.html` | The Play "delete data" URL: how to erase on-device data, and how to request deletion of analytics. Bilingual, same shell. |
+| `delete-account.html` | Account deletion for Nafis Pro subscribers (Google/Apple sign-in): in-app steps, email fallback, what the account holds. Bilingual, same shell. |
 | `nafis.css`   | The styles both pages share. Extracted when the second page arrived.        |
 | `nafis.js`    | The language toggle both pages share.                                       |
 | `404.html`    | Redirects any wrong path to the policy, so an old link never dead-ends.     |
