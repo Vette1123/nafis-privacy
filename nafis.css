@@ -105,14 +105,13 @@ body {
   cursor: pointer;
   transition: background-color 0.18s ease, color 0.18s ease;
 }
-.switch button[aria-pressed="true"] {
+/* The pressed pill follows the root class, not aria-pressed, so it is already on the
+   right button in the first painted frame. :not(.lang-en) keeps Arabic the default
+   when no script has run. */
+html:not(.lang-en) #btn-ar,
+html.lang-en #btn-en {
   background: var(--accent);
   color: #14110c;
-}
-@media (prefers-color-scheme: dark) {
-  .switch button[aria-pressed="true"] {
-    color: #14110c;
-  }
 }
 .switch button:focus-visible {
   outline: 2px solid var(--accent);
@@ -314,7 +313,10 @@ footer.page {
   color: var(--muted);
   font-size: 0.86rem;
 }
-.lang-hidden {
+/* The head script stamps html.lang-ar / html.lang-en before the first paint. With no
+   script neither class lands and the page stays the single Arabic document it ships as. */
+html:not(.lang-en) #doc-en,
+html.lang-en #doc-ar {
   display: none;
 }
 .skip {

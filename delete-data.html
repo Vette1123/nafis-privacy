@@ -28,6 +28,35 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E0B07'/%3E%3Cpath d='M9 22V10l14 12V10' stroke='%23E0B044' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="nafis.css" />
+    <script>
+      // Resolve the language BEFORE first paint. The whole document flips direction,
+      // so deciding after paint moved the header across the viewport — a visible
+      // RTL→LTR flash and a 0.016 layout shift on every English visit.
+      (function () {
+        function stored() {
+          try {
+            return localStorage.getItem("nafis-privacy-lang");
+          } catch (e) {
+            return null; // private browsing can block storage
+          }
+        }
+        // A deep link to a section anchor wins over the stored choice, so a shared
+        // section link always lands on the section it names.
+        function pick() {
+          if (/^#en-/.test(location.hash)) return "en";
+          if (/^#ar-/.test(location.hash)) return "ar";
+          var saved = stored();
+          if (saved === "ar" || saved === "en") return saved;
+          if ((navigator.language || "ar").toLowerCase().indexOf("ar") === 0) return "ar";
+          return "en";
+        }
+        var lang = pick();
+        var root = document.documentElement;
+        root.lang = lang;
+        root.dir = lang === "ar" ? "rtl" : "ltr";
+        root.classList.add("lang-" + lang);
+      })();
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">تخطي إلى المحتوى / Skip to content</a>
@@ -208,7 +237,7 @@
       </section>
 
       <!-- ================================ ENGLISH ================================ -->
-      <section id="doc-en" lang="en" dir="ltr" class="lang-hidden">
+      <section id="doc-en" lang="en" dir="ltr">
         <h1>Request deletion of your Nafis data</h1>
         <p class="lede">
           This page covers the app <b>Nafis: Gold, Silver &amp; Dollar</b>
@@ -365,6 +394,6 @@
       </section>
     </main>
 
-    <script src="nafis.js"></script>
+    <script src="nafis.js" defer></script>
   </body>
 </html>
