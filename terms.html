@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nafis · شروط الخدمة · Terms of Service</title>
+    <meta
+      name="description"
+      content="شروط استخدام نفيس ونفيس Pro. The terms for using Nafis, the gold, silver and dollar price tracker, and Nafis Pro."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#100e0b" media="(prefers-color-scheme: dark)" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://vette1123.github.io/nafis-privacy/terms.html" />
+    <meta property="og:title" content="Nafis · Terms of Service · شروط الخدمة" />
+    <meta property="og:description" content="The terms for using Nafis and Nafis Pro." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vette1123.github.io/nafis-privacy/terms.html" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E0B07'/%3E%3Cpath d='M9 22V10l14 12V10' stroke='%23E0B044' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="nafis.css" />
+    <script>
+      // Resolve the language BEFORE first paint, the same way the privacy policy does,
+      // so an English visit never flashes the Arabic layout first.
+      (function () {
+        function stored() {
+          try {
+            return localStorage.getItem("nafis-privacy-lang");
+          } catch (e) {
+            return null; // private browsing can block storage
+          }
+        }
+        function pick() {
+          if (/^#en-/.test(location.hash)) return "en";
+          if (/^#ar-/.test(location.hash)) return "ar";
+          var saved = stored();
+          if (saved === "ar" || saved === "en") return saved;
+          if ((navigator.language || "ar").toLowerCase().indexOf("ar") === 0) return "ar";
+          return "en";
+        }
+        var lang = pick();
+        var root = document.documentElement;
+        root.lang = lang;
+        root.dir = lang === "ar" ? "rtl" : "ltr";
+        root.classList.add("lang-" + lang);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">تخطي إلى المحتوى / Skip to content</a>
+    <header class="top">
+      <div class="top-inner">
+        <span class="brand">
+          <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="8" fill="#0E0B07" />
+            <path
+              d="M9 22V10l14 12V10"
+              stroke="#E0B044"
+              stroke-width="2.6"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Nafis
+        </span>
+        <div class="switch" role="group" aria-label="Language / اللغة">
+          <button type="button" id="btn-ar" aria-pressed="true" lang="ar">العربية</button>
+          <button type="button" id="btn-en" aria-pressed="false" lang="en">English</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      <!-- ================================ ARABIC ================================ -->
+      <section id="doc-ar" lang="ar" dir="rtl">
+        <h1>شروط الخدمة</h1>
+        <p class="lede">
+          <b>نفيس — الذهب والفضة والدولار</b> (<code>com.mohamedgado.nafis</code>) تطبيق لمتابعة
+          أسعار الذهب والفضة والبلاتين والعملات الرقمية وأسعار الصرف، يطوّره ويديره محمد جادو. هذه
+          الشروط هي الاتفاق بينك وبيننا عند استخدامك التطبيق ونفيس Pro. اقرأها مع
+          <a href="./">سياسة الخصوصية</a> التي توضّح البيانات التي يحتفظ بها التطبيق وأين.
+        </p>
+        <p class="meta">
+          آخر تحديث: <b><time datetime="2026-11-04">4 نوفمبر 2026</time></b> · الخصوصية:
+          <a href="./">سياسة الخصوصية</a> · الحذف: <a href="./delete-account.html">حذف حسابك</a>
+        </p>
+
+        <h2 id="ar-1">1. استخدام نفيس</h2>
+        <p>
+          باستخدامك التطبيق فأنت توافق على هذه الشروط. إن لم توافق عليها فلا تستخدم التطبيق.
+          النسخة المجانية لا تحتاج حسابًا. الحساب (بجوجل أو Apple) لمشتركي نفيس Pro فقط، وأنت مسؤول
+          عن حماية تسجيل دخولك. يمكنك التوقف عن استخدام نفيس و<a href="./delete-account.html"
+            >حذف حسابك</a
+          >
+          في أي وقت.
+        </p>
+
+        <h2 id="ar-2">2. ما هو نفيس، وما ليس هو</h2>
+        <p>
+          يعرض نفيس أسعارًا من مصادر عامة مجانية، ويساعدك على متابعة مدّخراتك وأهدافك. ليس بنكًا ولا
+          محل ذهب ولا وسيطًا، ولا يبيع أو يشتري أي شيء نيابةً عنك، ولا شيء فيه نصيحة مالية أو
+          استثمارية أو ضريبية أو شرعية.
+        </p>
+        <ul>
+          <li>
+            الأسعار قد تتأخر أو تختلف عن سعر المحل أو البنك الذي تتعامل معه. تأكّد من السعر عند البائع
+            قبل أي شراء أو بيع.
+          </li>
+          <li>
+            التنبيهات تعتمد على الشبكة ونظام هاتفك، وقد تصل متأخرة أو لا تصل. لا تعتمد عليها وحدها في
+            قرار يهمّك.
+          </li>
+          <li>
+            حاسبة الزكاة تقديرية بحسب ما تُدخله. راجع من تثق به في العلم الشرعي إن كان عندك شك.
+          </li>
+        </ul>
+
+        <h2 id="ar-3">3. نفيس Pro</h2>
+        <ul>
+          <li>
+            يُباع Pro عبر Google Play أو App Store، والمتجر هو من يتولى الدفع والإيصال وأي استرداد وفق
+            سياسته.
+          </li>
+          <li>
+            الاشتراك يتجدّد تلقائيًا حتى تلغيه. ألغِه قبل نهاية الفترة الحالية بـ 24 ساعة على الأقل من
+            إعدادات الاشتراكات في حسابك على المتجر. حذف التطبيق أو حذف حسابك في نفيس لا يلغي
+            الاشتراك.
+          </li>
+          <li>
+            إن عُرضت فترة تجربة مجانية، فهي تتحوّل إلى اشتراك مدفوع في نهايتها ما لم تلغِه قبلها.
+          </li>
+          <li>
+            صفحة Pro داخل التطبيق تعرض ما يشمله والسعر. قد نضيف ميزات أو نغيّرها أو نوقفها مع الوقت،
+            لكننا لن نسحب ما تغطيه فترة مدفوعة دون بديل عادل أو استرداد عبر المتجر.
+          </li>
+        </ul>
+
+        <h2 id="ar-4">4. بياناتك تبقى ملكك</h2>
+        <p>
+          محفظتك وأهدافك وتنبيهاتك ملكك، وتبقى على هاتفك. إن اشتركت في Pro وفعّلت المزامنة، تمنحنا
+          فقط الإذن اللازم لحفظ نسخة منها على خادم نفيس ومزامنتها بين أجهزتك، كما تصف
+          <a href="./">سياسة الخصوصية</a>.
+        </p>
+
+        <h2 id="ar-5">5. الاستخدام العادل</h2>
+        <p>من فضلك لا:</p>
+        <ul>
+          <li>تستخدم نفيس في أي أمر غير قانوني؛</li>
+          <li>تهاجم خوادمنا أو تُثقلها أو تكشط بياناتها أو تتحايل على حدودها، أو تدخل حساب شخص آخر؛</li>
+          <li>تعيد نشر أسعار التطبيق أو بيعها كخدمة خاصة بك.</li>
+        </ul>
+        <p>قد نوقف الحساب الذي يكرر مخالفة هذه القواعد، وسنخبرك بالسبب متى أمكن.</p>
+
+        <h2 id="ar-6">6. توفّر الخدمة</h2>
+        <p>
+          نعمل على إبقاء نفيس يعمل وبياناتك آمنة، لكن التطبيق مقدَّم كما هو، دون تعهّد بأن يكون متاحًا
+          دائمًا أو خاليًا من الأخطاء، ومصادر الأسعار العامة قد تتوقف أو تتغير. وفي الحدود التي يسمح بها
+          القانون، لسنا مسؤولين عن الخسائر غير المباشرة أو عن قرارات اتُّخذت بناءً على معلومات في
+          التطبيق. ولا شيء في هذه الشروط يقيّد حقوقك بموجب قانون حماية المستهلك في بلدك.
+        </p>
+
+        <h2 id="ar-7">7. تغيير هذه الشروط</h2>
+        <p>
+          عند تغيير هذه الشروط نحدّث التاريخ أعلى هذه الصفحة. وإن كان التغيير يمسّ طريقة استخدامك
+          لنفيس، نخبرك به داخل التطبيق قبل أن يسري. واستمرارك في استخدام التطبيق بعد ذلك يعني قبولك
+          الشروط الجديدة.
+        </p>
+
+        <div class="contact">
+          <p>
+            لأي سؤال عن هذه الشروط:
+            <a href="mailto:boogado@yahoo.com?subject=Nafis%20terms">boogado@yahoo.com</a>
+          </p>
+          <p>المطوّر: Mohamed Gado · التطبيق: نفيس (<code>com.mohamedgado.nafis</code>)</p>
+        </div>
+
+        <footer class="page">
+          <p>صفحة ثابتة على GitHub Pages: بلا كوكيز، بلا تتبّع، بلا خطوط أو سكربتات خارجية.</p>
+          <p>
+            التطبيق على
+            <a href="https://play.google.com/store/apps/details?id=com.mohamedgado.nafis"
+              >Google Play</a
+            >.
+          </p>
+        </footer>
+      </section>
+
+      <!-- ================================ ENGLISH ================================ -->
+      <section id="doc-en" lang="en" dir="ltr">
+        <h1>Terms of Service</h1>
+        <p class="lede">
+          <b>Nafis: Gold, Silver &amp; Dollar</b> (<code>com.mohamedgado.nafis</code>) tracks gold,
+          silver, platinum, crypto and exchange-rate prices. It is built and run by Mohamed Gado.
+          These terms are the agreement between you and us when you use the app and Nafis Pro.
+          Please read them with the <a href="./">privacy policy</a>, which says what data the app
+          keeps and where.
+        </p>
+        <p class="meta">
+          Last updated: <b><time datetime="2026-11-04">4 November 2026</time></b> · Privacy:
+          <a href="./">privacy policy</a> · Deletion:
+          <a href="./delete-account.html">delete your account</a>
+        </p>
+
+        <h2 id="en-1">1. Using Nafis</h2>
+        <p>
+          By using the app you agree to these terms. If you do not agree, do not use the app. The
+          free app needs no account. An account (Google or Apple sign-in) is for Nafis Pro
+          subscribers only, and you are responsible for keeping your sign-in safe. You can stop
+          using Nafis and <a href="./delete-account.html">delete your account</a> at any time.
+        </p>
+
+        <h2 id="en-2">2. What Nafis is, and what it is not</h2>
+        <p>
+          Nafis shows prices from free public sources and helps you follow your savings and goals.
+          It is not a bank, a gold dealer or a broker. It never buys or sells anything for you, and
+          nothing in it is financial, investment, tax or religious advice.
+        </p>
+        <ul>
+          <li>
+            Prices can be delayed or differ from the price at the shop or bank you deal with. Check
+            the price with the seller before you buy or sell.
+          </li>
+          <li>
+            Alerts depend on the network and your phone's system, and can arrive late or not at
+            all. Do not rely on them alone for a decision that matters to you.
+          </li>
+          <li>
+            The zakat calculator gives an estimate from what you enter. Ask someone you trust in
+            religious knowledge if you are unsure.
+          </li>
+        </ul>
+
+        <h2 id="en-3">3. Nafis Pro</h2>
+        <ul>
+          <li>
+            Pro is sold through Google Play or the App Store, and that store handles the payment,
+            the receipt and any refund under its own policy.
+          </li>
+          <li>
+            A subscription renews automatically until you cancel it. Cancel at least 24 hours before
+            the end of the current period, in your store account's subscription settings. Deleting
+            the app or your Nafis account does not cancel it.
+          </li>
+          <li>
+            If a free trial is offered, it turns into a paid subscription when it ends unless you
+            cancel before then.
+          </li>
+          <li>
+            The Pro page in the app lists what Pro includes and what it costs. We may add, change or
+            retire individual features over time, but we will not take away what a paid period
+            already covers without a fair replacement or a refund through the store.
+          </li>
+        </ul>
+
+        <h2 id="en-4">4. Your data stays yours</h2>
+        <p>
+          Your vault, goals and alerts belong to you and stay on your phone. If you subscribe to Pro
+          and turn on sync, you give us only the permission needed to keep a copy on the Nafis
+          server and sync it between your devices, as the <a href="./">privacy policy</a>
+          describes.
+        </p>
+
+        <h2 id="en-5">5. Fair use</h2>
+        <p>Please do not:</p>
+        <ul>
+          <li>use Nafis for anything unlawful;</li>
+          <li>
+            attack, overload, scrape or try to get around the limits of our servers, or access
+            another person's account;
+          </li>
+          <li>republish the app's prices or resell them as a service of your own.</li>
+        </ul>
+        <p>
+          We may suspend an account that keeps breaking these rules. If we do, we will tell you why
+          where we can.
+        </p>
+
+        <h2 id="en-6">6. Availability</h2>
+        <p>
+          We work to keep Nafis running and your data safe, but the app is provided as it is,
+          without a promise that it will always be available or free of errors, and the public
+          price sources it reads can stop or change. To the extent the law allows, we are not liable
+          for indirect losses or for decisions made using information in the app. Nothing in these
+          terms limits rights you have under the consumer law where you live.
+        </p>
+
+        <h2 id="en-7">7. Changes to these terms</h2>
+        <p>
+          When these terms change we update the date at the top of this page. If a change matters to
+          how you use Nafis, we say so in the app before it applies. Continuing to use the app after
+          that means you accept the new terms.
+        </p>
+
+        <div class="contact">
+          <p>
+            Questions about these terms:
+            <a href="mailto:boogado@yahoo.com?subject=Nafis%20terms">boogado@yahoo.com</a>
+          </p>
+          <p>Developer: Mohamed Gado · App: Nafis (<code>com.mohamedgado.nafis</code>)</p>
+        </div>
+
+        <footer class="page">
+          <p>A static page on GitHub Pages: no cookies, no analytics, no external fonts or scripts.</p>
+          <p>
+            The app this covers:
+            <a href="https://play.google.com/store/apps/details?id=com.mohamedgado.nafis"
+              >Nafis on Google Play</a
+            >.
+          </p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="nafis.js"></script>
+  </body>
+</html>
