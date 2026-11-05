@@ -4,7 +4,9 @@ Public privacy policy for the **Nafis** app (نفيس), served as a single stati
 GitHub Pages.
 
 **App on Google Play:** <https://play.google.com/store/apps/details?id=com.mohamedgado.nafis>
-**Live page:** <https://vette1123.github.io/nafis-privacy/>
+**Live page:** <https://www.mohamedgado.com/projects/nafis/privacy> (also served at <https://vette1123.github.io/nafis-privacy/>)
+
+**About the app:** <https://www.mohamedgado.com/projects/nafis> · [Google Play](https://play.google.com/store/apps/details?id=com.mohamedgado.nafis) · [App Store](https://apps.apple.com/app/id6807595780)
 **Package:** `com.mohamedgado.nafis`
 **Contact:** boogado@yahoo.com
 
