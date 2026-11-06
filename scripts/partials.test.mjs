@@ -90,3 +90,46 @@ test('theme: the current nav item is clearly marked', async () => {
   assert.match(on, /inset 0 0 0 1px/);
   assert.match(theme, /\.topnav a\[aria-current\]::before\s*\{[^}]*border-radius:\s*50%/);
 });
+
+// 6 Nov UI audit. Each assertion pins one visible flaw.
+test('audit: the footer divider sits on the content edges, not the padded wrap box', () => {
+  // `.sitefoot.wrap` painted its border across the wrap's 20px padding, so the line ran
+  // wider than the page rule above it (and edge to edge on a phone).
+  assert.doesNotMatch(theme.match(/\.sitefoot \{[^}]*\}/)[0], /border-top/);
+  assert.match(theme, /\.sitefoot::before \{[^}]*inset-inline: max\(20px[^}]*height: 1px/);
+});
+
+test('audit: touch targets reach 44px (language pills, nav, footer, brand)', () => {
+  assert.match(doc.match(/\.switch button \{[^}]*\}/)[0], /min-height: 44px/);
+  assert.match(theme, /\.brand \{[^}]*min-height: 44px/);
+  // Contents links: 26px of line + 2 x 9px = 44.
+  assert.match(doc, /\.toc a \{[^}]*padding-block: 9px/);
+  const touch = theme.match(/@media \(max-width: 720px\), \(pointer: coarse\) \{(.*)\}\r?\n/)?.[1] ?? '';
+  for (const sel of ['.topnav a', '.sitefoot li a', '.foot a']) {
+    assert.match(touch, new RegExp(`${sel.replace('.', '\.')} \{[^}]*min-height: 44px`), `${sel} stays under 44px on touch`);
+  }
+});
+
+test('audit: language pills, brand and prose links answer hover and press', () => {
+  assert.match(doc, /\.switch button:hover \{/);
+  assert.match(doc, /\.switch button:active \{ transform: scale\(0\.97\)/);
+  assert.match(doc, /\.prose a:hover, footer\.page a:hover \{/);
+  assert.match(theme, /\.brand:active \{ transform: scale/);
+  // Hover is for a mouse: touch never sticks in a hover state.
+  assert.match(doc, /@media \(hover: hover\) and \(pointer: fine\) \{ \.switch button:hover/);
+});
+
+test('audit: every page with a language switch sets the language before first paint', () => {
+  for (const f of ['index.html', 'terms.html', 'delete-account.html', 'delete-data.html']) {
+    const html = fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+    const head = html.slice(0, html.indexOf('</head>'));
+    assert.match(head, /root\.classList\.add\("lang-" \+ lang\)/, `${f} flashes the wrong language: no pre-paint script in <head>`);
+  }
+});
+
+test('audit: nafis.css is gone and nothing points at it', () => {
+  assert.equal(fs.existsSync(new URL('../nafis.css', import.meta.url)), false);
+  for (const f of fs.readdirSync(new URL('..', import.meta.url)).filter((n) => n.endsWith('.html'))) {
+    assert.doesNotMatch(fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8'), /nafis\.css/, f);
+  }
+});

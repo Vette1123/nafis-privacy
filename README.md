@@ -67,7 +67,7 @@ that noise for good.
 ## How the page works
 
 Two pages — `index.html` (the policy) and `delete-data.html` (the deletion request) —
-sharing `nafis.css` and `nafis.js`. No framework, no build.
+sharing `nafis.js`. No framework, no build.
 
 - **Bilingual in one document.** Both the Arabic (`#doc-ar`, RTL) and English
   (`#doc-en`, LTR) versions are always present in the DOM, so crawlers, reader modes and

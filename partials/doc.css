@@ -11,8 +11,10 @@ html:not(.lang-en) .topnav[lang="en"], html.lang-en .topnav[lang="ar"] { display
 
 /* Language switch: one pill with two 44px targets. */
 .switch { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); overflow: hidden; }
-.switch button { appearance: none; border: 0; background: transparent; color: var(--soft); font: 600 14px var(--ui); min-width: 44px; min-height: 42px; padding: 0 16px; cursor: pointer; transition: background-color 200ms var(--ease), color 200ms var(--ease); -webkit-tap-highlight-color: transparent; }
+.switch button { appearance: none; border: 0; background: transparent; color: var(--soft); font: 600 14px var(--ui); min-width: 44px; min-height: 44px; padding: 0 16px; cursor: pointer; transition: background-color 200ms var(--ease), color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
 .switch button[lang="ar"] { font-family: var(--arabic); }
+@media (hover: hover) and (pointer: fine) { .switch button:hover { color: var(--ink); background: color-mix(in srgb, var(--gold) 12%, transparent); } }
+.switch button:active { transform: scale(0.97); }
 .switch button:focus-visible { outline-offset: -3px; border-radius: 999px; }
 html:not(.lang-en) #btn-ar, html.lang-en #btn-en { background: var(--gold); color: var(--bg); }
 
@@ -42,7 +44,7 @@ html[lang="ar"] .toc h2 { letter-spacing: 0; text-transform: none; font-family: 
 .toc ol { margin: 0; padding: 0; padding-inline-start: 24px; font-size: 15px; columns: 2; column-gap: 28px; }
 .toc li { break-inside: avoid; margin: 0; }
 .toc li::marker { color: var(--faint); font-variant-numeric: tabular-nums; }
-.toc a { display: block; padding-block: 8px; color: var(--soft); text-decoration: none; }
+.toc a { display: block; padding-block: 9px; color: var(--soft); text-decoration: none; }
 .toc a:hover { color: var(--gold); }
 @media (max-width: 620px) { .toc ol { columns: 1; } }
 
@@ -66,6 +68,7 @@ html[lang="ar"] .toc h2 { letter-spacing: 0; text-transform: none; font-family: 
 footer.page { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--faint); }
 footer.page p { margin-top: 8px; }
 footer.page a { color: var(--soft); }
+@media (hover: hover) and (pointer: fine) { .prose a:hover, footer.page a:hover { color: var(--ink); text-decoration-thickness: 2px; } }
 .doc-body { margin-top: 40px; }
 /* A heading never touches the card or table under it. */
 .prose h2 + :not(p):not(ul):not(ol) { margin-top: 24px; }

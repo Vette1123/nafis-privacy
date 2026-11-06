@@ -64,6 +64,9 @@ p { margin: 0; text-wrap: pretty; }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: max(18px, env(safe-area-inset-top)) 18px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; text-decoration: none; }
 .brand img { width: 40px; height: 40px; border-radius: 10px; }
+.brand { min-height: 44px; transition: opacity 160ms var(--ease), transform 160ms var(--ease); }
+.brand:active { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) { .brand:hover { opacity: 0.8; } .lang:active { transform: scale(0.97); } }
 .brand small { font-weight: 500; color: var(--faint); font-size: 15px; }
 .lang { font: 600 14px var(--ui); padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; transition: border-color 200ms var(--ease); }
 .lang:hover { border-color: var(--gold); }
@@ -206,7 +209,9 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
 .foot a:hover { color: var(--gold); }
 
 /* ---- site footer: every Nafis page links every other one (partials/footer.*.html) ---- */
-.sitefoot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 28px; padding-block: 64px max(32px, env(safe-area-inset-bottom)); margin-top: 32px; border-top: 1px solid var(--line); font-size: 15px; }
+.sitefoot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 28px; padding-block: 64px max(32px, env(safe-area-inset-bottom)); margin-top: 32px; position: relative; font-size: 15px; }
+/* The divider sits on the content edges, not the wrap's padded box, so it lines up with the page's own rule above. */
+.sitefoot::before { content: ""; position: absolute; top: 0; inset-inline: max(20px, env(safe-area-inset-left)); height: 1px; background: var(--line); }
 .sf-brand { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px 32px; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
 .sf-stores { gap: 8px; }
 .sf-brand p { margin-top: 14px; color: var(--soft); max-width: 42ch; font-size: 15px; }
@@ -225,6 +230,9 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
 .topnav a[aria-current] { color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, var(--panel)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 38%, transparent), 0 6px 16px -10px color-mix(in srgb, var(--gold) 70%, transparent); }
 .topnav a[aria-current]::before { content: ""; flex: none; width: 6px; height: 6px; margin-inline-end: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent); }
 @media (max-width: 720px) { .top { flex-wrap: wrap; } .topnav { order: 3; width: 100%; justify-content: space-between; } .topnav a { flex: 1; justify-content: center; } }
+
+/* Touch targets: 44px where a thumb is the pointer (a phone, or any coarse pointer). */
+@media (max-width: 720px), (pointer: coarse) { .topnav a { min-height: 44px; } .sitefoot li a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; } .foot a { display: inline-flex; align-items: center; min-height: 44px; } }
 
 /* ---- motion: transform only, so the first frame is already the page ---- */
 @media (prefers-reduced-motion: no-preference) {
