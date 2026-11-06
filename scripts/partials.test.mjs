@@ -117,7 +117,7 @@ test('audit: language pills, brand and prose links answer hover and press', () =
   assert.match(doc, /\.prose a:hover, footer\.page a:hover \{/);
   assert.match(theme, /\.brand:active \{ transform: scale/);
   // Hover is for a mouse: touch never sticks in a hover state.
-  assert.match(theme, /@media \(hover: hover\) and \(pointer: fine\) \{\n  \.theme:hover/);
+  assert.match(theme, /@media \(hover: hover\) and \(pointer: fine\) \{\r?\n  \.theme:hover/);
   assert.match(theme, /@media \(hover: hover\) and \(pointer: fine\) \{ \.topnav a:hover/);
 });
 
