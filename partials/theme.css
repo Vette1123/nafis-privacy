@@ -144,6 +144,10 @@ html[lang="ar"] .prose h2, [lang="ar"] .prose h2 { font-weight: 750; font-family
 .prose th, .prose td { text-align: start; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 .prose th { color: var(--ink); font-weight: 650; }
 .panel { background: color-mix(in srgb, var(--panel) 86%, transparent); border: 1px solid var(--line); border-radius: 22px; padding: clamp(20px, 3vw, 32px); box-shadow: 0 24px 48px -32px rgba(15, 29, 39, 0.4); }
+/* A panel opens on its content: a heading inside keeps no top margin on top of the padding. */
+.panel > :first-child { margin-top: 0; }
+/* Every action shows the pointer, the <button> default arrow included. */
+a[href], button, summary, [role="button"], label[for], select, input[type="checkbox"], input[type="radio"], input[type="submit"] { cursor: pointer; }
 
 /* ---- official store badges, equal visual height ---- */
 .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }

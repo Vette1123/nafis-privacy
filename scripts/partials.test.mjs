@@ -66,3 +66,16 @@ test('lessons from Masareef live in the shared CSS', () => {
   // Nafis is Arabic first: the language rules key on .lang-en.
   assert.match(doc, /html:not\(\.lang-en\) #doc-en/);
 });
+
+// 6 Nov: a panel's first heading kept `.sec h3 { margin-top: 32px }` on top of the panel's
+// own padding, so the bank "how it works" cards opened on a band of empty space. And a
+// <button> shows the arrow by default: every clickable thing gets the pointer from one rule.
+test('theme: a panel opens on its content, and every action shows the pointer', async () => {
+  const { readFileSync } = await import('node:fs');
+  const theme = readFileSync(new URL('../partials/theme.css', import.meta.url), 'utf8');
+  assert.match(theme, /\.panel > :first-child\s*\{[^}]*margin-top:\s*0/);
+  const rule = theme.match(/([^{}]+)\{\s*cursor:\s*pointer;?\s*\}/)?.[1] ?? '';
+  for (const sel of ['a[href]', 'button', 'summary', '[role="button"]', 'label[for]', 'select']) {
+    assert.ok(rule.includes(sel), `pointer rule is missing ${sel}`);
+  }
+});
