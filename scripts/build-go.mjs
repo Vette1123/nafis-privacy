@@ -106,7 +106,7 @@ function page(l) {
   const other = l === 'ar' ? ['en', 'go', 'English'] : ['ar', 'go-ar', 'العربية']
   const pic = (f, sizes, alt, cls, lazy) =>
     `<picture${cls ? ` class="${cls}"` : ''}><source type="image/avif" srcset="${img}${f}-480.avif 480w, ${img}${f}-720.avif 720w" sizes="${sizes}" />` +
-    `<img src="${img}${f}-480.webp" srcset="${img}${f}-480.webp 480w, ${img}${f}-720.webp 720w" sizes="${sizes}" width="480" height="985" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async" /></picture>`
+    `<img src="${img}${f}-480.webp" srcset="${img}${f}-480.webp 480w, ${img}${f}-720.webp 720w" sizes="${sizes}" width="480" height="983" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async" /></picture>`
   const badges =
     `<a class="apple" href="${c.apple}?ct=card-qr"><img src="${img}app-store-en.svg" width="156" height="52" alt="${esc(t.apple)}" /></a>` +
     `<a class="play" href="${c.play}&amp;referrer=utm_source%3Dcard%26utm_medium%3Dqr"><img src="${img}google-play-${l}.png" width="197" height="76" alt="${esc(t.play)}" /></a>`
