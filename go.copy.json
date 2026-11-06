@@ -4,11 +4,11 @@
   "apple": "https://apps.apple.com/app/id6807595780",
   "play": "https://play.google.com/store/apps/details?id=com.mohamedgado.nafis",
   "category": "FinanceApplication",
-  "image": "og.jpg",
+  "image": "og.jpg?v=2",
   "en": {
     "title": "Nafis: Gold Price App, Silver, Dollar & Portfolio",
     "description": "Nafis is a free gold price app: today's local buy and sell price per gram, plus silver, dollar and crypto rates, your portfolio, zakat and price alerts.",
-    "ogAlt": "Nafis: local gold, silver and dollar prices with a portfolio and zakat",
+    "ogAlt": "Nafis: today's 24k gold price in Egyptian pounds, buy and sell, the ounce and the trend",
     "ldName": "Nafis",
     "ldAlt": "نفيس",
     "kicker": "Nafis: Gold, Silver & Dollar",
@@ -163,7 +163,7 @@
   "ar": {
     "title": "نفيس: سعر الذهب اليوم والدولار والفضة والمحفظة",
     "description": "تطبيق نفيس يعرض سعر الذهب اليوم بالبيع والشراء للجرام في السوق المحلي، مع الفضة والدولار والعملات الرقمية ومحفظتك والزكاة وتنبيهات الأسعار. مجاني.",
-    "ogAlt": "نفيس: أسعار الذهب والفضة والدولار محليًا مع المحفظة والزكاة",
+    "ogAlt": "نفيس: سعر الذهب عيار 24 اليوم بالجنيه، بيع وشراء، والأونصة واتجاه السعر",
     "ldName": "نفيس",
     "ldAlt": "Nafis",
     "kicker": "نفيس: الذهب والفضة والدولار",
