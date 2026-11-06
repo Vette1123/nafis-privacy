@@ -2,22 +2,6 @@
    same hero) and holds what a long, two-language legal page needs and the install page
    does not. Inlined by scripts/build-pages.mjs. */
 
-/* The head script stamps html.lang-en / html.lang-ar before the first paint. With no script
-   neither class lands and the page stays the Arabic document it ships as (Nafis is
-   Arabic first, so the rules key on .lang-en). */
-html:not(.lang-en) #doc-en, html.lang-en #doc-ar,
-html:not(.lang-en) #foot-en, html.lang-en #foot-ar,
-html:not(.lang-en) .topnav[lang="en"], html.lang-en .topnav[lang="ar"] { display: none; }
-
-/* Language switch: one pill with two 44px targets. */
-.switch { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); overflow: hidden; }
-.switch button { appearance: none; border: 0; background: transparent; color: var(--soft); font: 600 14px var(--ui); min-width: 44px; min-height: 44px; padding: 0 16px; cursor: pointer; transition: background-color 200ms var(--ease), color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
-.switch button[lang="ar"] { font-family: var(--arabic); }
-@media (hover: hover) and (pointer: fine) { .switch button:hover { color: var(--ink); background: color-mix(in srgb, var(--gold) 12%, transparent); } }
-.switch button:active { transform: scale(0.97); }
-.switch button:focus-visible { outline-offset: -3px; border-radius: 999px; }
-html:not(.lang-en) #btn-ar, html.lang-en #btn-en { background: var(--gold); color: var(--bg); }
-
 /* Reading text */
 .head .title { max-width: 22ch; }
 .head .lede { max-width: 62ch; }
@@ -79,7 +63,7 @@ footer.page a { color: var(--soft); }
 @media (min-width: 1100px) {
   .prose { max-width: none; display: grid; grid-template-columns: minmax(0, 72ch) minmax(240px, 300px); column-gap: 64px; justify-content: space-between; }
   .prose > * { grid-column: 1; min-width: 0; }
-  .prose > .toc { grid-column: 2; grid-row: 1 / span 400; align-self: start; position: sticky; top: 24px; margin-top: 0; max-height: calc(100vh - 48px); overflow-y: auto; }
+  .prose > .toc { grid-column: 2; grid-row: 1 / span 400; align-self: start; position: sticky; top: calc(24px + var(--top-on)); margin-top: 0; max-height: calc(100vh - 48px - var(--top-on)); transition: top 240ms var(--ease); overflow-y: auto; }
   .toc ol { columns: 1; }
   .toc a { padding-block: 7px; }
 }
@@ -91,10 +75,4 @@ footer.page a { color: var(--soft); }
   .table-scroll { overflow: visible; border: 0; }
   .table-scroll table { min-width: 0; }
   .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
-}
-/* A 360px phone: brand, theme and the language pills share one row; the nav takes the next. */
-@media (max-width: 420px) {
-  .top { gap: 8px; }
-  .top .brand img { width: 32px; height: 32px; }
-  .switch button { padding: 0 10px; font-size: 13px; }
 }

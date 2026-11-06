@@ -3,7 +3,7 @@
 // is its own URL so that hreflang and a search engine can tell them apart.
 import fs from 'fs'
 import path from 'path'
-import { applyPartials, css } from './partials.mjs'
+import { applyPartials, css, SITE } from './partials.mjs'
 const repo = '.'
 const c = JSON.parse(fs.readFileSync(path.join(repo, 'go.copy.json'), 'utf8'))
 // Canonical on the domain Google crawls, which proxies these pages. The github.io URLs keep
@@ -15,17 +15,9 @@ const img = `${site}go-img/`
 const esc = (s) => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
 const tpl = fs.readFileSync(path.join(repo, 'go.template.html'), 'utf8')
 
-// Arabic browsers land on the Arabic page, unless they chose English with the switch.
-// A crawler's locale is English, so it reads both URLs as they are.
-const ROUTE = `<script>
-      (function () {
-        var chose;
-        try { chose = localStorage.getItem('go-lang'); } catch (e) {}
-        if (chose !== 'en' && (navigator.language || '').toLowerCase().indexOf('ar') === 0) {
-          location.replace('go-ar' + location.search);
-        }
-      })();
-    </script>`
+// Which language a reader gets is partials/lang-pick.js, the same as every other page: the
+// language they chose anywhere on the site, else an Arabic browser goes from go to go-ar.
+// <html data-alt> names the other URL it swaps to. A crawler reads both URLs as they are.
 
 function ld(l) {
   const t = c[l]
@@ -104,7 +96,6 @@ function page(l) {
     `<meta name="apple-itunes-app" content="app-id=${c.appleId}" />`,
     `<link rel="preconnect" href="https://vette1123.github.io" />`,
   ].join('\n    ')
-  const other = l === 'ar' ? ['en', 'go', 'English'] : ['ar', 'go-ar', 'العربية']
   const pic = (f, sizes, alt, cls, lazy) =>
     `<picture${cls ? ` class="${cls}"` : ''}><source type="image/avif" srcset="${img}${f}-480.avif 480w, ${img}${f}-720.avif 720w" sizes="${sizes}" />` +
     `<img src="${img}${f}-480.webp" srcset="${img}${f}-480.webp 480w, ${img}${f}-720.webp 720w" sizes="${sizes}" width="480" height="983" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async" /></picture>`
@@ -128,18 +119,11 @@ function page(l) {
   const vals = {
     LANG: l,
     DIR: l === 'ar' ? 'rtl' : 'ltr',
+    ALT_URL: l === 'ar' ? 'go' : 'go-ar',
     HEAD: head,
     JSONLD: ld(l),
-    ROUTE: l === 'en' ? ROUTE : '',
     IMG: img,
-    SELF: l === 'ar' ? 'go-ar' : 'go',
-    BRAND: esc(t.ldName),
-    ALT: esc(t.ldAlt),
-    OTHER: other[0],
-    SWITCH: `<a class="lang" lang="${other[0]}" hreflang="${other[0]}" href="${other[1]}" onclick="try{localStorage.setItem('go-lang','${other[0]}')}catch(e){}">${other[2]}</a>`,
     CUE: esc(t.cue),
-    THEME_DARK: esc(t.theme[0]),
-    THEME_LIGHT: esc(t.theme[1]),
     KICKER: esc(t.kicker),
     H1A: esc(t.h1a),
     H1B: esc(t.h1b),
@@ -169,7 +153,7 @@ function page(l) {
     return vals[k]
   })
   // The shared look and footer (partials/), then every inline <style> minified, the theme's too.
-  return applyPartials(filled, { require: ['head.html', 'theme.css', 'switch.js', `footer.${l}.html`, `topnav.${l}.html`] })
+  return applyPartials(filled, { require: [...SITE, `footer.${l}.html`] })
     .replace(/<style>([\s\S]*?)<\/style>/g, (_, c) => `<style>${css(c)}</style>`)
 }
 
