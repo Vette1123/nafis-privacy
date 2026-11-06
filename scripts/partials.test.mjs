@@ -133,3 +133,13 @@ test('audit: nafis.css is gone and nothing points at it', () => {
     assert.doesNotMatch(fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8'), /nafis\.css/, f);
   }
 });
+
+// 6 Nov: on a wide screen the policy filled the left half and left the right half empty.
+// Same fix as Rafiq: from 1100px the contents ride beside the text as a sticky sidebar.
+test('doc: the policy contents sit beside the text on wide screens', async () => {
+  const { readFileSync } = await import('node:fs');
+  const doc = readFileSync(new URL('../partials/doc.css', import.meta.url), 'utf8');
+  const wide = doc.match(/@media \(min-width: 1100px\) \{([^]*?)\n\}/)?.[1] ?? '';
+  assert.match(wide, /\.prose > \.toc\s*\{[^}]*position:\s*sticky/);
+  assert.match(wide, /grid-template-columns:\s*minmax\(0, 72ch\)/);
+});
