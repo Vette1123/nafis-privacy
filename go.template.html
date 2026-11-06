@@ -4,19 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {{HEAD}}
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf6ec" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0b07" />
-    <meta name="color-scheme" content="light dark" />
-    <script>
-      // A theme picked with the switch applies before the first paint, so the page never flashes.
-      try {
-        var t = localStorage.getItem('go-theme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
-        }
-      } catch (e) {}
-    </script>
+    <!--partial:head.html--><!--/partial:head.html-->
     {{ROUTE}}
     <script type="application/ld+json">{{JSONLD}}</script>
     <link rel="icon" href="{{IMG}}icon-96.webp" type="image/webp" />
@@ -33,96 +21,12 @@
       fallback, and sized so nothing shifts. No web fonts, no scripts from anyone else.
       Both store badges are the official artwork: Apple and Google forbid redrawing them.
     -->
+    <!--partial:theme.css--><!--/partial:theme.css-->
     <style>
-      :root {
-        --bg: #faf6ec; --bg-2: #f1e9d4; --ink: #1c160d; --soft: #54482f; --faint: #6e6247;
-        --gold: #7a5a0e; --gold-2: #e0b044; --line: rgba(28, 22, 13, 0.12); --panel: #ffffff;
-        --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
-        --glow-a: rgba(224, 176, 68, 0.2); --glow-b: rgba(201, 121, 66, 0.1); --grid: rgba(28, 22, 13, 0.06); --fog: rgba(224, 176, 68, 0.18);
-        --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
-        /* The store art sets Nafis in a serif; the system's own keeps the page font-free. */
-        --display: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif;
-        --arabic: "SF Arabic", "Geeza Pro", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
-        --ease: cubic-bezier(0.16, 1, 0.3, 1);
-        color-scheme: light dark;
-      }
-      /* Dark follows the system unless the reader picked a theme with the switch (data-theme). */
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) {
-          --bg: #0e0b07; --bg-2: #14100a; --ink: #f5eedd; --soft: #cbbe9f; --faint: #a99b7c;
-          --gold: #e0b044; --line: rgba(245, 238, 221, 0.12); --panel: #1c160d;
-          --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
-          --glow-a: rgba(224, 176, 68, 0.14); --glow-b: rgba(201, 121, 66, 0.14); --grid: rgba(245, 238, 221, 0.05); --fog: rgba(224, 176, 68, 0.22);
-          color-scheme: dark;
-        }
-      }
-      :root[data-theme="dark"] {
-        --bg: #0e0b07; --bg-2: #14100a; --ink: #f5eedd; --soft: #cbbe9f; --faint: #a99b7c;
-          --gold: #e0b044; --line: rgba(245, 238, 221, 0.12); --panel: #1c160d;
-          --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
-          --glow-a: rgba(224, 176, 68, 0.14); --glow-b: rgba(201, 121, 66, 0.14); --grid: rgba(245, 238, 221, 0.05); --fog: rgba(224, 176, 68, 0.22);
-        color-scheme: dark;
-      }
-      :root[data-theme="light"] { color-scheme: light; }
-      * { box-sizing: border-box; }
-      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
-      body {
-        margin: 0; background: var(--bg); color: var(--ink);
-        font: 16px/1.6 var(--ui); -webkit-font-smoothing: antialiased;
-      }
-      html[lang="ar"] body { font-family: var(--arabic); }
-      /* The page's light: a fixed aurora behind everything. Static and fixed, so it is painted
-         once and scrolling repaints nothing. No grain layer: a fixed noise film made Chrome draw
-         pale boxes around the composited phone shots. */
-      body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-      body::before {
-        background:
-          radial-gradient(60vmax 45vmax at 88% -8%, var(--glow-a), transparent 62%),
-          radial-gradient(55vmax 40vmax at -12% 38%, var(--glow-b), transparent 62%),
-          radial-gradient(50vmax 38vmax at 70% 115%, var(--glow-a), transparent 62%);
-      }
-      img { max-width: 100%; height: auto; display: block; }
-      a { color: inherit; }
-      h1, h2, h3 { margin: 0; text-wrap: balance; }
-      p { margin: 0; text-wrap: pretty; }
-      :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 10px; }
-      .wrap {
-        width: 100%; max-width: 1180px; margin-inline: auto;
-        padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right));
-      }
-
-      /* ---- top ---- */
-      .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: max(18px, env(safe-area-inset-top)) 18px; }
-      .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; text-decoration: none; }
-      .brand img { width: 40px; height: 40px; border-radius: 10px; }
-      .brand small { font-weight: 500; color: var(--faint); font-size: 15px; }
-      .lang { font: 600 14px var(--ui); padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; transition: border-color 200ms var(--ease); }
-      .lang:hover { border-color: var(--gold); }
-      .tools { display: flex; align-items: center; gap: 8px; }
-      .theme { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; transition: border-color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
-      .theme:hover { border-color: var(--gold); }
-      .theme:active { transform: scale(0.94); }
-      .theme svg { width: 20px; height: 20px; }
-      /* The icon shows where the switch goes: a sun on the dark page, a moon on the light one. */
-      .theme .sun { display: none; }
-      :root[data-theme="dark"] .theme .sun { display: block; }
-      :root[data-theme="dark"] .theme .moon { display: none; }
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) .theme .sun { display: block; }
-        :root:not([data-theme="light"]) .theme .moon { display: none; }
-      }
-
+      /* The install page's own parts; the shared look is partials/theme.css above. */
       /* ---- hero: the headline is the first paint ---- */
       .hero { position: relative; isolation: isolate; padding-block: 32px 56px; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 48px; align-items: center; }
       .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; pointer-events: none; inset-inline: calc(50% - 50vw); }
-      /* A fine grid behind the headline and the phone, fading out from their middle. */
-      .hero::after {
-        top: -140px; bottom: -40px;
-        background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-        background-size: 56px 56px; background-position: center top;
-        -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
-        mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
-      }
       .hero::before {
         top: -120px; bottom: -200px;
         /* Full-bleed past the 1180px wrap; html clips overflow-x, so 100vw can't add a sideways scroll.
@@ -137,19 +41,8 @@
       .big { display: block; font-family: var(--display); font-size: clamp(40px, 6.2vw, 86px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 600; }
       .big span { color: var(--faint); }
       html[lang="ar"] .big { font-family: var(--arabic); line-height: 1.25; letter-spacing: 0; font-weight: 750; font-size: clamp(38px, 5.6vw, 76px); }
-      .lede { font-size: clamp(17px, 1.6vw, 19px); color: var(--soft); max-width: 44ch; margin-top: 22px; }
+      .hero .lede { max-width: 44ch; margin-top: 22px; }
       .hero .badges { margin-top: 28px; }
-
-      /* ---- official badges, equal visual height ---- */
-      .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-      .badges a { display: block; border-radius: 10px; transition: transform 220ms var(--ease); -webkit-tap-highlight-color: transparent; }
-      .badges a:hover { transform: translateY(-2px); }
-      .badges a:active { transform: scale(0.97); }
-      .badges .apple img { width: 156px; height: 52px; }
-      /* Google's PNG carries its own clear space: at 76px tall its artwork matches the
-         Apple badge's 52, which Google's rules ask for (same size or larger). */
-      .badges .play { margin: -12px -10px; }
-      .badges .play img { width: 197px; height: 76px; }
 
       /* ---- facts ---- */
       .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
@@ -209,6 +102,8 @@
       .how { padding-block: 72px 24px; }
       .how > h2, .feat h2, .more h2 { font-family: var(--display); font-size: clamp(30px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; font-weight: 600; }
       html[lang="ar"] .how > h2, html[lang="ar"] .feat h2, html[lang="ar"] .more h2 { font-weight: 750; font-family: var(--arabic); line-height: 1.35; letter-spacing: 0; }
+      /* A heading never touches the list or block under it. */
+      .how > h2 + :not(p), .more > h2 + :not(p) { margin-top: 28px; }
       .how > p { margin-top: 14px; font-size: 18px; color: var(--soft); max-width: 60ch; }
       .how ol { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: s; border-block: 1px solid var(--line); }
       .how li { counter-increment: s; padding: 28px 24px; border-inline-start: 1px solid var(--line); min-width: 0; }
@@ -229,61 +124,19 @@
       /* ---- more inside: the rest of the app, named so search reads it ---- */
       .more { padding-block: 64px 16px; }
       .more p { margin-top: 12px; color: var(--soft); max-width: 60ch; }
-      .chips { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
       .chips li { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); font-weight: 600; font-size: 15px; }
 
       /* Below the first screen: skip layout and paint until it is near, so a low-end phone
          paints the hero sooner. The size hint keeps the scrollbar from jumping. */
-      .feat, .more, .band, .faq { content-visibility: auto; contain-intrinsic-size: auto 640px; }
+      .feat, .more { content-visibility: auto; contain-intrinsic-size: auto 640px; }
 
-      /* ---- privacy band ---- */
-      /* Full-bleed strip: margins pull it to the viewport edges, padding puts the content back on the wrap's column. */
-      .band { margin-block: 48px; margin-inline: calc(50% - 50vw); padding: 64px max(20px, calc(50vw - 50%)); background: var(--band); color: var(--band-ink); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; position: relative; overflow: hidden; isolation: isolate; }
-      .band::before { content: ""; position: absolute; z-index: -1; inset: auto -10% -60% 40%; height: 120%; background: radial-gradient(closest-side, rgba(224, 176, 68, 0.2), transparent); }
-      .band h2 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.12; letter-spacing: -0.02em; }
-      html[lang="ar"] .band h2 { font-family: var(--arabic); line-height: 1.4; letter-spacing: 0; }
-      .band p { margin-top: 14px; color: var(--band-soft); max-width: 48ch; }
-      .band ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
-      .band li { display: flex; gap: 12px; align-items: baseline; }
-      .band li::before { content: "✓"; color: var(--gold-2); font-weight: 800; }
-
-      /* ---- faq ---- */
-      .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 40px; padding-block: 32px 40px; }
-      .faq h2 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.02em; }
-      html[lang="ar"] .faq h2 { font-family: var(--arabic); letter-spacing: 0; }
-      details { border-top: 1px solid var(--line); }
-      details:last-child { border-bottom: 1px solid var(--line); }
-      summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding-block: 18px; font-weight: 650; font-size: 17px; min-height: 44px; }
-      summary::-webkit-details-marker { display: none; }
-      summary::after { content: "+"; flex: none; font-weight: 400; font-size: 24px; line-height: 1; color: var(--gold); transition: transform 260ms var(--ease); }
-      details[open] summary::after { transform: rotate(45deg); }
-      details p { padding-bottom: 18px; color: var(--soft); max-width: 62ch; }
-
-      /* ---- closing ---- */
-      .cta { text-align: center; padding-block: 56px 64px; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); display: grid; justify-items: center; gap: 22px; }
-      .cta img.ic { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 24px 40px -14px rgba(15, 29, 39, 0.45); }
-      .cta h2 { font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4.4vw, 54px); letter-spacing: -0.025em; line-height: 1.1; }
-      html[lang="ar"] .cta h2 { font-family: var(--arabic); letter-spacing: 0; line-height: 1.35; }
-      .cta .badges { justify-content: center; }
-      .foot { padding-block: 28px max(40px, env(safe-area-inset-bottom)); font-size: 14px; color: var(--faint); display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; border-top: 1px solid var(--line); }
-      .foot nav { display: flex; gap: 6px 20px; flex-wrap: wrap; }
-      .foot a { color: var(--soft); text-underline-offset: 3px; padding-block: 6px; }
-      .foot a:hover { color: var(--gold); }
-
-      /* ---- motion: transform only, so the first frame is already the page ---- */
+      /* ---- the hero demo's motion ---- */
       @media (prefers-reduced-motion: no-preference) {
-        .rise { animation: rise 760ms var(--ease) both; }
-        .rise.d1 { animation-delay: 80ms; }
-        @keyframes rise { from { transform: translateY(14px); } to { transform: none; } }
         .alert { animation: drop 6.5s var(--ease) infinite; }
         .txn { animation: land 6.5s var(--ease) infinite; }
         @keyframes drop { 0% { opacity: 0; transform: translateY(-22px) scale(0.96); } 7%, 40% { opacity: 1; transform: none; } 52%, 100% { opacity: 0; transform: translateY(90px) scale(0.9); } }
         @keyframes land { 0%, 44% { opacity: 0; transform: translateY(-46px) scale(0.94); } 56%, 93% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
       }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { transition: none !important; animation: none !important; }
-      }
-
       /* ---- desktop: the whole hero fits the first screen, whatever the window's height ----
          Type and the phone scale with the shorter of width and height; the hero fills the
          screen below the top bar, so the facts row starts at the fold. */
@@ -300,7 +153,7 @@
 
       /* ---- tablet and phone: one column ---- */
       @media (max-width: 860px) {
-        .hero, .feat, .band, .faq { grid-template-columns: minmax(0, 1fr); }
+        .hero, .feat { grid-template-columns: minmax(0, 1fr); }
         .hero { gap: 36px; padding-block: 20px 40px; }
         .feat { gap: 32px; padding-block: 48px; }
         .feat:nth-child(even) picture { order: 0; }
@@ -312,15 +165,9 @@
         .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .facts div:nth-child(3) { border-inline-start: 0; padding-inline-start: 0; }
         .facts div:nth-child(n + 3) { border-top: 1px solid var(--line); }
-        .band { padding-block: 40px; margin-block: 24px; }
-        .faq { gap: 16px; }
         .hero .badges { width: 100%; }
       }
       @media (max-width: 380px) {
-        .brand small { display: none; }
-        .badges .apple img { width: 138px; height: 46px; }
-        .badges .play { margin: -10px -9px; }
-        .badges .play img { width: 174px; height: 67px; }
         .card { padding: 12px; gap: 10px; grid-template-columns: 36px minmax(0, 1fr) auto; }
         .card .ic { width: 36px; height: 36px; }
         .txn { inset-inline: 8px; }
@@ -333,6 +180,7 @@
     <div class="wrap">
       <header class="top">
         <a class="brand" href="{{SELF}}"><img src="{{IMG}}icon-96.webp" width="40" height="40" alt="" />{{BRAND}} <small lang="{{OTHER}}">{{ALT}}</small></a>
+        <!--partial:topnav.{{LANG}}.html--><!--/partial:topnav.{{LANG}}.html-->
         <div class="tools">
           <button class="theme" type="button" data-dark="{{THEME_DARK}}" data-light="{{THEME_LIGHT}}" aria-label="{{THEME_DARK}}">
             <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" /></svg>
@@ -387,7 +235,7 @@
       <nav class="badges" aria-label="{{NAV_LABEL}}">{{BADGES}}</nav>
     </section>
 
-    <div class="wrap"><footer class="foot"><span>{{FOOT}}</span><nav>{{LINKS}}</nav></footer></div>
+    <!--partial:footer.{{LANG}}.html--><!--/partial:footer.{{LANG}}.html-->
 
     <script>
       (function () {
@@ -395,20 +243,6 @@
         // The scroll cue leaves once the reader has started scrolling.
         var cue = function () { root.classList.toggle('scrolled', scrollY > 40); };
         addEventListener('scroll', cue, { passive: true });
-
-        // Light/dark switch. With no choice stored the page follows the system; a click stores
-        // the opposite of what is showing now.
-        var sw = document.querySelector('.theme');
-        var dark = function () { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
-        var label = function () { sw.setAttribute('aria-label', dark() ? sw.getAttribute('data-light') : sw.getAttribute('data-dark')); };
-        label();
-        sw.addEventListener('click', function () {
-          var t = dark() ? 'light' : 'dark';
-          root.setAttribute('data-theme', t);
-          try { localStorage.setItem('go-theme', t); } catch (e) {}
-          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
-          label();
-        });
 
         // The reader's own store goes first, in both badge rows. iPadOS reports itself
         // as a Mac, so Macintosh counts as Apple. Nothing redirects: an in-app browser
@@ -436,5 +270,6 @@
         params.delete('m');
       })();
     </script>
+    <!--partial:switch.js--><!--/partial:switch.js-->
   </body>
 </html>

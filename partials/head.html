@@ -1,0 +1,13 @@
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf6ec" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0b07" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // A theme picked with the switch applies before the first paint, so the page never flashes.
+      try {
+        var t = localStorage.getItem('go-theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
+        }
+      } catch (e) {}
+    </script>

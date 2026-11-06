@@ -3,6 +3,7 @@
 // is its own URL so that hreflang and a search engine can tell them apart.
 import fs from 'fs'
 import path from 'path'
+import { applyPartials, css } from './partials.mjs'
 const repo = '.'
 const c = JSON.parse(fs.readFileSync(path.join(repo, 'go.copy.json'), 'utf8'))
 // Canonical on the domain Google crawls, which proxies these pages. The github.io URLs keep
@@ -163,16 +164,28 @@ function page(l) {
     FOOT: esc(t.foot),
     LINKS: t.links.map(([n, u]) => `<a href="${u}">${esc(n)}</a>`).join(''),
   }
-  // Inline CSS ships minified: comments out, whitespace collapsed. Lighthouse flags it otherwise.
-  const css = (c) => c.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{};,>])\s*/g, '$1').replace(/;}/g, '}').trim()
-  return tpl.replace(/<style>([\s\S]*?)<\/style>/g, (_, c) => `<style>${css(c)}</style>`).replace(/\{\{(\w+)\}\}/g, (_, k) => {
+  const filled = tpl.replace(/\{\{(\w+)\}\}/g, (_, k) => {
     if (!(k in vals)) throw Error('no value for ' + k)
     return vals[k]
   })
+  // The shared look and footer (partials/), then every inline <style> minified, the theme's too.
+  return applyPartials(filled, { require: ['head.html', 'theme.css', 'switch.js', `footer.${l}.html`, `topnav.${l}.html`] })
+    .replace(/<style>([\s\S]*?)<\/style>/g, (_, c) => `<style>${css(c)}</style>`)
 }
 
-fs.writeFileSync(path.join(repo, 'go.html'), page('en'))
-fs.writeFileSync(path.join(repo, 'go-ar.html'), page('ar'))
+// --check: write nothing, exit 1 naming the pages that are stale.
+const check = process.argv.includes('--check')
+const stale = []
+for (const [f, l] of [['go.html', 'en'], ['go-ar.html', 'ar']]) {
+  const next = page(l)
+  const p = path.join(repo, f)
+  if (check ? fs.readFileSync(p, 'utf8') !== next : (fs.writeFileSync(p, next), false)) stale.push(f)
+}
+if (check) {
+  if (stale.length) { console.error('stale (run node scripts/build-go.mjs): ' + stale.join(', ')); process.exit(1) }
+  console.log('go pages up to date')
+  process.exit(0)
+}
 for (const f of ['go.html', 'go-ar.html']) {
   const h = fs.readFileSync(path.join(repo, f), 'utf8')
   if (/noindex/.test(h)) throw Error(f + ' still noindex')
