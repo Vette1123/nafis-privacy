@@ -79,3 +79,14 @@ test('theme: a panel opens on its content, and every action shows the pointer', 
     assert.ok(rule.includes(sel), `pointer rule is missing ${sel}`);
   }
 });
+
+// 6 Nov: the current page's nav pill was a near-invisible shade of the bar. It now wears the
+// brand colour, a ring and a dot, so "where am I" reads at a glance in both themes.
+test('theme: the current nav item is clearly marked', async () => {
+  const { readFileSync } = await import('node:fs');
+  const theme = readFileSync(new URL('../partials/theme.css', import.meta.url), 'utf8');
+  const on = theme.match(/\.topnav a\[aria-current\]\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(on, /color:\s*var\(--gold\)/);
+  assert.match(on, /inset 0 0 0 1px/);
+  assert.match(theme, /\.topnav a\[aria-current\]::before\s*\{[^}]*border-radius:\s*50%/);
+});
