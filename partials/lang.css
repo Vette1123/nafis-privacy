@@ -1,0 +1,6 @@
+/* The two-language kit: privacy, terms and both deletion pages ship both languages in the
+   DOM, one shown at a time. Keyed on <html lang>, which lang-pick.js sets before the first
+   paint; with no script the language the page is served in shows (Arabic, for Nafis).
+   The header (both languages, every page) hides its other half in theme.css. */
+html:not([lang="en"]) #doc-en, html[lang="en"] #doc-ar,
+html:not([lang="en"]) #foot-en, html[lang="en"] #foot-ar { display: none; }

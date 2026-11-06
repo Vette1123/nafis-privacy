@@ -7,16 +7,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyPartials, css } from './partials.mjs';
+import { applyPartials, css, SITE } from './partials.mjs';
 
 const repo = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const base = ['head.html', 'theme.css', 'switch.js'];
+// Every two-language page: the show-one-language rules and both footers.
+const bilingual = [...SITE, 'lang.css', 'doc.css', 'footer.en.html', 'footer.ar.html'];
 const PAGES = {
-  'index.html': [...base, 'doc.css', 'footer.en.html', 'footer.ar.html', 'topnav.en.html', 'topnav.ar.html'],
-  'terms.html': [...base, 'doc.css', 'footer.en.html', 'footer.ar.html', 'topnav.en.html', 'topnav.ar.html'],
-  'delete-account.html': [...base, 'doc.css', 'footer.en.html', 'footer.ar.html', 'topnav.en.html', 'topnav.ar.html'],
-  'delete-data.html': [...base, 'doc.css', 'footer.en.html', 'footer.ar.html', 'topnav.en.html', 'topnav.ar.html'],
-  '404.html': [...base, 'footer.en.html', 'topnav.en.html'],
+  'index.html': bilingual,
+  'terms.html': bilingual,
+  'delete-account.html': bilingual,
+  'delete-data.html': bilingual,
+  '404.html': [...SITE, 'footer.en.html'],
 };
 
 const build = (html, require) =>
@@ -26,7 +27,7 @@ const check = process.argv.includes('--check');
 const stale = [];
 for (const [file, require] of Object.entries(PAGES)) {
   const p = path.join(repo, file);
-  const old = fs.readFileSync(p, 'utf8');
+  const old = fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
   const next = build(old, require);
   if (next === old) continue;
   stale.push(file);

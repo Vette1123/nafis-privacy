@@ -10,4 +10,20 @@
           document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
         }
       } catch (e) {}
+      // Visits on mohamedgado.com, which proxies every page here, count in its Vercel Web
+      // Analytics: cookieless, same origin, and stated in the policy (section 7). The github.io
+      // copies load nothing. A link's ?s=<source> (nafis.mohamedgado.com/?s=ig) reaches the
+      // dashboard as utm_source, so sources can be compared.
+      if (/(^|\.)mohamedgado\.com$/.test(location.hostname)) {
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+        window.va('beforeSend', function (e) {
+          var m = /[?&]s=([a-z0-9_-]{1,40})(&|#|$)/i.exec(e.url);
+          if (!m || /[?&]utm_source=/.test(e.url)) return e;
+          return Object.assign({}, e, { url: e.url.replace(/#.*$/, '') + '&utm_source=' + m[1].toLowerCase() });
+        });
+        var va = document.createElement('script');
+        va.defer = true;
+        va.src = '/_vercel/insights/script.js';
+        document.head.appendChild(va);
+      }
     </script>

@@ -60,20 +60,52 @@ p { margin: 0; text-wrap: pretty; }
 .skip { position: absolute; inset-inline-start: 12px; top: -60px; z-index: 10; padding: 10px 16px; border-radius: 999px; background: var(--panel); border: 1px solid var(--gold); text-decoration: none; font-weight: 600; }
 .skip:focus { top: 12px; }
 
-/* ---- top bar ---- */
-.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: max(18px, env(safe-area-inset-top)) 18px; }
-.brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; text-decoration: none; }
+/* ---- top bar: one header on every page (partials/header.html), both languages in it.
+   Keyed on <html lang>, so the half that shows is right before any script runs. ---- */
+html:not([lang="ar"]) .top-in > [lang="ar"], html[lang="ar"] .top-in > [lang="en"] { display: none; }
+.top-in { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: max(18px, env(safe-area-inset-top)) 18px; }
+/* Sticky, and smart about it (partials/header.js): it scrolls away going down and slides back
+   going up. At the top of the page it has no background, so the hero's light runs behind it;
+   once scrolled, a solid bar of the page colour fades in under it (any see-through let the text
+   scrolling under it ghost through). No blur: a backdrop filter painted pale boxes over the
+   phone shots in Chrome. Transform and opacity only. */
+.top { position: sticky; top: 0; z-index: 30; isolation: isolate; transition: transform 240ms var(--ease); }
+.top::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: var(--bg); box-shadow: 0 1px 0 var(--line), 0 12px 32px -24px rgba(0, 0, 0, 0.5); transition: opacity 200ms var(--ease); }
+.top-stuck .top::before { opacity: 1; }
+.top-hidden .top { transform: translateY(-100%); }
+/* A pinned column (the policy's Contents) sits under the header while it shows. */
+:root { --top-h: 80px; --top-on: 0px; }
+.top-stuck:not(.top-hidden) { --top-on: var(--top-h); }
+.brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; text-decoration: none; white-space: nowrap; }
 .brand img { width: 40px; height: 40px; border-radius: 10px; }
 .brand { min-height: 44px; transition: opacity 160ms var(--ease), transform 160ms var(--ease); }
 .brand:active { transform: scale(0.98); }
-@media (hover: hover) and (pointer: fine) { .brand:hover { opacity: 0.8; } .lang:active { transform: scale(0.97); } }
+@media (hover: hover) and (pointer: fine) { .brand:hover { opacity: 0.8; } }
 .brand small { font-weight: 500; color: var(--faint); font-size: 15px; }
-.lang { font: 600 14px var(--ui); padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; transition: border-color 200ms var(--ease); }
-.lang:hover { border-color: var(--gold); }
+.brand[lang="ar"] { font-family: var(--arabic); }
+.brand small[lang="en"] { font-family: var(--ui); }
 .tools { display: flex; align-items: center; gap: 8px; }
 .theme { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; transition: border-color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
-.theme:hover { border-color: var(--gold); }
 .theme:active { transform: scale(0.94); }
+/* Language: one pill, English then Arabic, two 44px targets; the page's language is filled. */
+.switch { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); overflow: hidden; }
+.switch button { appearance: none; border: 0; background: transparent; color: var(--soft); font: 600 14px var(--ui); min-width: 44px; min-height: 44px; padding: 0 16px; cursor: pointer; transition: background-color 200ms var(--ease), color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
+.switch button[lang="ar"] { font-family: var(--arabic); }
+.switch button:active { transform: scale(0.97); }
+.switch button:focus-visible { outline-offset: -3px; border-radius: 999px; }
+html:not([lang="ar"]) #btn-en, html[lang="ar"] #btn-ar { background: var(--gold); color: var(--bg); }
+@media (hover: hover) and (pointer: fine) {
+  .theme:hover { border-color: var(--gold); }
+  html:not([lang="ar"]) #btn-ar:hover, html[lang="ar"] #btn-en:hover { color: var(--ink); }
+}
+/* A phone: brand, theme and the language pill share one row; the tabs take the next. */
+@media (max-width: 420px) {
+  .top-in { gap: 8px; }
+  .brand { gap: 10px; }
+  .brand img { width: 36px; height: 36px; }
+  .brand small { display: none; }
+  .switch button { padding: 0 12px; font-size: 13px; }
+}
 .theme svg { width: 20px; height: 20px; }
 /* The icon shows where the switch goes: a sun on the dark page, a moon on the light one. */
 .theme .sun { display: none; }
@@ -88,7 +120,7 @@ p { margin: 0; text-wrap: pretty; }
 .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 14px; color: var(--faint); }
 .crumbs li { display: inline-flex; align-items: center; gap: 8px; }
 .crumbs li + li::before { content: ""; width: 5px; height: 5px; border-top: 1.5px solid currentColor; border-inline-end: 1.5px solid currentColor; transform: rotate(45deg); opacity: 0.7; }
-[dir="rtl"] .crumbs li + li::before { transform: rotate(-135deg); }
+[dir="rtl"] .crumbs li + li::before { transform: rotate(-45deg); }
 .crumbs a { color: var(--soft); text-decoration: none; padding-block: 10px; }
 .crumbs a:hover { color: var(--gold); }
 .crumbs [aria-current] { color: var(--ink); font-weight: 600; }
@@ -101,9 +133,17 @@ p { margin: 0; text-wrap: pretty; }
   top: -140px; bottom: -40px;
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 56px 56px; background-position: center top;
-  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
+  /* The second layer fades the grid in from its top edge (see --rise below). */
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%), var(--rise);
+  mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%), var(--rise);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
+/* Every hero layer starts 120-140px above its hero, under the header. On a phone the header
+   wraps to two rows (~130px), so that top edge landed inside the page as a hard band across
+   the header (6 Nov). Each layer fades in over its first 160px instead: no edge, whatever
+   the header's height. */
+:root { --rise: linear-gradient(transparent, #000 160px); }
 /* No fog band here: it is the go page's horizon under its phone, and on a text hero it is a
    stray stripe behind whatever sits at that height (the bank search, 6 Nov).
    The glow layer fades to nothing before its own edge: a gradient that reaches the box edge
@@ -113,8 +153,8 @@ p { margin: 0; text-wrap: pretty; }
   background:
     radial-gradient(min(900px, 80vw) 420px at 22% 30%, var(--glow-a), transparent 70%),
     radial-gradient(min(800px, 70vw) 380px at 80% 10%, var(--glow-b), transparent 70%);
-  -webkit-mask-image: linear-gradient(#000 55%, transparent 92%);
-  mask-image: linear-gradient(#000 55%, transparent 92%);
+  -webkit-mask-image: linear-gradient(transparent, #000 160px, #000 55%, transparent 92%);
+  mask-image: linear-gradient(transparent, #000 160px, #000 55%, transparent 92%);
 }
 .head .crumbs { margin-bottom: 22px; }
 .title { font-family: var(--display); font-size: clamp(36px, 5.4vw, 72px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 600; max-width: 18ch; }
@@ -222,14 +262,15 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
 .sf-base { grid-column: 1 / -1; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
 @media (max-width: 560px) { .sitefoot { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } .sitefoot > nav:last-of-type { grid-column: 1 / -1; } }
 /* ---- the top bar's links: every page one tap from the others ---- */
-.topnav { display: flex; gap: 2px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 70%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.topnav { display: flex; gap: 2px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 70%, transparent); }
 .topnav a { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 16px; border-radius: 999px; color: var(--soft); font: 600 14px var(--ui); text-decoration: none; white-space: nowrap; transition: color 160ms var(--ease), background-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 120ms var(--ease); }
-.topnav a:hover { color: var(--ink); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+@media (hover: hover) and (pointer: fine) { .topnav a:hover { color: var(--ink); background: color-mix(in srgb, var(--gold) 8%, transparent); } }
+.topnav[lang="ar"] a { font-family: var(--arabic); font-size: 15px; }
 .topnav a:active { transform: scale(0.97); }
 /* The page you are on: brand tint, a hairline ring and a lit dot, readable in both themes. */
 .topnav a[aria-current] { color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, var(--panel)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 38%, transparent), 0 6px 16px -10px color-mix(in srgb, var(--gold) 70%, transparent); }
 .topnav a[aria-current]::before { content: ""; flex: none; width: 6px; height: 6px; margin-inline-end: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent); }
-@media (max-width: 720px) { .top { flex-wrap: wrap; } .topnav { order: 3; width: 100%; justify-content: space-between; } .topnav a { flex: 1; justify-content: center; } }
+@media (max-width: 720px) { .top-in { flex-wrap: wrap; } .topnav { order: 3; width: 100%; justify-content: space-between; } .topnav a { flex: 1; justify-content: center; } }
 
 /* Touch targets: 44px where a thumb is the pointer (a phone, or any coarse pointer). */
 @media (max-width: 720px), (pointer: coarse) { .topnav a { min-height: 44px; } .sitefoot li a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; } .foot a { display: inline-flex; align-items: center; min-height: 44px; } }
@@ -253,12 +294,12 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
   .sec { padding-block: 44px 4px; }
 }
 @media (max-width: 380px) {
-  .brand small { display: none; }
   .badges .apple img { width: 138px; height: 46px; }
   .badges .play { margin: -10px -9px; }
   .badges .play img { width: 174px; height: 67px; }
 }
 @media print {
   body::before, .head::before, .head::after, .tools, .badges, .cta { display: none; }
+  .top { position: static; transform: none; } .top::before { display: none; }
   body { background: #fff; color: #000; }
 }
