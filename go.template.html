@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="{{LANG}}" dir="{{DIR}}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {{HEAD}}
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf6ec" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0b07" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // A theme picked with the switch applies before the first paint, so the page never flashes.
+      try {
+        var t = localStorage.getItem('go-theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
+        }
+      } catch (e) {}
+    </script>
+    {{ROUTE}}
+    <script type="application/ld+json">{{JSONLD}}</script>
+    <link rel="icon" href="{{IMG}}icon-96.webp" type="image/webp" />
+    <link rel="apple-touch-icon" href="https://vette1123.github.io/nafis-privacy/icon.png" />
+    <!--
+      The one link printed inside every share card's QR code. Served at /nafis-privacy/go
+      (GitHub Pages drops the .html), which keeps the encoded URL short enough for a
+      37-module code, and proxied at mohamedgado.com/projects/nafis/go. The path must never
+      change: cards already sent cannot be updated. A link that names a place inside the
+      app (?to=quran/26&ayah=169) is offered to the app first.
+
+      Fast by construction: the largest thing in the first screen is the headline (text,
+      painted on the first frame), every picture below it is lazy, AVIF with a WebP
+      fallback, and sized so nothing shifts. No web fonts, no scripts from anyone else.
+      Both store badges are the official artwork: Apple and Google forbid redrawing them.
+    -->
+    <style>
+      :root {
+        --bg: #faf6ec; --bg-2: #f1e9d4; --ink: #1c160d; --soft: #54482f; --faint: #6e6247;
+        --gold: #7a5a0e; --gold-2: #e0b044; --line: rgba(28, 22, 13, 0.12); --panel: #ffffff;
+        --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
+        --glow-a: rgba(224, 176, 68, 0.2); --glow-b: rgba(201, 121, 66, 0.1); --grid: rgba(28, 22, 13, 0.06); --fog: rgba(224, 176, 68, 0.18);
+        --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
+        /* The store art sets Nafis in a serif; the system's own keeps the page font-free. */
+        --display: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif;
+        --arabic: "SF Arabic", "Geeza Pro", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        color-scheme: light dark;
+      }
+      /* Dark follows the system unless the reader picked a theme with the switch (data-theme). */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0e0b07; --bg-2: #14100a; --ink: #f5eedd; --soft: #cbbe9f; --faint: #a99b7c;
+          --gold: #e0b044; --line: rgba(245, 238, 221, 0.12); --panel: #1c160d;
+          --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
+          --glow-a: rgba(224, 176, 68, 0.14); --glow-b: rgba(201, 121, 66, 0.14); --grid: rgba(245, 238, 221, 0.05); --fog: rgba(224, 176, 68, 0.22);
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0e0b07; --bg-2: #14100a; --ink: #f5eedd; --soft: #cbbe9f; --faint: #a99b7c;
+          --gold: #e0b044; --line: rgba(245, 238, 221, 0.12); --panel: #1c160d;
+          --band: #1c160d; --band-ink: #f5eedd; --band-soft: #cbbe9f;
+          --glow-a: rgba(224, 176, 68, 0.14); --glow-b: rgba(201, 121, 66, 0.14); --grid: rgba(245, 238, 221, 0.05); --fog: rgba(224, 176, 68, 0.22);
+        color-scheme: dark;
+      }
+      :root[data-theme="light"] { color-scheme: light; }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
+      body {
+        margin: 0; background: var(--bg); color: var(--ink);
+        font: 16px/1.6 var(--ui); -webkit-font-smoothing: antialiased;
+      }
+      html[lang="ar"] body { font-family: var(--arabic); }
+      /* The page's light: a fixed aurora behind everything. Static and fixed, so it is painted
+         once and scrolling repaints nothing. No grain layer: a fixed noise film made Chrome draw
+         pale boxes around the composited phone shots. */
+      body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      body::before {
+        background:
+          radial-gradient(60vmax 45vmax at 88% -8%, var(--glow-a), transparent 62%),
+          radial-gradient(55vmax 40vmax at -12% 38%, var(--glow-b), transparent 62%),
+          radial-gradient(50vmax 38vmax at 70% 115%, var(--glow-a), transparent 62%);
+      }
+      img { max-width: 100%; height: auto; display: block; }
+      a { color: inherit; }
+      h1, h2, h3 { margin: 0; text-wrap: balance; }
+      p { margin: 0; text-wrap: pretty; }
+      :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 10px; }
+      .wrap {
+        width: 100%; max-width: 1180px; margin-inline: auto;
+        padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right));
+      }
+
+      /* ---- top ---- */
+      .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: max(18px, env(safe-area-inset-top)) 18px; }
+      .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; text-decoration: none; }
+      .brand img { width: 40px; height: 40px; border-radius: 10px; }
+      .brand small { font-weight: 500; color: var(--faint); font-size: 15px; }
+      .lang { font: 600 14px var(--ui); padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; transition: border-color 200ms var(--ease); }
+      .lang:hover { border-color: var(--gold); }
+      .tools { display: flex; align-items: center; gap: 8px; }
+      .theme { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; transition: border-color 200ms var(--ease), transform 160ms var(--ease); -webkit-tap-highlight-color: transparent; }
+      .theme:hover { border-color: var(--gold); }
+      .theme:active { transform: scale(0.94); }
+      .theme svg { width: 20px; height: 20px; }
+      /* The icon shows where the switch goes: a sun on the dark page, a moon on the light one. */
+      .theme .sun { display: none; }
+      :root[data-theme="dark"] .theme .sun { display: block; }
+      :root[data-theme="dark"] .theme .moon { display: none; }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .theme .sun { display: block; }
+        :root:not([data-theme="light"]) .theme .moon { display: none; }
+      }
+
+      /* ---- hero: the headline is the first paint ---- */
+      .hero { position: relative; isolation: isolate; padding-block: 32px 56px; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 48px; align-items: center; }
+      .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; pointer-events: none; inset-inline: calc(50% - 50vw); }
+      /* A fine grid behind the headline and the phone, fading out from their middle. */
+      .hero::after {
+        top: -140px; bottom: -40px;
+        background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 56px 56px; background-position: center top;
+        -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
+        mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 20%, transparent 75%);
+      }
+      .hero::before {
+        top: -120px; bottom: -200px;
+        /* Full-bleed past the 1180px wrap; html clips overflow-x, so 100vw can't add a sideways scroll.
+           The last layer is the fog: a low, wide gold glow along the foot of the hero, behind the phone. */
+        background:
+          radial-gradient(min(900px, 80vw) 460px at 22% 26%, var(--glow-a), transparent 70%),
+          radial-gradient(min(800px, 70vw) 420px at 80% 12%, var(--glow-b), transparent 70%),
+          radial-gradient(ellipse 60% 13% at 50% 79%, var(--fog), transparent);
+      }
+      .kicker { display: block; font: 700 15px/1.4 var(--ui); color: var(--gold); letter-spacing: 0.01em; margin-bottom: 14px; }
+      html[lang="ar"] .kicker { font-family: var(--arabic); }
+      .big { display: block; font-family: var(--display); font-size: clamp(40px, 6.2vw, 86px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 600; }
+      .big span { color: var(--faint); }
+      html[lang="ar"] .big { font-family: var(--arabic); line-height: 1.25; letter-spacing: 0; font-weight: 750; font-size: clamp(38px, 5.6vw, 76px); }
+      .lede { font-size: clamp(17px, 1.6vw, 19px); color: var(--soft); max-width: 44ch; margin-top: 22px; }
+      .hero .badges { margin-top: 28px; }
+
+      /* ---- official badges, equal visual height ---- */
+      .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+      .badges a { display: block; border-radius: 10px; transition: transform 220ms var(--ease); -webkit-tap-highlight-color: transparent; }
+      .badges a:hover { transform: translateY(-2px); }
+      .badges a:active { transform: scale(0.97); }
+      .badges .apple img { width: 156px; height: 52px; }
+      /* Google's PNG carries its own clear space: at 76px tall its artwork matches the
+         Apple badge's 52, which Google's rules ask for (same size or larger). */
+      .badges .play { margin: -12px -10px; }
+      .badges .play img { width: 197px; height: 76px; }
+
+      /* ---- facts ---- */
+      .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+      .facts div { padding: 22px 18px; border-inline-start: 1px solid var(--line); min-width: 0; }
+      .facts div:first-child { border-inline-start: 0; padding-inline-start: 0; }
+      .facts b { display: block; font-size: 22px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+      .facts span { font-size: 14px; color: var(--soft); }
+
+      /* ---- live capture: a gold alert arrives, then the live price card, in HTML so it costs no image ---- */
+      .demo { position: relative; justify-self: center; width: min(100%, 400px); }
+      /* The whole phone, uncropped: a mask or a clip on it made Chrome paint a pale box behind it. */
+      .demo picture { position: relative; display: flex; justify-content: center; }
+      /* A contact shadow under each phone, drawn as a gradient: a drop-shadow filter on the shots
+         made Chrome paint a pale box behind them. */
+      .demo picture::after, .feat picture::after { content: ""; position: absolute; z-index: -1; left: 50%; bottom: -18px; translate: -50% 0; width: 70%; height: 64px; border-radius: 50%; background: radial-gradient(closest-side, rgba(4, 14, 22, 0.38), transparent); pointer-events: none; }
+      .demo { isolation: isolate; }
+      .demo picture img { width: min(76%, 300px); height: auto; margin-top: 40px; }
+      .card { position: absolute; z-index: 3; inset-inline: 0; display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 24px 48px -22px rgba(15, 29, 39, 0.45); }
+      .card .ic { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; }
+      .card b { display: block; font-size: 14px; line-height: 1.3; }
+      .card small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: var(--soft); font-size: 13px; line-height: 1.4; }
+      /* Solid, not frosted: a backdrop-filter here veiled the whole phone shot in Chrome. */
+      .alert { top: 0; background: var(--panel); }
+      .alert time { align-self: start; color: var(--faint); font-size: 12px; }
+      .txn { top: 54%; inset-inline: 18px; background: var(--panel); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+      .txn .ic { background: var(--gold); color: var(--bg); }
+      .txn .ic svg { width: 20px; height: 20px; }
+      .txn small { -webkit-line-clamp: 1; }
+      .txn .tag { display: block; margin-top: 2px; font: 700 11px var(--ui); color: var(--gold); letter-spacing: 0.04em; text-transform: uppercase; }
+      html[lang="ar"] .txn .tag { font-family: var(--arabic); letter-spacing: 0; }
+      .txn .amt { font: 800 19px var(--ui); color: var(--gold); white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .txn .amt span { font-size: 11px; font-weight: 600; color: var(--faint); margin-inline-start: 4px; }
+
+      /* ---- scroll cue: a small mouse at the foot of the hero, desktop only (on a phone the
+         hero is taller than the screen, so the next section is already peeking) ---- */
+      .cue { display: none; }
+      @media (min-width: 861px) {
+        .cue { position: absolute; bottom: 16px; left: 50%; translate: -50% 0; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 16px 6px 8px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 70%, transparent); font: 600 13px var(--ui); color: var(--soft); text-decoration: none; white-space: nowrap; transition: opacity 300ms var(--ease), border-color 200ms var(--ease), color 200ms var(--ease); -webkit-tap-highlight-color: transparent; }
+        html[lang="ar"] .cue { font-family: var(--arabic); padding: 6px 8px 6px 16px; }
+        .cue:hover { color: var(--ink); border-color: var(--gold); }
+        .cue .mouse { flex: none; width: 18px; height: 28px; border: 1.6px solid var(--gold); border-radius: 10px; position: relative; }
+        .cue .mouse::before { content: ""; position: absolute; left: 50%; top: 5px; width: 3px; height: 6px; margin-left: -1.5px; border-radius: 2px; background: var(--gold); }
+        .scrolled .cue { opacity: 0; pointer-events: none; }
+      }
+      /* A short window has no room under the badges for it. */
+      @media (min-width: 861px) and (max-height: 559px) { .cue { display: none; } }
+      @media (prefers-reduced-motion: no-preference) {
+        html { scroll-behavior: smooth; }
+        .cue .mouse::before { animation: wheel 1.8s var(--ease) infinite; }
+        .cue { animation: nudge 2.4s ease-in-out infinite; }
+        .cue:hover { animation-play-state: paused; }
+        @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes wheel { 0% { opacity: 0; transform: translateY(-2px); } 30% { opacity: 1; } 70% { opacity: 0; transform: translateY(8px); } 100% { opacity: 0; } }
+      }
+
+      /* ---- how it works ---- */
+      .how { padding-block: 72px 24px; }
+      .how > h2, .feat h2, .more h2 { font-family: var(--display); font-size: clamp(30px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; font-weight: 600; }
+      html[lang="ar"] .how > h2, html[lang="ar"] .feat h2, html[lang="ar"] .more h2 { font-weight: 750; font-family: var(--arabic); line-height: 1.35; letter-spacing: 0; }
+      .how > p { margin-top: 14px; font-size: 18px; color: var(--soft); max-width: 60ch; }
+      .how ol { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: s; border-block: 1px solid var(--line); }
+      .how li { counter-increment: s; padding: 28px 24px; border-inline-start: 1px solid var(--line); min-width: 0; }
+      .how li:first-child { border-inline-start: 0; padding-inline-start: 0; }
+      .how li::before { content: "0" counter(s); display: block; margin-bottom: 10px; font: 800 13px var(--ui); color: var(--gold); letter-spacing: 0.08em; }
+      .how h3 { font-size: 19px; line-height: 1.3; }
+      .how li p { margin-top: 6px; font-size: 15px; color: var(--soft); }
+
+      /* ---- features: text beside its screen, alternating ---- */
+      .feat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-block: 48px; border-bottom: 1px solid var(--line); }
+      .feat:nth-child(even) picture { order: -1; }
+      .feat .k { font: 700 14px var(--ui); color: var(--gold); }
+      html[lang="ar"] .feat .k { font-family: var(--arabic); font-size: 15px; }
+      .feat h2 { margin-top: 10px; }
+      .feat p { margin-top: 14px; font-size: 18px; color: var(--soft); max-width: 44ch; }
+      .feat picture { position: relative; isolation: isolate; justify-self: center; width: min(100%, 270px); }
+
+      /* ---- more inside: the rest of the app, named so search reads it ---- */
+      .more { padding-block: 64px 16px; }
+      .more p { margin-top: 12px; color: var(--soft); max-width: 60ch; }
+      .chips { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+      .chips li { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); font-weight: 600; font-size: 15px; }
+
+      /* Below the first screen: skip layout and paint until it is near, so a low-end phone
+         paints the hero sooner. The size hint keeps the scrollbar from jumping. */
+      .feat, .more, .band, .faq { content-visibility: auto; contain-intrinsic-size: auto 640px; }
+
+      /* ---- privacy band ---- */
+      /* Full-bleed strip: margins pull it to the viewport edges, padding puts the content back on the wrap's column. */
+      .band { margin-block: 48px; margin-inline: calc(50% - 50vw); padding: 64px max(20px, calc(50vw - 50%)); background: var(--band); color: var(--band-ink); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; position: relative; overflow: hidden; isolation: isolate; }
+      .band::before { content: ""; position: absolute; z-index: -1; inset: auto -10% -60% 40%; height: 120%; background: radial-gradient(closest-side, rgba(224, 176, 68, 0.2), transparent); }
+      .band h2 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.12; letter-spacing: -0.02em; }
+      html[lang="ar"] .band h2 { font-family: var(--arabic); line-height: 1.4; letter-spacing: 0; }
+      .band p { margin-top: 14px; color: var(--band-soft); max-width: 48ch; }
+      .band ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+      .band li { display: flex; gap: 12px; align-items: baseline; }
+      .band li::before { content: "✓"; color: var(--gold-2); font-weight: 800; }
+
+      /* ---- faq ---- */
+      .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 40px; padding-block: 32px 40px; }
+      .faq h2 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.02em; }
+      html[lang="ar"] .faq h2 { font-family: var(--arabic); letter-spacing: 0; }
+      details { border-top: 1px solid var(--line); }
+      details:last-child { border-bottom: 1px solid var(--line); }
+      summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding-block: 18px; font-weight: 650; font-size: 17px; min-height: 44px; }
+      summary::-webkit-details-marker { display: none; }
+      summary::after { content: "+"; flex: none; font-weight: 400; font-size: 24px; line-height: 1; color: var(--gold); transition: transform 260ms var(--ease); }
+      details[open] summary::after { transform: rotate(45deg); }
+      details p { padding-bottom: 18px; color: var(--soft); max-width: 62ch; }
+
+      /* ---- closing ---- */
+      .cta { text-align: center; padding-block: 56px 64px; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); display: grid; justify-items: center; gap: 22px; }
+      .cta img.ic { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 24px 40px -14px rgba(15, 29, 39, 0.45); }
+      .cta h2 { font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4.4vw, 54px); letter-spacing: -0.025em; line-height: 1.1; }
+      html[lang="ar"] .cta h2 { font-family: var(--arabic); letter-spacing: 0; line-height: 1.35; }
+      .cta .badges { justify-content: center; }
+      .foot { padding-block: 28px max(40px, env(safe-area-inset-bottom)); font-size: 14px; color: var(--faint); display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; border-top: 1px solid var(--line); }
+      .foot nav { display: flex; gap: 6px 20px; flex-wrap: wrap; }
+      .foot a { color: var(--soft); text-underline-offset: 3px; padding-block: 6px; }
+      .foot a:hover { color: var(--gold); }
+
+      /* ---- motion: transform only, so the first frame is already the page ---- */
+      @media (prefers-reduced-motion: no-preference) {
+        .rise { animation: rise 760ms var(--ease) both; }
+        .rise.d1 { animation-delay: 80ms; }
+        @keyframes rise { from { transform: translateY(14px); } to { transform: none; } }
+        .alert { animation: drop 6.5s var(--ease) infinite; }
+        .txn { animation: land 6.5s var(--ease) infinite; }
+        @keyframes drop { 0% { opacity: 0; transform: translateY(-22px) scale(0.96); } 7%, 40% { opacity: 1; transform: none; } 52%, 100% { opacity: 0; transform: translateY(90px) scale(0.9); } }
+        @keyframes land { 0%, 44% { opacity: 0; transform: translateY(-46px) scale(0.94); } 56%, 93% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition: none !important; animation: none !important; }
+      }
+
+      /* ---- desktop: the whole hero fits the first screen, whatever the window's height ----
+         Type and the phone scale with the shorter of width and height; the hero fills the
+         screen below the top bar, so the facts row starts at the fold. */
+      @media (min-width: 861px) {
+        .hero { --ph: min(300px, calc((100svh - 150px) * 480 / 985)); min-height: calc(100svh - 80px); padding-block: 8px 24px; }
+        .big { font-size: clamp(34px, min(6.2vw, 10svh), 86px); }
+        html[lang="ar"] .big { font-size: clamp(32px, min(5.6vw, 9svh), 76px); }
+        .kicker { margin-bottom: min(14px, 1.6svh); }
+        .lede { margin-top: min(22px, 2.6svh); font-size: clamp(15px, min(1.6vw, 2.6svh), 19px); }
+        .hero .badges { margin-top: min(28px, 3.2svh); }
+        .demo { width: min(100%, 400px, max(340px, calc(var(--ph) + 120px))); }
+        .demo picture img { width: var(--ph); margin-top: min(40px, 5svh); }
+      }
+
+      /* ---- tablet and phone: one column ---- */
+      @media (max-width: 860px) {
+        .hero, .feat, .band, .faq { grid-template-columns: minmax(0, 1fr); }
+        .hero { gap: 36px; padding-block: 20px 40px; }
+        .feat { gap: 32px; padding-block: 48px; }
+        .feat:nth-child(even) picture { order: 0; }
+        .feat picture { width: min(72%, 280px); }
+        .how { padding-block: 48px 8px; }
+        .how ol { grid-template-columns: minmax(0, 1fr); }
+        .how li, .how li:first-child { padding: 22px 0; border-inline-start: 0; }
+        .how li + li { border-top: 1px solid var(--line); }
+        .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .facts div:nth-child(3) { border-inline-start: 0; padding-inline-start: 0; }
+        .facts div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+        .band { padding-block: 40px; margin-block: 24px; }
+        .faq { gap: 16px; }
+        .hero .badges { width: 100%; }
+      }
+      @media (max-width: 380px) {
+        .brand small { display: none; }
+        .badges .apple img { width: 138px; height: 46px; }
+        .badges .play { margin: -10px -9px; }
+        .badges .play img { width: 174px; height: 67px; }
+        .card { padding: 12px; gap: 10px; grid-template-columns: 36px minmax(0, 1fr) auto; }
+        .card .ic { width: 36px; height: 36px; }
+        .txn { inset-inline: 8px; }
+        .facts div { padding: 18px 12px; }
+        .facts div:first-child, .facts div:nth-child(3) { padding-inline-start: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a class="brand" href="{{SELF}}"><img src="{{IMG}}icon-96.webp" width="40" height="40" alt="" />{{BRAND}} <small lang="{{OTHER}}">{{ALT}}</small></a>
+        <div class="tools">
+          <button class="theme" type="button" data-dark="{{THEME_DARK}}" data-light="{{THEME_LIGHT}}" aria-label="{{THEME_DARK}}">
+            <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" /></svg>
+            <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" /></svg>
+          </button>
+          {{SWITCH}}
+        </div>
+      </header>
+
+      <main>
+      <section class="hero">
+        <div>
+          <h1 class="rise"><span class="kicker">{{KICKER}}</span><span class="big">{{H1A}} <span>{{H1B}}</span></span></h1>
+          <p class="lede rise d1">{{LEDE}}</p>
+          <nav class="badges rise d1" aria-label="{{NAV_LABEL}}">{{BADGES}}</nav>
+        </div>
+        <div class="demo">{{DEMO}}</div>
+        <a class="cue" href="#how"><span class="mouse" aria-hidden="true"></span>{{CUE}}</a>
+      </section>
+
+      <div class="facts">{{FACTS}}</div>
+
+      <section class="how" id="how">
+        <h2>{{HOW_H}}</h2>
+        <p>{{HOW_P}}</p>
+        <ol>{{HOW}}</ol>
+      </section>
+
+      <div class="feats">{{FEATS}}</div>
+
+      <section class="more">
+        <h2>{{MORE_H}}</h2>
+        <p>{{MORE_P}}</p>
+        <ul class="chips">{{MORE}}</ul>
+      </section>
+
+      <section class="band">
+        <div><h2>{{PRIV_H}}</h2><p>{{PRIV_P}}</p></div>
+        <ul>{{PRIV}}</ul>
+      </section>
+
+      <section class="faq">
+        <h2>{{FAQ_H}}</h2>
+        <div>{{FAQ}}</div>
+      </section>
+      </main>
+    </div>
+
+    <section class="cta">
+      <img class="ic" src="{{IMG}}icon-192.webp" width="88" height="88" alt="" loading="lazy" decoding="async" />
+      <h2>{{CTA_H}}</h2>
+      <nav class="badges" aria-label="{{NAV_LABEL}}">{{BADGES}}</nav>
+    </section>
+
+    <div class="wrap"><footer class="foot"><span>{{FOOT}}</span><nav>{{LINKS}}</nav></footer></div>
+
+    <script>
+      (function () {
+        var root = document.documentElement;
+        // The scroll cue leaves once the reader has started scrolling.
+        var cue = function () { root.classList.toggle('scrolled', scrollY > 40); };
+        addEventListener('scroll', cue, { passive: true });
+
+        // Light/dark switch. With no choice stored the page follows the system; a click stores
+        // the opposite of what is showing now.
+        var sw = document.querySelector('.theme');
+        var dark = function () { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
+        var label = function () { sw.setAttribute('aria-label', dark() ? sw.getAttribute('data-light') : sw.getAttribute('data-dark')); };
+        label();
+        sw.addEventListener('click', function () {
+          var t = dark() ? 'light' : 'dark';
+          root.setAttribute('data-theme', t);
+          try { localStorage.setItem('go-theme', t); } catch (e) {}
+          document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
+          label();
+        });
+
+        // The reader's own store goes first, in both badge rows. iPadOS reports itself
+        // as a Mac, so Macintosh counts as Apple. Nothing redirects: an in-app browser
+        // that blocks the bounce would show the reader nothing at all.
+        var apple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent || '');
+        if (!apple) document.querySelectorAll('.badges').forEach(function (n) { n.prepend(n.querySelector('.play')); });
+
+        // Attribution. `?s=<source>` and an optional `?m=<medium>` are the only way to tell
+        // one channel from another once an install lands. Play takes ONE `referrer` whose
+        // value is itself a percent-encoded query (top-level utm_ keys are dropped silently);
+        // Apple takes a campaign token, `ct`. A bare /go is a scanned card, so the hrefs
+        // already say card/qr. marketing/tracked-links.md in the app repo lists the sources.
+        var params = new URLSearchParams(location.search);
+        if (params.get('s') || params.get('m')) {
+          var source = (params.get('s') || 'card').slice(0, 40);
+          var medium = (params.get('m') || (params.get('s') ? 'share' : 'qr')).slice(0, 40);
+          document.querySelectorAll('.badges .play').forEach(function (a) {
+            a.href = a.href.replace(/&referrer=[^&]*/, '&referrer=' + encodeURIComponent('utm_source=' + source + '&utm_medium=' + medium));
+          });
+          document.querySelectorAll('.badges .apple').forEach(function (a) {
+            a.href = a.href.replace(/([?&])ct=[^&]*/, '$1ct=' + encodeURIComponent(source + '-' + medium));
+          });
+        }
+        params.delete('s');
+        params.delete('m');
+      })();
+    </script>
+  </body>
+</html>

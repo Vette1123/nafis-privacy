@@ -1,0 +1,318 @@
+{
+  "slug": "nafis",
+  "appleId": "6807595780",
+  "apple": "https://apps.apple.com/app/id6807595780",
+  "play": "https://play.google.com/store/apps/details?id=com.mohamedgado.nafis",
+  "category": "FinanceApplication",
+  "image": "og.jpg",
+  "en": {
+    "title": "Nafis: Gold Price App, Silver, Dollar & Portfolio",
+    "description": "Nafis is a free gold price app: today's local buy and sell price per gram, plus silver, dollar and crypto rates, your portfolio, zakat and price alerts.",
+    "ogAlt": "Nafis: local gold, silver and dollar prices with a portfolio and zakat",
+    "ldName": "Nafis",
+    "ldAlt": "نفيس",
+    "kicker": "Nafis: Gold, Silver & Dollar",
+    "h1a": "The gold price,",
+    "h1b": "the way your market trades it.",
+    "lede": "Nafis shows local gold, silver, currencies and crypto in one calm app: the buy and sell price per gram at your market, plus your portfolio, zakat and alerts. Free to use.",
+    "nav": "Download Nafis",
+    "open": "Open in Nafis",
+    "apple": "Download on the App Store",
+    "play": "Get it on Google Play",
+    "facts": [
+      [
+        "4 karats",
+        "24K, 22K, 21K and 18K"
+      ],
+      [
+        "Buy & sell",
+        "per gram, at the local price"
+      ],
+      [
+        "Offline",
+        "prices cached, opens instantly"
+      ],
+      [
+        "Free",
+        "no ads, no account needed"
+      ]
+    ],
+    "demo": {
+      "app": "Nafis",
+      "alert": "Gold 21K hit your target price",
+      "when": "now",
+      "place": "Gold price now",
+      "meta": "24K · per gram · Egypt",
+      "tag": "Buy and sell",
+      "time": "6,702",
+      "ampm": "EGP"
+    },
+    "features": [
+      [
+        "home",
+        "Gold price",
+        "Today's gold price, buy and sell",
+        "Gold per gram for 24K, 22K, 21K and 18K, blending international spot with the local market dollar so the number matches your neighbourhood jeweller. Tuned for Egypt and the Gulf, each with its own karats."
+      ],
+      [
+        "markets",
+        "Markets",
+        "Every metal, currency and crypto",
+        "Gold, silver, platinum and palladium at their real purities, live currency rates with the official dollar against the market dollar, a bank-by-bank buy and sell board, and top crypto in your home currency."
+      ],
+      [
+        "portfolio",
+        "Portfolio",
+        "Your gold, valued at resale",
+        "Add your gold, silver and crypto and watch their resale value update live, after the making charge. Record a sale, set savings goals and track your value over time."
+      ],
+      [
+        "zakat",
+        "Zakat",
+        "Zakat on your holdings, worked out",
+        "Know when you have reached nisab and exactly what is due, at 2.5%, from your holdings."
+      ],
+      [
+        "calculator",
+        "Tools",
+        "What's your gold worth?",
+        "Enter a weight and get its resale value today. Around it sit an authenticity check, fair price and fair making-charge coaches, a gam'eya planner and a currency converter."
+      ]
+    ],
+    "how": [
+      [
+        "Choose your country",
+        "Nafis finds your country automatically, or you pick it. Egypt and the Gulf each get their own karats."
+      ],
+      [
+        "Add what you own",
+        "Enter your gold, silver or crypto and see what it would fetch today, after the making charge."
+      ],
+      [
+        "Set an alert",
+        "Pick a target price and get a notification when it is crossed."
+      ]
+    ],
+    "moreH": "More inside",
+    "moreP": "Nafis also carries:",
+    "more": [
+      "The Nafis Compass: buy, hold or wait",
+      "Fear & Greed mood",
+      "Charts with period high, low and average",
+      "Gold coin prices",
+      "Price alerts",
+      "News reader with an on-device summary",
+      "Gold against a bank certificate",
+      "Shabka planner",
+      "Backup to a file",
+      "Home-screen widgets on Android"
+    ],
+    "privH": "No ads. Your data stays on your phone.",
+    "privP": "Your portfolio, alerts and settings stay on your device, and prices are cached so Nafis opens instantly. An optional Nafis Pro account adds cloud sync.",
+    "priv": [
+      "No ads",
+      "No account needed",
+      "Portfolio and settings stay on the device",
+      "Works offline"
+    ],
+    "faqH": "Questions",
+    "faq": [
+      [
+        "Is Nafis free?",
+        "Nafis is free to use, with no ads. Nafis Pro is an optional in-app purchase that adds cloud sync, family vaults and server-side alerts."
+      ],
+      [
+        "Which gold price does Nafis show?",
+        "The local buy and sell price per gram for 24K, 22K, 21K and 18K. It blends international spot with the local market dollar, so it matches your jeweller rather than a far-off exchange."
+      ],
+      [
+        "Which countries does it cover?",
+        "Nafis is tuned for Egypt and the Gulf: Saudi Arabia, the UAE, Kuwait, Qatar, Bahrain and Oman."
+      ],
+      [
+        "Does Nafis work offline?",
+        "Yes. Prices are cached, so it opens instantly and keeps working without a connection."
+      ],
+      [
+        "Is Nafis available in Arabic?",
+        "Yes. Nafis is fully in Arabic and English, with a proper right-to-left layout."
+      ],
+      [
+        "Which phones can run Nafis?",
+        "Nafis is on the App Store for iPhone and on Google Play for Android. Home-screen widgets and launcher shortcuts are Android-only."
+      ]
+    ],
+    "ctaH": "Gold prices that match your market.",
+    "foot": "Free to use · No ads · No account needed",
+    "links": [
+      [
+        "About Nafis",
+        "https://www.mohamedgado.com/projects/nafis"
+      ],
+      [
+        "Privacy policy",
+        "https://www.mohamedgado.com/projects/nafis/privacy"
+      ]
+    ],
+    "theme": [
+      "Switch to dark theme",
+      "Switch to light theme"
+    ],
+    "cue": "Scroll to explore"
+  },
+  "ar": {
+    "title": "نفيس: سعر الذهب اليوم والدولار والفضة والمحفظة",
+    "description": "تطبيق نفيس يعرض سعر الذهب اليوم بالبيع والشراء للجرام في السوق المحلي، مع الفضة والدولار والعملات الرقمية ومحفظتك والزكاة وتنبيهات الأسعار. مجاني.",
+    "ogAlt": "نفيس: أسعار الذهب والفضة والدولار محليًا مع المحفظة والزكاة",
+    "ldName": "نفيس",
+    "ldAlt": "Nafis",
+    "kicker": "نفيس: الذهب والفضة والدولار",
+    "h1a": "سعر الذهب اليوم،",
+    "h1b": "كما يُتداول في سوقك.",
+    "lede": "نفيس يعرض الذهب والفضة والعملات والعملات الرقمية في تطبيق واحد هادئ: سعر البيع والشراء للجرام في سوقك، مع محفظتك والزكاة والتنبيهات. مجاني للاستخدام.",
+    "nav": "تحميل نفيس",
+    "open": "افتحه في نفيس",
+    "apple": "حمّل من App Store",
+    "play": "احصل عليه من Google Play",
+    "facts": [
+      [
+        "٤ عيارات",
+        "٢٤ و٢٢ و٢١ و١٨"
+      ],
+      [
+        "بيع وشراء",
+        "للجرام بسعر السوق المحلي"
+      ],
+      [
+        "دون إنترنت",
+        "الأسعار محفوظة ويفتح فورًا"
+      ],
+      [
+        "مجاني",
+        "بلا إعلانات ولا حساب إلزامي"
+      ]
+    ],
+    "demo": {
+      "app": "نفيس",
+      "alert": "ذهب عيار ٢١ وصل إلى السعر الذي حدّدته",
+      "when": "الآن",
+      "place": "سعر الذهب الآن",
+      "meta": "عيار ٢٤ · للجرام · مصر",
+      "tag": "بيع وشراء",
+      "time": "٦٬٧٠٢",
+      "ampm": "ج.م"
+    },
+    "features": [
+      [
+        "home",
+        "سعر الذهب",
+        "سعر الذهب اليوم، بيع وشراء",
+        "سعر الجرام لعيار ٢٤ و٢٢ و٢١ و١٨، يجمع بين السعر العالمي ودولار السوق المحلي، فيطابق الرقم ما يقوله الصايغ في منطقتك. مضبوط لمصر والخليج، ولكل بلد عياراته."
+      ],
+      [
+        "markets",
+        "الأسواق",
+        "كل المعادن والعملات والعملات الرقمية",
+        "الذهب والفضة والبلاتين والبلاديوم بنقاواتها الحقيقية، وأسعار العملات لحظيًا مع الدولار الرسمي مقابل دولار السوق، ولوحة بيع وشراء بنكًا بنكًا، وأشهر العملات الرقمية بعملة بلدك."
+      ],
+      [
+        "portfolio",
+        "المحفظة",
+        "ذهبك بقيمته عند البيع",
+        "أضف ذهبك وفضتك وعملاتك الرقمية وتابع قيمتها عند البيع لحظةً بلحظة، بعد المصنعية. سجّل عملية بيع، وحدّد أهدافًا للادخار، وتابع قيمة محفظتك عبر الوقت."
+      ],
+      [
+        "zakat",
+        "الزكاة",
+        "زكاة ما تملكه محسوبة لك",
+        "اعرف متى بلغت النصاب وكم المستحق بالضبط، بنسبة ٢٫٥٪، من مقتنياتك."
+      ],
+      [
+        "calculator",
+        "الأدوات",
+        "ذهبي بكام؟",
+        "اكتب الوزن واعرف قيمته عند البيع اليوم. وبجانبها فحص الأصالة، ومدرّب السعر العادل والمصنعية العادلة، ومخطّط الجمعية، ومحوّل العملات."
+      ]
+    ],
+    "how": [
+      [
+        "اختر بلدك",
+        "يتعرّف نفيس على بلدك تلقائيًا، أو تختاره بنفسك. ولمصر وكل دولة خليجية عياراتها."
+      ],
+      [
+        "أضف ما تملكه",
+        "أدخل ذهبك أو فضتك أو عملاتك الرقمية وشاهد قيمتها لو بعتها اليوم، بعد المصنعية."
+      ],
+      [
+        "فعّل تنبيهًا",
+        "حدّد سعرًا مستهدفًا ويصلك إشعار عند الوصول إليه."
+      ]
+    ],
+    "moreH": "والمزيد في التطبيق",
+    "moreP": "ويضم نفيس أيضًا:",
+    "more": [
+      "بوصلة نفيس: اشترِ أو انتظر أو تمهّل",
+      "مؤشر الخوف والطمع",
+      "رسوم بيانية بأعلى سعر وأدناه ومتوسطه",
+      "أسعار الجنيه الذهب",
+      "تنبيهات الأسعار",
+      "قارئ أخبار بخلاصة على جهازك",
+      "الذهب مقابل شهادة البنك",
+      "مخطّط الشبكة",
+      "نسخة احتياطية في ملف",
+      "ويدجت على الشاشة الرئيسية في أندرويد"
+    ],
+    "privH": "بلا إعلانات. وبياناتك تبقى على هاتفك.",
+    "privP": "محفظتك وتنبيهاتك وإعداداتك تبقى على جهازك، والأسعار محفوظة فيفتح نفيس فورًا. وحساب نفيس برو الاختياري يضيف المزامنة السحابية.",
+    "priv": [
+      "بلا إعلانات",
+      "لا حاجة إلى حساب",
+      "المحفظة والإعدادات على الجهاز",
+      "يعمل دون اتصال"
+    ],
+    "faqH": "أسئلة شائعة",
+    "faq": [
+      [
+        "هل نفيس مجاني؟",
+        "نفيس مجاني للاستخدام وبلا إعلانات. أما نفيس برو فاشتراك اختياري داخل التطبيق يضيف المزامنة السحابية وخزائن العائلة والتنبيهات من الخادم."
+      ],
+      [
+        "أي سعر للذهب يعرضه نفيس؟",
+        "سعر البيع والشراء المحلي للجرام لعيار ٢٤ و٢٢ و٢١ و١٨. يجمع بين السعر العالمي ودولار السوق المحلي، فيطابق ما عند الصايغ لا بورصة بعيدة."
+      ],
+      [
+        "ما البلدان المدعومة؟",
+        "نفيس مضبوط لمصر والخليج: السعودية والإمارات والكويت وقطر والبحرين وعُمان."
+      ],
+      [
+        "هل يعمل نفيس دون إنترنت؟",
+        "نعم. الأسعار محفوظة مؤقتًا، فيفتح التطبيق فورًا ويواصل العمل دون اتصال."
+      ],
+      [
+        "هل نفيس متاح بالعربية؟",
+        "نعم. نفيس بالعربية والإنجليزية بالكامل، بتخطيط صحيح من اليمين إلى اليسار."
+      ],
+      [
+        "على أي هاتف يعمل نفيس؟",
+        "نفيس على App Store للآيفون وعلى Google Play للأندرويد. أما ويدجت الشاشة الرئيسية واختصارات الأيقونة فمتاحة في أندرويد فقط."
+      ]
+    ],
+    "ctaH": "أسعار ذهب تطابق سوقك.",
+    "foot": "مجاني للاستخدام · بلا إعلانات · بلا حساب إلزامي",
+    "links": [
+      [
+        "عن نفيس",
+        "https://www.mohamedgado.com/projects/nafis"
+      ],
+      [
+        "سياسة الخصوصية",
+        "https://www.mohamedgado.com/projects/nafis/privacy"
+      ]
+    ],
+    "theme": [
+      "التبديل إلى الوضع الداكن",
+      "التبديل إلى الوضع الفاتح"
+    ],
+    "cue": "مرّر للمزيد"
+  }
+}
