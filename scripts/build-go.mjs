@@ -4,6 +4,7 @@
 import fs from 'fs'
 import path from 'path'
 import { applyPartials, css, SITE } from './partials.mjs'
+import { APP_SAME_AS, PERSON_SAME_AS } from './social.mjs'
 const repo = '.'
 const c = JSON.parse(fs.readFileSync(path.join(repo, 'go.copy.json'), 'utf8'))
 // Canonical on the domain Google crawls, which proxies these pages. The github.io URLs keep
@@ -37,7 +38,7 @@ function ld(l) {
     operatingSystem: 'Android, iOS',
     downloadUrl: [c.apple, c.play],
     installUrl: base + (l === 'ar' ? 'go-ar' : 'go'),
-    sameAs: [c.apple, c.play],
+    sameAs: APP_SAME_AS,
     image: site + 'icon.png',
     screenshot: t.features.map(([f]) => `${img}${f}-720.webp`),
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -55,7 +56,7 @@ function ld(l) {
     ].map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })),
   }
   crumbs['@id'] = self + '#breadcrumb'
-  const person = { '@type': 'Person', '@id': 'https://www.mohamedgado.com/#person', name: 'Mohamed Gado', url: 'https://www.mohamedgado.com/' }
+  const person = { '@type': 'Person', '@id': 'https://www.mohamedgado.com/#person', name: 'Mohamed Gado', url: 'https://www.mohamedgado.com/', sameAs: PERSON_SAME_AS }
   const website = { '@type': 'WebSite', '@id': 'https://www.mohamedgado.com/#website', name: 'Mohamed Gado', url: 'https://www.mohamedgado.com/', publisher: { '@id': person['@id'] } }
   // The page itself: what it is about (the app), where it sits (breadcrumb, site) and its language.
   const webpage = {

@@ -259,6 +259,13 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
 .sitefoot ul { list-style: none; margin: 0; padding: 0; }
 .sitefoot li a { display: inline-block; padding-block: 6px; color: var(--soft); text-decoration: none; text-wrap: balance; transition: color 160ms var(--ease); }
 .sitefoot li a:hover, .sitefoot li a[aria-current] { color: var(--gold); }
+/* The maker's profiles, the same glyphs masareef and rafiq draw: one 44px tile each. */
+.sf-follow { margin: 22px 0 10px; }
+.sitefoot .sf-social { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 44px); gap: 8px; }
+.sitefoot .sf-social a { display: grid; place-items: center; width: 100%; height: auto; aspect-ratio: 1; min-width: 0; min-height: 0; padding: 0; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--soft); transition: color 160ms var(--ease), border-color 160ms var(--ease), transform 120ms var(--ease); }
+.sf-social svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) and (pointer: fine) { .sitefoot .sf-social a:hover { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, transparent); } }
+.sitefoot .sf-social a:active { transform: scale(0.94); }
 .sf-base { grid-column: 1 / -1; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
 @media (max-width: 560px) { .sitefoot { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } .sitefoot > nav:last-of-type { grid-column: 1 / -1; } }
 /* ---- the top bar's links: every page one tap from the others ---- */

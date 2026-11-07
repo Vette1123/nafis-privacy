@@ -310,3 +310,32 @@ test('head: Vercel Web Analytics loads on mohamedgado.com only, and ?s= becomes 
     assert.match(html, /تُعدّ\s+الزيارة\s+عبر\s+Vercel\s+Web\s+Analytics\s+بلا\s+كوكيز/);
   }
 });
+
+// 7 Nov: the site linked the stores and nothing else. Both footers carry every profile in
+// scripts/social.mjs, each with a name a screen reader says, and every indexable page tells
+// search engines which profiles are the maker's (sameAs).
+test('both footers link every social profile, each named', async () => {
+  const { SOCIAL } = await import('./social.mjs');
+  for (const l of ['en', 'ar']) {
+    const foot = fs.readFileSync(new URL(`../partials/footer.${l}.html`, import.meta.url), 'utf8');
+    const row = foot.match(/<ul class="sf-social"[\s\S]*?<\/ul>/)?.[0] ?? '';
+    const hrefs = [...row.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1]);
+    assert.deepEqual(hrefs, SOCIAL.map((s) => s.url), `footer.${l} social row`);
+    for (const a of row.match(/<a [^>]*>/g)) assert.match(a, /aria-label="[^"]{3,}"/, `footer.${l}: ${a}`);
+  }
+});
+
+test('every indexable page lists the profiles in sameAs', async () => {
+  const { APP_SAME_AS, PERSON_SAME_AS } = await import('./social.mjs');
+  for (const f of ['index.html', 'terms.html', 'delete-account.html', 'delete-data.html', 'go.html', 'go-ar.html']) {
+    const html = fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+    const nodes = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .map((m) => JSON.parse(m[1]))
+      .flatMap((j) => j['@graph'] ?? [j])
+      .flatMap((n) => [n, n.about, n.publisher, n.author].filter((x) => x && typeof x === 'object'));
+    const app = nodes.find((n) => n['@type'] === 'MobileApplication' && n.sameAs);
+    const person = nodes.find((n) => n['@type'] === 'Person' && n.name);
+    for (const u of APP_SAME_AS) assert.ok(app?.sameAs.includes(u), `${f}: app sameAs is missing ${u}`);
+    for (const u of PERSON_SAME_AS) assert.ok(person?.sameAs?.includes(u), `${f}: person sameAs is missing ${u}`);
+  }
+});
