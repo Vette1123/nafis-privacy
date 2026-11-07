@@ -28,6 +28,11 @@
       if (/(^|\.)mohamedgado\.com$/.test(location.hostname)) {
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
         window.va('beforeSend', function (e) {
+          // nafis.mohamedgado.com serves the install page in place (no 301 to www), so its
+          // pageview would count as that host's `/`, mixed with the portfolio home. It counts
+          // under the page's canonical www URL instead, with the query kept.
+          var c = location.hostname !== 'www.mohamedgado.com' && document.querySelector('link[rel="canonical"]');
+          if (c) { var q = e.url.search(/[?#]/); e = Object.assign({}, e, { url: c.href + (q < 0 ? "" : e.url.slice(q)) }); }
           var m = /[?&]s=([a-z0-9_-]{1,40})(&|#|$)/i.exec(e.url);
           if (!m || /[?&]utm_source=/.test(e.url)) return e;
           return Object.assign({}, e, { url: e.url.replace(/#.*$/, '') + '&utm_source=' + m[1].toLowerCase() });

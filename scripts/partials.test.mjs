@@ -266,7 +266,7 @@ test('header.js: hides going down, returns going up, ignores jitter and keeps fo
 
 // 6 Nov: visits to these pages were invisible: mohamedgado.com proxies them from github.io, so they
 // never got the portfolio's <Analytics/>. The head now loads Vercel Web Analytics on that host only.
-function runHead(hostname) {
+function runHead(hostname, canonical) {
   return import('node:fs').then(async ({ readFileSync }) => {
     const vm = await import('node:vm');
     const head = readFileSync(new URL('../partials/head.html', import.meta.url), 'utf8');
@@ -276,7 +276,7 @@ function runHead(hostname) {
     const ctx = {
       window: win, location: { hostname },
       localStorage: { getItem: () => null },
-      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], createElement: () => ({}), head: { appendChild: (n) => added.push(n) } },
+      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], querySelector: (q) => (canonical && q === 'link[rel="canonical"]' ? { href: canonical } : null), createElement: () => ({}), head: { appendChild: (n) => added.push(n) } },
       Object,
     };
     vm.runInNewContext(js, ctx);
@@ -301,6 +301,18 @@ test('head: Vercel Web Analytics loads on mohamedgado.com only, and ?s= becomes 
   assert.equal(url('https://www.mohamedgado.com/projects/nafis/go?s=IG'), 'https://www.mohamedgado.com/projects/nafis/go?s=IG&utm_source=ig');
   assert.equal(url('https://www.mohamedgado.com/projects/nafis/privacy#en-12'), 'https://www.mohamedgado.com/projects/nafis/privacy#en-12', 'no tag, untouched');
   assert.equal(url('https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y'), 'https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y', 'an explicit utm wins');
+  // nafis.mohamedgado.com serves its install page in place since 7 Nov: its pageviews count under
+  // the canonical www page (not as `/`, mixed with the portfolio home), and ?s= still tags them.
+  const go = 'https://www.mohamedgado.com/projects/nafis/go';
+  const sub = await runHead('nafis.mohamedgado.com', go);
+  assert.deepEqual(sub.added.map((n) => n.src), ['/_vercel/insights/script.js']);
+  const subUrl = (u) => sub.win.vaq[0][1]({ type: 'pageview', url: u }).url;
+  assert.equal(subUrl('https://nafis.mohamedgado.com/?s=IG'), go + '?s=IG&utm_source=ig');
+  assert.equal(subUrl('https://nafis.mohamedgado.com/'), go);
+  assert.equal(subUrl('https://nafis.mohamedgado.com/go#x'), go + '#x');
+  const ar = await runHead('nafis.mohamedgado.com', go + '-ar');
+  assert.equal(ar.win.vaq[0][1]({ type: 'pageview', url: 'https://nafis.mohamedgado.com/ar?s=tt' }).url, go + '-ar?s=tt&utm_source=tt');
+  assert.equal(url('https://www.mohamedgado.com/projects/nafis/go-ar'), 'https://www.mohamedgado.com/projects/nafis/go-ar', 'www untouched');
   // The policy says so, in both languages, and no page still claims to run none.
   const { readFileSync } = await import('node:fs');
   for (const f of ['index.html', 'terms.html', 'delete-account.html', 'delete-data.html']) {
