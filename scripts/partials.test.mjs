@@ -351,3 +351,15 @@ test('every indexable page lists the profiles in sameAs', async () => {
     for (const u of PERSON_SAME_AS) assert.ok(person?.sameAs?.includes(u), `${f}: person sameAs is missing ${u}`);
   }
 });
+
+test('the policy page carries a BreadcrumbList that matches its first visible trail', () => {
+  const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const lists = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1])).filter((n) => n['@type'] === 'BreadcrumbList');
+  assert.equal(lists.length, 1);
+  const items = lists[0].itemListElement;
+  assert.deepEqual(items.map((i) => i.item), [`${B}/go`, `${B}/privacy`]);
+  const trails = html.match(/<nav class="crumbs"[\s\S]*?<\/nav>/g) ?? [];
+  assert.equal(trails.length, 2, 'one trail per language');
+  const visible = [...trails[0].matchAll(/<li[^>]*>(?:<a [^>]*>)?([^<]+)/g)].map((m) => m[1]);
+  assert.deepEqual(visible, items.map((i) => i.name));
+});
