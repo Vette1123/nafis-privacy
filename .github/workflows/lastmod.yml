@@ -1,0 +1,44 @@
+# Writes lastmod.json: every page's last commit date, read from git. mohamedgado.com's
+# sitemap proxies these pages and dates each one from this file, one fetch per site.
+# It used to ask the GitHub API once per page, and past 60 pages an hour the
+# unauthenticated limit made the sitemap fall back to the project's date.
+#
+# The commit back to main republishes Pages with the new dates. A push made with
+# GITHUB_TOKEN starts no workflows, so this cannot loop.
+name: lastmod
+on:
+  push:
+    branches: [main]
+    paths: ['**.html']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: lastmod
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Date every page from its last commit
+        run: |
+          set -eu
+          node -e '
+            const { execFileSync: x } = require("child_process")
+            const files = x("git", ["ls-files", "*.html"]).toString().split("\n").filter(Boolean).sort()
+            const out = {}
+            for (const f of files) out[f] = x("git", ["log", "-1", "--format=%cs", "--", f]).toString().trim()
+            const bad = files.filter((f) => !/^\d{4}-\d{2}-\d{2}$/.test(out[f]))
+            if (!files.length || bad.length) { console.error("undated: " + (bad.join(" ") || "no pages")); process.exit(1) }
+            require("fs").writeFileSync("lastmod.json", JSON.stringify(out, null, 1) + "\n")
+            console.log(files.length + " pages dated")
+          '
+          if git ls-files --error-unmatch lastmod.json >/dev/null 2>&1 && git diff --quiet -- lastmod.json; then
+            echo "lastmod.json unchanged"; exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lastmod.json
+          git commit -m 'chore: date pages in lastmod.json'
+          git push || { git pull --rebase && git push; }
