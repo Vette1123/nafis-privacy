@@ -86,11 +86,23 @@ export function buildAll() {
   return new Map([...out].map(([k, v]) => [k, finish(v)]));
 }
 
+/** The slugs, in page order, as the portfolio's content/nafis-feature-pages.json. */
+export function featureKeysJson() {
+  return JSON.stringify(FEATURES.map((f) => f.slug), null, 2) + '\n';
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const check = process.argv.includes('--check');
   const stale = [];
-  for (const [file, body] of buildAll()) {
-    const p = path.join(repo, file);
+  const files = buildAll();
+  // The portfolio proxies these pages and is their canonical home; its sitemap, llms.txt,
+  // IndexNow and check:prod read this slug list. Skipped where there is no checkout (CI).
+  const portfolio = path.join(repo, '../../Next/portfolio-v1');
+  if (fs.existsSync(path.join(portfolio, 'content'))) {
+    files.set(path.join(portfolio, 'content/nafis-feature-pages.json'), featureKeysJson());
+  } else console.log(`portfolio skipped: no checkout at ${portfolio}`);
+  for (const [file, body] of files) {
+    const p = path.resolve(repo, file);
     const old = fs.existsSync(p) ? fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n') : null;
     if (old === body) continue;
     stale.push(file);
