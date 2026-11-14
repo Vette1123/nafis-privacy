@@ -8,7 +8,7 @@ GitHub Pages.
 
 **About the app:** <https://www.mohamedgado.com/projects/nafis> · [Google Play](https://play.google.com/store/apps/details?id=com.mohamedgado.nafis) · [App Store](https://apps.apple.com/app/id6807595780)
 **Package:** `com.mohamedgado.nafis`
-**Contact:** boogado@yahoo.com
+**Contact:** booogado@gmail.com
 
 The Play URL is the canonical listing for the package and is what the store, the app and
 this policy all point at. It only resolves once the production listing is live: while the

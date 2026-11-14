@@ -8,3 +8,4 @@
 | 2026-11-06 | [One header, sticky, visit counts](2026-11-06-one-header-sticky-analytics.md) | One header and one stored language for every page; the policy says visits are counted on mohamedgado.com. |
 | 2026-11-07 | [Subdomain pageviews](2026-11-07-subdomain-pageviews.md) | nafis.mohamedgado.com is served in place now; analytics logs its pageviews under the canonical www URL, ?s= still tagged. |
 | 2026-11-10 | [Policy breadcrumb](2026-11-10-policy-breadcrumb.md) | The JSON-LD trail is in Arabic, the first visible trail, pinned by a test on the real page. |
+| 2026-11-14 | [Contact email moved to Gmail](2026-11-14-contact-email-gmail.md) | Exclude paths with `:(exclude)`, never `:!_`; generators and their output change together |
