@@ -25,3 +25,10 @@ there is no portfolio checkout (CI).
 
 - A page whose canonical is on www isn't live until www returns 200 for it; check with curl
   after the portfolio deploys.
+
+## Then: Arabic in an English snippet
+
+The portfolio's `check:seo` crawl, once it could reach these pages, failed
+`features/en/street-dollar` for Arabic (صاغة) in its meta and og description. `check-site.mjs`
+now fails Arabic in an English page's title, description or og tags, seen red on the old page.
+Body copy may still gloss a local term in Arabic; the search snippet may not.

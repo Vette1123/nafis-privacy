@@ -1,5 +1,5 @@
 // The SEO gate. Fails (exit 1) on: a duplicate title, description or canonical; a title over 60
-// characters; a description outside 70-170; a missing canonical, og:image or twitter card; a
+// characters; a description outside 70-170; Arabic in an English page's title, description or og tags; a missing canonical, og:image or twitter card; a
 // JSON-LD block that does not parse; hreflang that is not reciprocal; an internal link that
 // goes nowhere; a page missing from sitemap.xml; an indexable 404; a wrong contact email.
 //   node scripts/check-site.mjs
@@ -37,6 +37,14 @@ for (const p of indexable) {
     else seen[k].set(p[k], f);
   }
   if (!/<html lang="(ar|en)" dir="(rtl|ltr)"/.test(p.html)) bad(f, 'html lang/dir missing');
+  // An English page's snippet is English: the portfolio's check:seo fails Arabic in its title,
+  // description or og tags, and it is cheaper caught here than after a deploy.
+  if (/<html lang="en"/.test(p.html)) {
+    const og = (k) => p.html.match(new RegExp(`property="${k}" content="([^"]*)"`))?.[1] ?? '';
+    for (const [k, v] of [['title', p.title], ['description', p.description], ['og:title', og('og:title')], ['og:description', og('og:description')]]) {
+      if (/[؀-ۿ]/.test(v ?? '')) bad(f, `${k} has Arabic on an English page`);
+    }
+  }
   for (const tag of ['og:title', 'og:description', 'og:url', 'og:image']) if (!p.html.includes(`property="${tag}"`)) bad(f, `no ${tag}`);
   if (!p.html.includes('name="twitter:card"')) bad(f, 'no twitter:card');
   const img = p.html.match(/property="og:image" content="([^"]+)"/)?.[1];

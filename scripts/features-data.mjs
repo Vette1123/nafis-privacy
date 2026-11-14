@@ -62,7 +62,7 @@ export const FEATURES = [
       name: 'Official vs street dollar',
       h1: 'The official dollar against the market dollar, side by side',
       title: 'Official vs Street Dollar Rate and Gap | Nafis',
-      description: 'Track the official dollar against the market (صاغة) dollar, a bank-by-bank buy and sell board, and get an alert when the street-dollar gap widens.',
+      description: 'Track the official dollar against the street dollar jewellers use, see a bank-by-bank buy and sell board, and get alerted when the gap widens.',
       lede: 'The gap between the two dollars moves local gold. Nafis puts both rates on one screen and tells you when the gap widens.',
       points: [
         'Live currency rates, with the official dollar against the market (صاغة) dollar.',
