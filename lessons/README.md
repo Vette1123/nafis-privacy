@@ -12,3 +12,4 @@
 
 | 2026-11-14 | [Site parity and SEO gate](2026-11-14-site-parity-and-seo.md) | Bilingual features pages from data and components; a gate is trusted only after it fails once. |
 | 2026-11-14 | [New icon, og key in four places](2026-11-14-new-icon-og-key.md) | Bumping `OG` missed three other copies of the og.jpg key; a test now pins every page to `OG`. |
+| 2026-11-14 | [The policy names ANR reports](2026-11-14-policy-names-anr-reports.md) | A new kind of report sent to PostHog means a policy edit in both languages, same unit of work. |
