@@ -11,3 +11,4 @@
 | 2026-11-14 | [Contact email moved to Gmail](2026-11-14-contact-email-gmail.md) | Exclude paths with `:(exclude)`, never `:!_`; generators and their output change together |
 
 | 2026-11-14 | [Site parity and SEO gate](2026-11-14-site-parity-and-seo.md) | Bilingual features pages from data and components; a gate is trusted only after it fails once. |
+| 2026-11-14 | [New icon, og key in four places](2026-11-14-new-icon-og-key.md) | Bumping `OG` missed three other copies of the og.jpg key; a test now pins every page to `OG`. |
