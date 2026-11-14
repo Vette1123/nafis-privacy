@@ -9,3 +9,5 @@
 | 2026-11-07 | [Subdomain pageviews](2026-11-07-subdomain-pageviews.md) | nafis.mohamedgado.com is served in place now; analytics logs its pageviews under the canonical www URL, ?s= still tagged. |
 | 2026-11-10 | [Policy breadcrumb](2026-11-10-policy-breadcrumb.md) | The JSON-LD trail is in Arabic, the first visible trail, pinned by a test on the real page. |
 | 2026-11-14 | [Contact email moved to Gmail](2026-11-14-contact-email-gmail.md) | Exclude paths with `:(exclude)`, never `:!_`; generators and their output change together |
+
+| 2026-11-14 | [Site parity and SEO gate](2026-11-14-site-parity-and-seo.md) | Bilingual features pages from data and components; a gate is trusted only after it fails once. |

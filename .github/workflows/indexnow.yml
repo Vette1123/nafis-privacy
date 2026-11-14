@@ -26,24 +26,30 @@ jobs:
         run: |
           set -eu
           sleep 90 # let GitHub Pages publish first
-          urls=""
-          for f in $(git diff --name-only "$BEFORE" HEAD -- '*.html' 2>/dev/null || git ls-files '*.html'); do
-            case "$f" in
-              index.html) u="$BASE/privacy" ;;
-              go.html) u="$BASE/go" ;;
-              go-ar.html) u="$BASE/go-ar" ;;
-              banks/index.html) u="$BASE/banks" ;;
-              banks/*.html) b="${f#banks/}"; u="$BASE/banks/${b%.html}" ;;
-              *.html) u="$BASE/${f%.html}" ;;
-            esac
-            code=$(curl -s -o /dev/null -w '%{http_code}' "$u")
+          # One flaky connection among thousands of URLs must skip that URL, not end the run under
+          # set -e (curl exit 35, 13 Nov): every check retries; a failed one prints 000 and goes on.
+          status() { curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors -m 20 "$1" || true; }
+          # Prints the URL that answers 200, or a skip line on stderr.
+          check() {
+            f=$1 u=$2 code=$(status "$2")
             # The proxy serves some pages under their file name (delete-account.html).
-            if [ "$code" != 200 ] && [ "$(curl -s -o /dev/null -w '%{http_code}' "$BASE/$f")" = 200 ]; then u="$BASE/$f"; code=200; fi
-            if [ "$code" = 200 ]; then urls="$urls\"$u\","; else echo "skip $u ($code)"; fi
+            if [ "$code" != 200 ] && [ "$(status "$BASE/$f")" = 200 ]; then u="$BASE/$f"; code=200; fi
+            if [ "$code" = 200 ]; then echo "$u"; else echo "skip $u ($code)" >&2; fi
+          }
+          export -f status check
+          export BASE
+          files=$(git diff --name-only "$BEFORE" HEAD -- '*.html' 2>/dev/null || git ls-files '*.html')
+          # File → URL lives in scripts/indexnow-url.mjs, tested: a dir's index.html is the dir.
+          # 16 checks at a time: one by one, the all pages took ~15 minutes.
+          printf '%s\n' "$files" | node scripts/indexnow-url.mjs "$BASE" \
+            | xargs -r -P 16 -n 2 bash -c 'check "$0" "$1"' > ok.txt
+          [ -s ok.txt ] || { echo "nothing proxied changed"; exit 0; }
+          echo "$(wc -l < ok.txt) URL(s) answer 200"
+          # IndexNow takes at most 10,000 URLs a request.
+          split -l 10000 ok.txt batch.
+          for b in batch.*; do
+            body=$(jq -Rn --arg key "$KEY" '{host: "www.mohamedgado.com", key: $key, keyLocation: "https://www.mohamedgado.com/\($key).txt", urlList: [inputs]}' < "$b")
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' -d "$body" https://api.indexnow.org/indexnow)
+            echo "IndexNow answered $code for $(wc -l < "$b") URL(s)"
+            case "$code" in 200|202) ;; *) exit 1 ;; esac
           done
-          [ -n "$urls" ] || { echo "nothing proxied changed"; exit 0; }
-          body="{\"host\":\"www.mohamedgado.com\",\"key\":\"$KEY\",\"keyLocation\":\"https://www.mohamedgado.com/$KEY.txt\",\"urlList\":[${urls%,}]}"
-          echo "$body"
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' -d "$body" https://api.indexnow.org/indexnow)
-          echo "IndexNow answered $code"
-          case "$code" in 200|202) ;; *) exit 1 ;; esac

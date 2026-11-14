@@ -1,0 +1,9 @@
+{
+  "name": "nafis-privacy",
+  "private": true,
+  "description": "Static public site for Nafis. No dependencies: scripts only.",
+  "scripts": {
+    "build": "node scripts/build-go.mjs && node scripts/build-pages.mjs && node scripts/build-features.mjs && node scripts/build-sitemap.mjs",
+    "check": "node scripts/build-go.mjs --check && node scripts/build-pages.mjs --check && node scripts/build-features.mjs --check && node scripts/build-sitemap.mjs --check && node scripts/check-site.mjs && node --test scripts/"
+  }
+}
