@@ -20,6 +20,7 @@ const byCanon = new Map(pages.filter((p) => p.canonical && !p.noindex).map((p) =
 const fileFor = (url) => {
   if (byCanon.has(url)) return true;
   if (url.startsWith(`${PAGES}/`)) return fs.existsSync(path.join(repo, url.slice(PAGES.length + 1).split(/[?#]/)[0] || 'index.html'));
+  if (url.startsWith(`${BASE}/go-img/`) || url === `${BASE}/og.jpg` || url === `${BASE}/icon.png`) return fs.existsSync(path.join(repo, url.slice(BASE.length + 1).split(/[?#]/)[0])); // www proxies the repo root
   return url.startsWith(BASE) ? false : null; // other hosts are not checked offline
 };
 
@@ -70,11 +71,13 @@ for (const p of indexable) {
     if (!back.includes(p.canonical)) bad(f, `hreflang ${href} does not name this page back`);
   }
   if (/@yahoo\.com|@mohamedgado\.com\b/.test(p.html)) bad(f, 'old contact email');
+  // Images are same-origin on www: a src on github.io costs a second connection before the LCP image.
+  if (/src="https:\/\/vette1123\.github\.io\/[^"]*go-img/.test(p.html)) bad(f, 'go-img image loads from github.io, use www.mohamedgado.com/projects/nafis/go-img/');
 }
 
 // Internal links: every link into this site must land on a real page.
 for (const p of pages) {
-  for (const m of p.html.matchAll(/href="((?:https:\/\/(?:www\.mohamedgado\.com\/projects\/nafis|vette1123\.github\.io\/nafis-privacy))[^"]*)"/g)) {
+  for (const m of p.html.matchAll(/(?:href|src)="((?:https:\/\/(?:www\.mohamedgado\.com\/projects\/nafis|vette1123\.github\.io\/nafis-privacy))[^"]*)"/g)) {
     const url = m[1].replace(/&amp;/g, '&').split('#')[0];
     if (url === BASE || url === `${BASE}/` || url === `${PAGES}/`) continue; // the about page lives in the portfolio
     if (/\/(go-img|og\.jpg|icon\.png)/.test(url) || /\.(png|webp|avif|svg|jpg)(\?|$)/.test(url)) {

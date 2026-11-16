@@ -12,7 +12,8 @@ const c = JSON.parse(fs.readFileSync(path.join(repo, 'go.copy.json'), 'utf8'))
 const base = `https://www.mohamedgado.com/projects/${c.slug}/`
 const site = `https://vette1123.github.io/${c.slug}-privacy/`
 // Pictures load from github.io on both hosts: the proxy only maps the pages.
-const img = `${site}go-img/`
+// Same origin as the page on www (the proxy edge-caches go-img/): no second connection before the hero image.
+const img = `https://www.mohamedgado.com/projects/${c.slug}/go-img/`
 const esc = (s) => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
 const tpl = fs.readFileSync(path.join(repo, 'go.template.html'), 'utf8')
 
@@ -95,7 +96,7 @@ function page(l) {
     `<meta name="twitter:image" content="${site}${c.image}" />`,
     `<meta name="twitter:image:alt" content="${esc(t.ogAlt)}" />`,
     `<meta name="apple-itunes-app" content="app-id=${c.appleId}" />`,
-    `<link rel="preconnect" href="https://vette1123.github.io" />`,
+    `<link rel="preconnect" href="https://www.mohamedgado.com" />`,
   ].join('\n    ')
   const pic = (f, sizes, alt, cls, lazy) =>
     `<picture${cls ? ` class="${cls}"` : ''}><source type="image/avif" srcset="${img}${f}-480.avif 480w, ${img}${f}-720.avif 720w" sizes="${sizes}" />` +

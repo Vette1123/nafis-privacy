@@ -4,7 +4,7 @@
 // and the tests build every page offline. The shared look (header, footer, theme) is in partials/.
 export const BASE = 'https://www.mohamedgado.com/projects/nafis';
 export const PAGES = 'https://vette1123.github.io/nafis-privacy';
-export const IMG = `${PAGES}/go-img/`;
+export const IMG = `${BASE}/go-img/`;
 export const OG = `${PAGES}/og.jpg?v=3`;
 export const APPLE_ID = '6807595780';
 export const PKG = 'com.mohamedgado.nafis';
