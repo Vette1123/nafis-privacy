@@ -10,7 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyPartials, css, SITE } from './partials.mjs';
+import { applyPartials, css, localImages, SITE } from './partials.mjs';
 import { FEATURES, UI } from './features-data.mjs';
 import { BASE, cards, crumbs, cta, esc, faqHtml, featureUrl, featuresUrl, graph, shell, shot, stores } from './components.mjs';
 
@@ -83,7 +83,8 @@ export function buildAll() {
     for (const f of FEATURES) out.set(rel(lang, f.slug), featurePage(lang, f));
   }
   const finish = (html) => applyPartials(html, { require: SITE }).replace(/<style>([\s\S]*?)<\/style>/g, (_, s) => `<style>${css(s)}</style>`);
-  return new Map([...out].map(([k, v]) => [k, finish(v)]));
+  // localImages: images load from whichever host served the page (partials.mjs says why).
+  return new Map([...out].map(([k, v]) => [k, localImages(finish(v), k)]));
 }
 
 /** The slugs, in page order, as the portfolio's content/nafis-feature-pages.json. */

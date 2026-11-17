@@ -15,3 +15,4 @@
 | 2026-11-14 | [The policy names ANR reports](2026-11-14-policy-names-anr-reports.md) | A new kind of report sent to PostHog means a policy edit in both languages, same unit of work. |
 | 2026-11-14 | [Feature slugs for the portfolio](2026-11-14-features-key-list-for-portfolio.md) | The pages named www as canonical while www 404ed; the generator now writes the portfolio key list and checks it. |
 | 2026-11-16 | [Same-origin images](2026-11-16-same-origin-images.md) | Load go-img from the www host so the LCP image needs no second connection; the check now reads img src too |
+| 2026-11-17 | [Relative page images](2026-11-17-relative-page-images.md) | Feature pages load go-img from the host that served them, so github.io crawls stop billing Vercel. |

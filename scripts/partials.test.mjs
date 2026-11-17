@@ -363,3 +363,22 @@ test('the policy page carries a BreadcrumbList that matches its first visible tr
   const visible = [...trails[0].matchAll(/<li[^>]*>(?:<a [^>]*>)?([^<]+)/g)].map((m) => m[1]);
   assert.deepEqual(visible, items.map((i) => i.name));
 });
+
+test('a feature page loads its images from the host that served it', async () => {
+  const { localImages } = await import('./partials.mjs');
+  const IMG = `${B}/go-img/`;
+  const html = `<meta property="og:image" content="${IMG}og.png" /><img src="${IMG}app-store-en.svg" /><source srcset="${IMG}a-480.avif 480w, ${IMG}a-720.avif 720w" />`;
+  // features/x is /projects/nafis/features/x on www and /nafis-privacy/features/x on github.io:
+  // one level up is go-img/ on both, so a crawl of the github.io copy never bills Vercel.
+  const ar = localImages(html, 'features/budget.html');
+  assert.match(ar, /<img src="\.\.\/go-img\/app-store-en\.svg"/);
+  assert.match(ar, /srcset="\.\.\/go-img\/a-480\.avif 480w, \.\.\/go-img\/a-720\.avif 720w"/);
+  // Meta and JSON-LD images stay absolute: they are read off the page, not resolved against it.
+  assert.ok(ar.includes(`content="${IMG}og.png"`));
+  assert.match(localImages(html, 'features/en/budget.html'), /src="\.\.\/\.\.\/go-img\/app-store-en\.svg"/);
+  // www serves an index without its trailing slash (/projects/nafis/features): relative would miss.
+  assert.equal(localImages(html, 'features/index.html'), html);
+  assert.equal(localImages(html, 'features/en/index.html'), html);
+  assert.equal(localImages(html, 'go.html'), html);
+  assert.equal(localImages(ar, 'features/budget.html'), ar);
+});

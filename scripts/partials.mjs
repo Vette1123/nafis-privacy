@@ -59,3 +59,18 @@ export const css = (c) => c.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' '
 
 // The markers a page carries, ready to paste into a template.
 export const slot = (name) => `<!--partial:${name}--><!--/partial:${name}-->`;
+
+// Feature pages are served twice: on www (proxied, canonical) and on github.io (old links,
+// crawlers). With absolute www image URLs every crawl of a github.io copy was a billed Vercel CDN
+// request: on 17 Nov the Masareef copies cost 47K of portfolio-v1's 75K requests in 12 hours, and
+// the Hobby plan pauses at 1M a month. Nafis is the same pattern, smaller. A relative URL loads
+// from whichever host served the page. `file` is the page's path in this repo (features/x.html,
+// features/en/x.html). index.html keeps www: www serves it without the trailing slash
+// (/projects/nafis/features), so a relative path would resolve one level too high. Only
+// src/srcset change; meta and JSON-LD stay absolute.
+const WWW_IMG = 'https://www.mohamedgado.com/projects/nafis/go-img/';
+export function localImages(html, file) {
+  if (!file.startsWith('features/') || file.endsWith('/index.html')) return html;
+  const local = `${'../'.repeat(file.split('/').length - 1)}go-img/`;
+  return html.replace(/\b(src|srcset)="([^"]*)"/g, (_, attr, v) => `${attr}="${v.replaceAll(WWW_IMG, local)}"`);
+}
