@@ -3,9 +3,12 @@
 // is its own URL so that hreflang and a search engine can tell them apart.
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { applyPartials, css, SITE } from './partials.mjs'
 import { APP_SAME_AS, PERSON_SAME_AS } from './social.mjs'
-const repo = '.'
+// The repo from this file, never the shell's folder: `.` read go.copy.json from wherever it ran
+// (ENOENT from any other cwd, 17 Nov).
+const repo = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const c = JSON.parse(fs.readFileSync(path.join(repo, 'go.copy.json'), 'utf8'))
 // Canonical on the domain Google crawls, which proxies these pages. The github.io URLs keep
 // serving: printed QR codes open them, and they cannot be updated.
@@ -161,11 +164,14 @@ function page(l) {
 
 // --check: write nothing, exit 1 naming the pages that are stale.
 const check = process.argv.includes('--check')
+// A Windows checkout holds CRLF (core.autocrlf), in the page and in the template it is built from:
+// compare as git stores them, or every page reads stale.
+const lf = (s) => s.replace(/\r\n/g, '\n')
 const stale = []
 for (const [f, l] of [['go.html', 'en'], ['go-ar.html', 'ar']]) {
   const next = page(l)
   const p = path.join(repo, f)
-  if (check ? fs.readFileSync(p, 'utf8') !== next : (fs.writeFileSync(p, next), false)) stale.push(f)
+  if (check ? lf(fs.readFileSync(p, 'utf8')) !== lf(next) : (fs.writeFileSync(p, next), false)) stale.push(f)
 }
 if (check) {
   if (stale.length) { console.error('stale (run node scripts/build-go.mjs): ' + stale.join(', ')); process.exit(1) }
