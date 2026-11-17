@@ -2,6 +2,8 @@
 // tomorrow): store badges, screenshot, breadcrumb, FAQ block, call-to-action, related cards, and
 // the JSON-LD graph. Pure functions of a language and plain data, no fs, so scripts/build-features.mjs
 // and the tests build every page offline. The shared look (header, footer, theme) is in partials/.
+import { APP_SAME_AS } from './social.mjs';
+
 export const BASE = 'https://www.mohamedgado.com/projects/nafis';
 export const PAGES = 'https://vette1123.github.io/nafis-privacy';
 export const IMG = `${BASE}/go-img/`;
@@ -64,7 +66,7 @@ export function graph(lang, ui, { url, title, description, trail, faq = null }) 
       '@type': 'MobileApplication', '@id': app, name: lang === 'ar' ? 'نفيس' : 'Nafis', alternateName: lang === 'ar' ? 'Nafis' : 'نفيس',
       description: ui.appDesc, url: GO[lang], inLanguage: lang, applicationCategory: 'FinanceApplication', operatingSystem: 'Android, iOS',
       downloadUrl: [`https://apps.apple.com/app/id${APPLE_ID}`, `https://play.google.com/store/apps/details?id=${PKG}`],
-      sameAs: [`https://apps.apple.com/app/id${APPLE_ID}`, `https://play.google.com/store/apps/details?id=${PKG}`],
+      sameAs: APP_SAME_AS,
       image: `${PAGES}/icon.png`, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       author: { '@id': PERSON }, publisher: { '@id': PERSON },
     },

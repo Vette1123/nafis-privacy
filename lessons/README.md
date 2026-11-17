@@ -17,3 +17,4 @@
 | 2026-11-16 | [Same-origin images](2026-11-16-same-origin-images.md) | Load go-img from the www host so the LCP image needs no second connection; the check now reads img src too |
 | 2026-11-17 | [Relative page images](2026-11-17-relative-page-images.md) | Feature pages load go-img from the host that served them, so github.io crawls stop billing Vercel. |
 | 2026-11-17 | [build-go runs from any folder](2026-11-17-build-go-cwd.md) | Scripts resolve the repo from import.meta.url, never cwd; --check compares through CRLF normalisation. |
+| 2026-11-17 | [Telegram channel](2026-11-17-telegram-channel.md) | A new app profile goes in social.mjs; pnpm check names every page that still lacks it. |
