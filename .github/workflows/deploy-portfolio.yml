@@ -1,0 +1,27 @@
+# mohamedgado.com copies this repo's pages into its own build (portfolio-v1
+# scripts/copy-apps.mjs), so a push here must rebuild it. Fires the Cloudflare Workers Builds
+# deploy hook. The 120 s sleep is a debounce: a burst of pushes (and the lastmod commit that
+# follows every page push) cancels the waiting run and only the last one fires.
+# Until the CF_DEPLOY_HOOK secret exists this run is a no-op notice.
+name: Deploy mohamedgado.com
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: deploy-portfolio
+  cancel-in-progress: true
+jobs:
+  hook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Debounce, then fire the deploy hook
+        env:
+          CF_DEPLOY_HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          set -eu
+          if [ -z "$CF_DEPLOY_HOOK" ]; then echo "::notice::CF_DEPLOY_HOOK not set yet, nothing to fire"; exit 0; fi
+          sleep 120
+          curl -fsS -X POST "$CF_DEPLOY_HOOK"
+          echo "deploy hook fired"
