@@ -83,8 +83,8 @@ sharing `partials/lang-pick.js` and `partials/lang.js`. No framework.
   `#en-1` to `#en-16`). Link Play Console or support replies straight at a section.
 - **Self-contained.** No web fonts, no CDN, no scripts from other hosts, no cookies.
 - **Counted, not tracked.** On mohamedgado.com (which proxies these pages) `partials/head.html`
-  loads that site's own Vercel Web Analytics, same origin and cookieless, so visits show in its
-  dashboard; a link's `?s=` arrives as `utm_source`. The github.io copies load nothing. The policy
+  sends one cookieless pageview beacon to that site's own `/ingest/e` (PostHog EU), so visits show in
+  its PostHog dashboard; a link's `?s=` arrives as `utm_source`. The github.io copies load nothing. The policy
   says so in section 7 and every page's footer; keep them in step if this ever changes.
 - **Header:** one partial (`partials/header.html` + `header.js`), sticky, hides going down and
   slides back going up. It must sit directly in `<body>` or `position: sticky` does nothing.

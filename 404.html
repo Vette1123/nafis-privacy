@@ -26,26 +26,62 @@
           document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
         }
       } catch (e) {}
-      // Visits on mohamedgado.com, which proxies every page here, count in its Vercel Web
-      // Analytics: cookieless, same origin, and stated in the policy (section 7). The github.io
-      // copies load nothing. A link's ?s=<source> (nafis.mohamedgado.com/?s=ig) reaches the
-      // dashboard as utm_source, so sources can be compared.
+      // Visits on mohamedgado.com, which proxies every page here, count in its own cookieless
+      // analytics: one pageview beacon to www.mohamedgado.com/ingest/e, which forwards it to
+      // PostHog EU (the path the portfolio's own pages use). The github.io copies send nothing.
+      // Absolute www URL: on the app subdomain /ingest/e answers 301 and a beacon never follows it.
+      // A link's ?s=<source> (nafis.mohamedgado.com/?s=ig) arrives as utm_source. The owner's
+      // opt-out (?va-ignore=1, same key as the portfolio) and lab/headless agents send nothing.
       if (/(^|\.)mohamedgado\.com$/.test(location.hostname)) {
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-        window.va('beforeSend', function (e) {
-          // nafis.mohamedgado.com serves the install page in place (no 301 to www), so its
-          // pageview would count as that host's `/`, mixed with the portfolio home. It counts
-          // under the page's canonical www URL instead, with the query kept.
-          var c = location.hostname !== 'www.mohamedgado.com' && document.querySelector('link[rel="canonical"]');
-          if (c) { var q = e.url.search(/[?#]/); e = Object.assign({}, e, { url: c.href + (q < 0 ? "" : e.url.slice(q)) }); }
-          var m = /[?&]s=([a-z0-9_-]{1,40})(&|#|$)/i.exec(e.url);
-          if (!m || /[?&]utm_source=/.test(e.url)) return e;
-          return Object.assign({}, e, { url: e.url.replace(/#.*$/, '') + '&utm_source=' + m[1].toLowerCase() });
-        });
-        var va = document.createElement('script');
-        va.defer = true;
-        va.src = '/_vercel/insights/script.js';
-        document.head.appendChild(va);
+        try {
+          var optOut = false;
+          try {
+            var flag = new URLSearchParams(location.search).get('va-ignore');
+            if (flag === '1') localStorage.setItem('va-ignore', '1');
+            if (flag === '0') localStorage.removeItem('va-ignore');
+            optOut = localStorage.getItem('va-ignore') === '1';
+          } catch (e) {}
+          var lab = navigator.webdriver || /Chrome-Lighthouse|HeadlessChrome|PTST|GTmetrix/i.test(navigator.userAgent);
+          if (!optOut && !lab) {
+            // The subdomain install page serves in place; it counts under its canonical www URL.
+            var c = location.hostname !== 'www.mohamedgado.com' && document.querySelector('link[rel="canonical"]');
+            var url = c ? c.href + location.search : location.href.replace(/#.*$/, '');
+            var u = new URL(url);
+            var props = {
+              $current_url: url,
+              $host: u.host,
+              $pathname: u.pathname,
+              $referrer: document.referrer || '$direct',
+              $raw_user_agent: navigator.userAgent,
+              $browser_language: navigator.language,
+              $timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              $screen_width: screen.width,
+              $screen_height: screen.height,
+              $viewport_width: innerWidth,
+              $viewport_height: innerHeight,
+              $lib: 'web-beacon',
+              area: 'traffic',
+              app: 'nafis',
+              $cookieless_mode: true,
+              $process_person_profile: false
+            };
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+              var v = u.searchParams.get(k);
+              if (v) props[k] = v;
+            });
+            var s = /^[a-z0-9_-]{1,40}$/i.exec(u.searchParams.get('s') || '');
+            if (s && !props.utm_source) props.utm_source = s[0].toLowerCase();
+            var body = JSON.stringify({
+              api_key: 'phc_mTuqCSZxECXYHxrPbEK5bXkxKUpEG32frvfZNsaMS6U7',
+              event: '$pageview',
+              distinct_id: '$posthog_cookieless',
+              timestamp: new Date().toISOString(),
+              properties: props
+            });
+            var sent = navigator.sendBeacon && navigator.sendBeacon('https://www.mohamedgado.com/ingest/e', body);
+            if (!sent) fetch('https://www.mohamedgado.com/ingest/e', { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }).catch(function () {});
+          }
+        } catch (e) {}
       }
     </script><!--/partial:head.html-->
     <!--partial:lang-pick.js--><script>

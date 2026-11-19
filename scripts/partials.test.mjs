@@ -265,61 +265,56 @@ test('header.js: hides going down, returns going up, ignores jitter and keeps fo
 });
 
 // 6 Nov: visits to these pages were invisible: mohamedgado.com proxies them from github.io, so they
-// never got the portfolio's <Analytics/>. The head now loads Vercel Web Analytics on that host only.
-function runHead(hostname, canonical) {
+// never got the portfolio's analytics. 19 Nov: Vercel is gone; the head sends one cookieless PostHog
+// pageview beacon to www.mohamedgado.com/ingest/e on that host only.
+function runHead(hostname, canonical, search = '', href) {
   return import('node:fs').then(async ({ readFileSync }) => {
     const vm = await import('node:vm');
     const head = readFileSync(new URL('../partials/head.html', import.meta.url), 'utf8');
     const js = head.match(/<script>([\s\S]*?)<\/script>/)[1];
-    const added = [];
-    const win = {};
+    const sent = [];
     const ctx = {
-      window: win, location: { hostname },
-      localStorage: { getItem: () => null },
-      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], querySelector: (q) => (canonical && q === 'link[rel="canonical"]' ? { href: canonical } : null), createElement: () => ({}), head: { appendChild: (n) => added.push(n) } },
-      Object,
+      location: { hostname, search, href: href || 'https://' + hostname + '/' + search },
+      localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+      navigator: { userAgent: 'Mozilla/5.0', language: 'en', sendBeacon: (u, b) => { sent.push({ u, body: JSON.parse(b) }); return true; } },
+      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], querySelector: (q) => (canonical && q === 'link[rel="canonical"]' ? { href: canonical } : null), referrer: '' },
+      screen: { width: 1, height: 1 }, innerWidth: 1, innerHeight: 1,
+      Intl, URL, URLSearchParams, Object, JSON, Date, RegExp, fetch: () => Promise.resolve(),
     };
     vm.runInNewContext(js, ctx);
-    return { added, win };
+    return sent;
   });
 }
 
-test('head: Vercel Web Analytics loads on mohamedgado.com only, and ?s= becomes utm_source', async () => {
+test('head: the PostHog pageview beacon fires on mohamedgado.com only, and ?s= becomes utm_source', async () => {
   for (const host of ['vette1123.github.io', 'localhost', 'mohamedgado.com.evil.example']) {
-    const { added, win } = await runHead(host);
-    assert.equal(added.length, 0, `${host} loads nothing`);
-    assert.equal(win.va, undefined);
+    assert.equal((await runHead(host)).length, 0, `${host} sends nothing`);
   }
   for (const host of ['www.mohamedgado.com', 'mohamedgado.com']) {
-    const { added } = await runHead(host);
-    assert.deepEqual(added.map((n) => n.src), ['/_vercel/insights/script.js'], `${host}: same-origin script`);
+    const sent = await runHead(host);
+    assert.equal(sent.length, 1, `${host}: one beacon`);
+    assert.equal(sent[0].u, 'https://www.mohamedgado.com/ingest/e');
+    assert.equal(sent[0].body.event, '$pageview');
+    assert.equal(sent[0].body.properties.$cookieless_mode, true);
   }
-  const { win } = await runHead('www.mohamedgado.com');
-  const [kind, beforeSend] = win.vaq[0];
-  assert.equal(kind, 'beforeSend');
-  const url = (u) => beforeSend({ type: 'pageview', url: u }).url;
-  assert.equal(url('https://www.mohamedgado.com/projects/nafis/go?s=IG'), 'https://www.mohamedgado.com/projects/nafis/go?s=IG&utm_source=ig');
-  assert.equal(url('https://www.mohamedgado.com/projects/nafis/privacy#en-12'), 'https://www.mohamedgado.com/projects/nafis/privacy#en-12', 'no tag, untouched');
-  assert.equal(url('https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y'), 'https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y', 'an explicit utm wins');
-  // nafis.mohamedgado.com serves its install page in place since 7 Nov: its pageviews count under
-  // the canonical www page (not as `/`, mixed with the portfolio home), and ?s= still tags them.
+  const p = async (...a) => (await runHead(...a))[0].body.properties;
+  assert.equal((await p('www.mohamedgado.com', null, '?s=IG', 'https://www.mohamedgado.com/projects/nafis/go?s=IG')).utm_source, 'ig');
+  assert.equal((await p('www.mohamedgado.com', null, '?s=x&utm_source=y', 'https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y')).utm_source, 'y', 'an explicit utm wins');
+  // nafis.mohamedgado.com serves its install page in place: it counts under the canonical www page.
   const go = 'https://www.mohamedgado.com/projects/nafis/go';
-  const sub = await runHead('nafis.mohamedgado.com', go);
-  assert.deepEqual(sub.added.map((n) => n.src), ['/_vercel/insights/script.js']);
-  const subUrl = (u) => sub.win.vaq[0][1]({ type: 'pageview', url: u }).url;
-  assert.equal(subUrl('https://nafis.mohamedgado.com/?s=IG'), go + '?s=IG&utm_source=ig');
-  assert.equal(subUrl('https://nafis.mohamedgado.com/'), go);
-  assert.equal(subUrl('https://nafis.mohamedgado.com/go#x'), go + '#x');
-  const ar = await runHead('nafis.mohamedgado.com', go + '-ar');
-  assert.equal(ar.win.vaq[0][1]({ type: 'pageview', url: 'https://nafis.mohamedgado.com/ar?s=tt' }).url, go + '-ar?s=tt&utm_source=tt');
-  assert.equal(url('https://www.mohamedgado.com/projects/nafis/go-ar'), 'https://www.mohamedgado.com/projects/nafis/go-ar', 'www untouched');
-  // The policy says so, in both languages, and no page still claims to run none.
+  const sub = await p('nafis.mohamedgado.com', go, '?s=IG');
+  assert.equal(sub.$current_url, go + '?s=IG');
+  assert.equal(sub.utm_source, 'ig');
+  assert.equal((await p('nafis.mohamedgado.com', go, '')).$current_url, go);
+  assert.equal(sub.app, 'nafis');
+  // The policy says so, in both languages, and no page still claims to run none or names Vercel.
   const { readFileSync } = await import('node:fs');
   for (const f of ['index.html', 'terms.html', 'delete-account.html', 'delete-data.html']) {
     const html = readFileSync(new URL('../' + f, import.meta.url), 'utf8');
     assert.doesNotMatch(html, /runs no analytics|no analytics, no external|ولا تشغّل أي قياس|بلا تتبّع/, `${f} still says no analytics`);
-    assert.match(html, /Vercel\s+Web\s+Analytics,\s+without\s+cookies/);
-    assert.match(html, /تُعدّ\s+الزيارة\s+عبر\s+Vercel\s+Web\s+Analytics\s+بلا\s+كوكيز/);
+    assert.doesNotMatch(html, /vercel/i, `${f} still names Vercel`);
+    assert.match(html, /counted,\s+without\s+cookies,\s+by\s+PostHog\s+analytics\s+on\s+EU\s+servers/);
+    assert.match(html, /تُعدّ\s+الزيارة\s+بلا\s+كوكيز\s+عبر\s+تحليلات\s+PostHog/);
   }
 });
 
