@@ -21,11 +21,12 @@ export const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 export const featuresUrl = (lang) => (lang === 'ar' ? `${BASE}/features` : `${BASE}/features/en`);
 export const featureUrl = (lang, slug) => `${featuresUrl(lang)}/${slug}`;
 
-export function stores(lang, ui, campaign, medium = 'feature_page') {
+// `place`: the data-place PostHog files badge clicks under, 'hero' (top row) or 'cta' (closing).
+export function stores(lang, ui, campaign, place, medium = 'feature_page') {
   const referrer = encodeURIComponent(`utm_source=site&utm_medium=${medium}&utm_campaign=${campaign}`);
   const play = `https://play.google.com/store/apps/details?id=${PKG}&referrer=${referrer}`;
   const apple = `https://apps.apple.com/app/id${APPLE_ID}?ct=${encodeURIComponent(`${medium}-${campaign}`.slice(0, 40))}`;
-  return `<nav class="badges" aria-label="${esc(ui.downloadAria)}">
+  return `<nav class="badges" data-place="${place}" aria-label="${esc(ui.downloadAria)}">
           <a class="apple" href="${esc(apple)}"><img src="${IMG}app-store-en.svg" width="156" height="52" alt="${esc(ui.appleAlt)}" /></a>
           <a class="play" href="${esc(play)}"><img src="${IMG}${ui.playImg}" width="197" height="76" alt="${esc(ui.playAlt)}" /></a>
         </nav>`;
@@ -49,7 +50,7 @@ export const cta = (lang, ui, campaign) => `
       <section class="cta">
         <img class="ic" src="${IMG}icon-192.webp" width="88" height="88" alt="" loading="lazy" decoding="async" />
         <h2>${esc(ui.ctaH)}</h2>
-        ${stores(lang, ui, campaign)}
+        ${stores(lang, ui, campaign, 'cta')}
         <p class="meta">${esc(ui.ctaMeta)}</p>
       </section>`;
 

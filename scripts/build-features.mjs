@@ -24,7 +24,7 @@ function head(lang, ui, { trail, h1, lede, campaign, shotFile, shotAlt }) {
           ${crumbs(ui, trail)}
           <h1 class="title rise">${esc(h1)}</h1>
           <p class="lede rise d1">${esc(lede)}</p>
-          ${stores(lang, ui, campaign)}
+          ${stores(lang, ui, campaign, 'hero')}
           <p class="meta">${esc(ui.ctaMeta)}</p>
         </div>${shotFile ? `\n        ${shot(shotFile, shotAlt)}` : ''}
       </div>`;
