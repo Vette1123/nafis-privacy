@@ -18,7 +18,7 @@
 
       Fast by construction: the largest thing in the first screen is the headline (text,
       painted on the first frame), every picture below it is lazy, AVIF with a WebP
-      fallback, and sized so nothing shifts. No web fonts, no scripts from anyone else (on mohamedgado.com, which proxies this page, the portfolio's own cookieless PostHog analytics on EU servers counts the visit: see partials/head.html).
+      fallback, and sized so nothing shifts. No web fonts, no scripts from anyone else (on mohamedgado.com, which proxies this page, the shared PostHog tracker (www.mohamedgado.com/t.js, cookieless, EU servers) counts the visit: see partials/head.html).
       Both store badges are the official artwork: Apple and Google forbid redrawing them.
     -->
     <!--partial:theme.css--><!--/partial:theme.css-->
@@ -187,7 +187,7 @@
         <div>
           <h1 class="rise"><span class="kicker">{{KICKER}}</span><span class="big">{{H1A}} <span>{{H1B}}</span></span></h1>
           <p class="lede rise d1">{{LEDE}}</p>
-          <nav class="badges rise d1" aria-label="{{NAV_LABEL}}">{{BADGES}}</nav>
+          <nav class="badges rise d1" aria-label="{{NAV_LABEL}}">{{BADGES_HERO}}</nav>
         </div>
         <div class="demo">{{DEMO}}</div>
         <a class="cue" href="#how"><span class="mouse" aria-hidden="true"></span>{{CUE}}</a>

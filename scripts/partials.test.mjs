@@ -265,57 +265,48 @@ test('header.js: hides going down, returns going up, ignores jitter and keeps fo
 });
 
 // 6 Nov: visits to these pages were invisible: mohamedgado.com proxies them from github.io, so they
-// never got the portfolio's analytics. 19 Nov: Vercel is gone; the head sends one cookieless PostHog
-// pageview beacon to www.mohamedgado.com/ingest/e on that host only.
-function runHead(hostname, canonical, search = '', href) {
+// never got the portfolio's analytics. 19 Nov: the head loads www's shared /t.js tracker (the one the
+// portfolio runs) on mohamedgado.com and its subdomains only; the page carries no beacon of its own.
+function runHead(hostname) {
   return import('node:fs').then(async ({ readFileSync }) => {
     const vm = await import('node:vm');
     const head = readFileSync(new URL('../partials/head.html', import.meta.url), 'utf8');
     const js = head.match(/<script>([\s\S]*?)<\/script>/)[1];
-    const sent = [];
+    const added = [];
     const ctx = {
-      location: { hostname, search, href: href || 'https://' + hostname + '/' + search },
-      localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
-      navigator: { userAgent: 'Mozilla/5.0', language: 'en', sendBeacon: (u, b) => { sent.push({ u, body: JSON.parse(b) }); return true; } },
-      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], querySelector: (q) => (canonical && q === 'link[rel="canonical"]' ? { href: canonical } : null), referrer: '' },
-      screen: { width: 1, height: 1 }, innerWidth: 1, innerHeight: 1,
-      Intl, URL, URLSearchParams, Object, JSON, Date, RegExp, fetch: () => Promise.resolve(),
+      location: { hostname },
+      localStorage: { getItem: () => null },
+      document: { documentElement: { setAttribute() {} }, querySelectorAll: () => [], createElement: () => ({}), head: { appendChild: (n) => added.push(n) } },
+      Object,
     };
     vm.runInNewContext(js, ctx);
-    return sent;
+    return added;
   });
 }
 
-test('head: the PostHog pageview beacon fires on mohamedgado.com only, and ?s= becomes utm_source', async () => {
+test('head: the shared PostHog tracker loads on mohamedgado.com and its subdomains only', async () => {
   for (const host of ['vette1123.github.io', 'localhost', 'mohamedgado.com.evil.example']) {
-    assert.equal((await runHead(host)).length, 0, `${host} sends nothing`);
+    assert.equal((await runHead(host)).length, 0, `${host} loads nothing`);
   }
-  for (const host of ['www.mohamedgado.com', 'mohamedgado.com']) {
-    const sent = await runHead(host);
-    assert.equal(sent.length, 1, `${host}: one beacon`);
-    assert.equal(sent[0].u, 'https://www.mohamedgado.com/ingest/e');
-    assert.equal(sent[0].body.event, '$pageview');
-    assert.equal(sent[0].body.properties.$cookieless_mode, true);
+  for (const host of ['www.mohamedgado.com', 'mohamedgado.com', 'nafis.mohamedgado.com']) {
+    const added = await runHead(host);
+    assert.equal(added.length, 1, `${host}: one script`);
+    assert.equal(added[0].src, 'https://www.mohamedgado.com/t.js');
+    assert.equal(added[0].async, true, `${host}: async`);
   }
-  const p = async (...a) => (await runHead(...a))[0].body.properties;
-  assert.equal((await p('www.mohamedgado.com', null, '?s=IG', 'https://www.mohamedgado.com/projects/nafis/go?s=IG')).utm_source, 'ig');
-  assert.equal((await p('www.mohamedgado.com', null, '?s=x&utm_source=y', 'https://www.mohamedgado.com/projects/nafis/go?s=x&utm_source=y')).utm_source, 'y', 'an explicit utm wins');
-  // nafis.mohamedgado.com serves its install page in place: it counts under the canonical www page.
-  const go = 'https://www.mohamedgado.com/projects/nafis/go';
-  const sub = await p('nafis.mohamedgado.com', go, '?s=IG');
-  assert.equal(sub.$current_url, go + '?s=IG');
-  assert.equal(sub.utm_source, 'ig');
-  assert.equal((await p('nafis.mohamedgado.com', go, '')).$current_url, go);
-  assert.equal(sub.app, 'nafis');
-  // The policy says so, in both languages, and no page still claims to run none or names Vercel.
+  const head = (await import('node:fs')).readFileSync(new URL('../partials/head.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(head, /_vercel|ingest\/e|sendBeacon/, 'no Vercel script and no inline beacon');
+  // The policy says so, in both languages, and no page names Vercel or the old beacon.
   const { readFileSync } = await import('node:fs');
   for (const f of ['index.html', 'terms.html', 'delete-account.html', 'delete-data.html']) {
     const html = readFileSync(new URL('../' + f, import.meta.url), 'utf8');
     assert.doesNotMatch(html, /runs no analytics|no analytics, no external|ولا تشغّل أي قياس|بلا تتبّع/, `${f} still says no analytics`);
-    assert.doesNotMatch(html, /vercel/i, `${f} still names Vercel`);
+    assert.doesNotMatch(html, /vercel|ingest\/e/i, `${f} still names Vercel or the beacon`);
     assert.match(html, /counted,\s+without\s+cookies,\s+by\s+PostHog\s+analytics\s+on\s+EU\s+servers/);
     assert.match(html, /تُعدّ\s+الزيارة\s+بلا\s+كوكيز\s+عبر\s+تحليلات\s+PostHog/);
   }
+  const notFound = readFileSync(new URL('../404.html', import.meta.url), 'utf8');
+  assert.match(notFound, /<body[^>]*data-route="\/404"/, '404 tells the tracker which page it is');
 });
 
 // 7 Nov: the site linked the stores and nothing else. Both footers carry every profile in

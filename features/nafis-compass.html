@@ -24,62 +24,16 @@
           document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = t === 'dark' ? '#0e0b07' : '#faf6ec'; });
         }
       } catch (e) {}
-      // Visits on mohamedgado.com, which proxies every page here, count in its own cookieless
-      // analytics: one pageview beacon to www.mohamedgado.com/ingest/e, which forwards it to
-      // PostHog EU (the path the portfolio's own pages use). The github.io copies send nothing.
-      // Absolute www URL: on the app subdomain /ingest/e answers 301 and a beacon never follows it.
-      // A link's ?s=<source> (nafis.mohamedgado.com/?s=ig) arrives as utm_source. The owner's
-      // opt-out (?va-ignore=1, same key as the portfolio) and lab/headless agents send nothing.
+      // PostHog: on mohamedgado.com (www and the app subdomains) every page loads www's /t.js,
+      // the same tracker the portfolio runs (lib/tracker-entry.ts there): pageviews, time on page
+      // and scroll depth, link and button clicks, store and download clicks, errors. Cookieless,
+      // EU servers, through www.mohamedgado.com's own PostHog proxy. ?s=<source> on a link arrives as
+      // utm_source. The github.io copies load nothing.
       if (/(^|\.)mohamedgado\.com$/.test(location.hostname)) {
-        try {
-          var optOut = false;
-          try {
-            var flag = new URLSearchParams(location.search).get('va-ignore');
-            if (flag === '1') localStorage.setItem('va-ignore', '1');
-            if (flag === '0') localStorage.removeItem('va-ignore');
-            optOut = localStorage.getItem('va-ignore') === '1';
-          } catch (e) {}
-          var lab = navigator.webdriver || /Chrome-Lighthouse|HeadlessChrome|PTST|GTmetrix/i.test(navigator.userAgent);
-          if (!optOut && !lab) {
-            // The subdomain install page serves in place; it counts under its canonical www URL.
-            var c = location.hostname !== 'www.mohamedgado.com' && document.querySelector('link[rel="canonical"]');
-            var url = c ? c.href + location.search : location.href.replace(/#.*$/, '');
-            var u = new URL(url);
-            var props = {
-              $current_url: url,
-              $host: u.host,
-              $pathname: u.pathname,
-              $referrer: document.referrer || '$direct',
-              $raw_user_agent: navigator.userAgent,
-              $browser_language: navigator.language,
-              $timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-              $screen_width: screen.width,
-              $screen_height: screen.height,
-              $viewport_width: innerWidth,
-              $viewport_height: innerHeight,
-              $lib: 'web-beacon',
-              area: 'traffic',
-              app: 'nafis',
-              $cookieless_mode: true,
-              $process_person_profile: false
-            };
-            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
-              var v = u.searchParams.get(k);
-              if (v) props[k] = v;
-            });
-            var s = /^[a-z0-9_-]{1,40}$/i.exec(u.searchParams.get('s') || '');
-            if (s && !props.utm_source) props.utm_source = s[0].toLowerCase();
-            var body = JSON.stringify({
-              api_key: 'phc_mTuqCSZxECXYHxrPbEK5bXkxKUpEG32frvfZNsaMS6U7',
-              event: '$pageview',
-              distinct_id: '$posthog_cookieless',
-              timestamp: new Date().toISOString(),
-              properties: props
-            });
-            var sent = navigator.sendBeacon && navigator.sendBeacon('https://www.mohamedgado.com/ingest/e', body);
-            if (!sent) fetch('https://www.mohamedgado.com/ingest/e', { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }).catch(function () {});
-          }
-        } catch (e) {}
+        var t = document.createElement('script');
+        t.src = 'https://www.mohamedgado.com/t.js';
+        t.async = true;
+        document.head.appendChild(t);
       }
     </script><!--/partial:head.html-->
     <!--partial:lang-pick.js--><script>
@@ -155,10 +109,10 @@
   <body>
     <!--partial:header.html--><header class="top">
   <div class="wrap top-in">
-  <a class="brand" lang="en" href="https://www.mohamedgado.com/projects/nafis/go"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" />Nafis <small lang="ar">نفيس</small></a>
-  <a class="brand" lang="ar" href="https://www.mohamedgado.com/projects/nafis/go-ar"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" />نفيس <small lang="en">Nafis</small></a>
-  <nav class="topnav" lang="en" aria-label="Nafis"><a href="https://www.mohamedgado.com/projects/nafis/go">Download</a><a href="https://www.mohamedgado.com/projects/nafis/features/en">Features</a><a href="https://www.mohamedgado.com/projects/nafis/privacy">Privacy</a><a href="https://www.mohamedgado.com/projects/nafis/terms.html">Terms</a></nav>
-  <nav class="topnav" lang="ar" aria-label="نفيس"><a href="https://www.mohamedgado.com/projects/nafis/go-ar">التحميل</a><a href="https://www.mohamedgado.com/projects/nafis/features" aria-current="true">المزايا</a><a href="https://www.mohamedgado.com/projects/nafis/privacy">الخصوصية</a><a href="https://www.mohamedgado.com/projects/nafis/terms.html">الشروط</a></nav>
+  <a class="brand" lang="en" href="https://www.mohamedgado.com/projects/nafis/go" data-place="header"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" />Nafis <small lang="ar">نفيس</small></a>
+  <a class="brand" lang="ar" href="https://www.mohamedgado.com/projects/nafis/go-ar" data-place="header"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" />نفيس <small lang="en">Nafis</small></a>
+  <nav class="topnav" lang="en" aria-label="Nafis"><a href="https://www.mohamedgado.com/projects/nafis/go" data-place="header">Download</a><a href="https://www.mohamedgado.com/projects/nafis/features/en" data-place="header">Features</a><a href="https://www.mohamedgado.com/projects/nafis/privacy" data-place="header">Privacy</a><a href="https://www.mohamedgado.com/projects/nafis/terms.html" data-place="header">Terms</a></nav>
+  <nav class="topnav" lang="ar" aria-label="نفيس"><a href="https://www.mohamedgado.com/projects/nafis/go-ar" data-place="header">التحميل</a><a href="https://www.mohamedgado.com/projects/nafis/features" aria-current="true" data-place="header">المزايا</a><a href="https://www.mohamedgado.com/projects/nafis/privacy" data-place="header">الخصوصية</a><a href="https://www.mohamedgado.com/projects/nafis/terms.html" data-place="header">الشروط</a></nav>
   <div class="tools">
     <button class="theme" type="button" data-dark-en="Switch to dark theme" data-light-en="Switch to light theme" data-dark-ar="التبديل إلى الوضع الداكن" data-light-ar="التبديل إلى الوضع الفاتح" aria-label="Switch to dark theme">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" /></svg>
@@ -225,46 +179,46 @@
     <!--partial:footer.ar.html--><footer class="sitefoot wrap" lang="ar" dir="rtl">
       <div class="sf-brand">
         <div>
-          <a class="brand" href="https://www.mohamedgado.com/projects/nafis/go-ar"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />نفيس <small lang="en">Nafis</small></a>
+          <a class="brand" href="https://www.mohamedgado.com/projects/nafis/go-ar" data-place="footer"><img src="../go-img/icon-96.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />نفيس <small lang="en">Nafis</small></a>
           <p>الذهب والفضة والعملات والعملات الرقمية في تطبيق واحد هادئ: سعر البيع والشراء للجرام في سوقك.</p>
           <p class="sf-h sf-follow">تابع المطوّر</p>
           <ul class="sf-social" aria-label="تابع نفيس والمطوّر">
-            <li><a href="https://t.me/nafis_app" rel="noopener" aria-label="قناة نفيس على تيليجرام" title="قناة نفيس على تيليجرام"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg></a></li>
-            <li><a href="https://www.tiktok.com/@vetteop" rel="noopener" aria-label="تيك توك" title="تيك توك"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" /></svg></a></li>
-            <li><a href="https://x.com/Sadge1996" rel="noopener" aria-label="إكس (تويتر)" title="إكس (تويتر)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.228 10.772l6.772-6.772" /></svg></a></li>
-            <li><a href="https://www.linkedin.com/in/mgado" rel="noopener" aria-label="لينكدإن" title="لينكدإن"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 1 0-4 0M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z" /></svg></a></li>
+            <li><a href="https://t.me/nafis_app" rel="noopener" aria-label="قناة نفيس على تيليجرام" title="قناة نفيس على تيليجرام" data-place="footer"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg></a></li>
+            <li><a href="https://www.tiktok.com/@vetteop" rel="noopener" aria-label="تيك توك" title="تيك توك" data-place="footer"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" /></svg></a></li>
+            <li><a href="https://x.com/Sadge1996" rel="noopener" aria-label="إكس (تويتر)" title="إكس (تويتر)" data-place="footer"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.228 10.772l6.772-6.772" /></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/mgado" rel="noopener" aria-label="لينكدإن" title="لينكدإن" data-place="footer"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 1 0-4 0M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z" /></svg></a></li>
           </ul>
         </div>
         <div class="badges sf-stores">
-          <a class="apple" href="https://apps.apple.com/app/id6807595780?ct=site-footer" rel="noopener"><img src="../go-img/app-store-en.svg" width="156" height="52" alt="حمّل من App Store" loading="lazy" decoding="async" /></a>
-          <a class="play" href="https://play.google.com/store/apps/details?id=com.mohamedgado.nafis&amp;referrer=utm_source%3Dsite%26utm_medium%3Dfooter" rel="noopener"><img src="../go-img/google-play-ar.png" width="197" height="76" alt="احصل عليه من Google Play" loading="lazy" decoding="async" /></a>
+          <a class="apple" href="https://apps.apple.com/app/id6807595780?ct=site-footer" rel="noopener" data-place="footer"><img src="../go-img/app-store-en.svg" width="156" height="52" alt="حمّل من App Store" loading="lazy" decoding="async" /></a>
+          <a class="play" href="https://play.google.com/store/apps/details?id=com.mohamedgado.nafis&amp;referrer=utm_source%3Dsite%26utm_medium%3Dfooter" rel="noopener" data-place="footer"><img src="../go-img/google-play-ar.png" width="197" height="76" alt="احصل عليه من Google Play" loading="lazy" decoding="async" /></a>
         </div>
       </div>
       <nav aria-label="نفيس">
         <p class="sf-h">نفيس</p>
         <ul>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/go-ar">تحميل نفيس</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/go" lang="en" hreflang="en">Download Nafis</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis">عن نفيس</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/features">مزايا نفيس</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/features/en" lang="en" hreflang="en">Nafis features</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/go-ar" data-place="footer">تحميل نفيس</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/go" lang="en" hreflang="en" data-place="footer">Download Nafis</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis" data-place="footer">عن نفيس</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/features" data-place="footer">مزايا نفيس</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/features/en" lang="en" hreflang="en" data-place="footer">Nafis features</a></li>
         </ul>
       </nav>
       <nav aria-label="قانوني">
         <p class="sf-h">قانوني</p>
         <ul>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/privacy">سياسة الخصوصية</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/terms.html">شروط الخدمة</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/delete-account.html">حذف حسابك</a></li>
-          <li><a href="https://www.mohamedgado.com/projects/nafis/delete-data.html">حذف بياناتك</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/privacy" data-place="footer">سياسة الخصوصية</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/terms.html" data-place="footer">شروط الخدمة</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/delete-account.html" data-place="footer">حذف حسابك</a></li>
+          <li><a href="https://www.mohamedgado.com/projects/nafis/delete-data.html" data-place="footer">حذف بياناتك</a></li>
         </ul>
       </nav>
       <nav aria-label="تطبيقات أخرى">
         <p class="sf-h">تطبيقات أخرى</p>
         <ul>
-          <li><a href="https://masareef.mohamedgado.com/?s=nafis-site">مصاريف: متتبّع مصروفات خاص يسجّل إشعارات الدفع البنكية</a></li>
-          <li><a href="https://rafiq.mohamedgado.com/?s=nafis-site">رفيق: رفيق هادئ وخاص للصلاة والقرآن والأذكار</a></li>
-          <li><a href="https://www.mohamedgado.com/" lang="en" hreflang="en">Mohamed Gado</a></li>
+          <li><a href="https://masareef.mohamedgado.com/?s=nafis-site" data-place="footer">مصاريف: متتبّع مصروفات خاص يسجّل إشعارات الدفع البنكية</a></li>
+          <li><a href="https://rafiq.mohamedgado.com/?s=nafis-site" data-place="footer">رفيق: رفيق هادئ وخاص للصلاة والقرآن والأذكار</a></li>
+          <li><a href="https://www.mohamedgado.com/" lang="en" hreflang="en" data-place="footer">Mohamed Gado</a></li>
         </ul>
       </nav>
       <p class="sf-base">© 2026 <span lang="en">Mohamed Gado</span> · مجاني للاستخدام · بلا إعلانات · بلا حساب إلزامي</p>

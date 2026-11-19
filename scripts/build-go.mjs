@@ -135,6 +135,7 @@ function page(l) {
     LEDE: esc(t.lede),
     NAV_LABEL: esc(t.nav),
     BADGES: badges,
+    BADGES_HERO: badges.replaceAll('<a ', '<a data-place="hero" '),
     FACTS: t.facts.map(([b, s]) => `<div><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join(''),
     DEMO: demo,
     HOW_H: esc(lead[2]),
