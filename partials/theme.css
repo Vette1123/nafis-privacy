@@ -310,3 +310,13 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
   .top { position: static; transform: none; } .top::before { display: none; }
   body { background: #fff; color: #000; }
 }
+/* More apps: one row per app, icon + name + one line, so the list reads as separate apps, not one paragraph. */
+.sitefoot .sf-apps { display: grid; gap: 4px; }
+.sitefoot .sf-apps a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding-block: 6px; text-wrap: pretty; transition: transform 120ms var(--ease); }
+.sitefoot .sf-apps a:active { transform: scale(0.98); }
+.sf-apps img { flex: none; width: 40px; height: 40px; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
+.sf-apps span { display: grid; gap: 1px; line-height: 1.35; }
+.sf-apps b { color: var(--ink); font-weight: 600; font-size: 15px; transition: color 160ms var(--ease); }
+.sf-apps small { color: var(--soft); font-size: 13px; }
+@media (hover: hover) and (pointer: fine) { .sitefoot .sf-apps a:hover b { color: var(--gold); } }
+.sitefoot .sf-apps + ul { margin-top: 8px; }
