@@ -319,4 +319,3 @@ html[lang="ar"] .cta h2 { font-weight: 750; font-family: var(--arabic); letter-s
 .sf-apps b { color: var(--ink); font-weight: 600; font-size: 15px; transition: color 160ms var(--ease); }
 .sf-apps small { color: var(--soft); font-size: 13px; }
 @media (hover: hover) and (pointer: fine) { .sitefoot .sf-apps a:hover b { color: var(--gold); } }
-.sitefoot .sf-apps + ul { margin-top: 8px; }
