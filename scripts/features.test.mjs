@@ -16,7 +16,7 @@ test('every feature is complete in both languages', () => {
       assert.ok(c.points.length >= 4, `${f.slug} ${lang}: points`);
       assert.ok(c.faq.length >= 3, `${f.slug} ${lang}: faq`);
       assert.ok([...c.title].length <= 60, `${f.slug} ${lang}: title ${[...c.title].length}`);
-      assert.ok(c.description.length >= 110 && c.description.length <= 170, `${f.slug} ${lang}: description ${c.description.length}`);
+      assert.ok(c.description.length >= 110 && c.description.length <= 160, `${f.slug} ${lang}: description ${c.description.length}`);
     }
     for (const r of f.related) assert.ok(slugs.has(r) && r !== f.slug, `${f.slug}: related ${r}`);
     if (f.shot) assert.ok(UI.en.shotAlt[f.shot] && UI.ar.shotAlt[f.shot], `${f.slug}: shot alt`);

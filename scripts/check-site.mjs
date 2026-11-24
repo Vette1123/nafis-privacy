@@ -1,5 +1,5 @@
 // The SEO gate. Fails (exit 1) on: a duplicate title, description or canonical; a title over 60
-// characters; a description outside 70-170; Arabic in an English page's title, description or og tags; a missing canonical, og:image or twitter card; a
+// characters; a description outside 70-160; Arabic in an English page's title, description or og tags; a missing canonical, og:image or twitter card; a
 // JSON-LD block that does not parse; hreflang that is not reciprocal; an internal link that
 // goes nowhere; a page missing from sitemap.xml; an indexable 404; a wrong contact email.
 //   node scripts/check-site.mjs
@@ -30,7 +30,7 @@ for (const p of indexable) {
   if (!p.title) bad(f, 'no <title>');
   else if ([...p.title].length > 60) bad(f, `title is ${[...p.title].length} chars (max 60)`);
   if (!p.description) bad(f, 'no meta description');
-  else if (p.description.length < 70 || p.description.length > 170) bad(f, `description is ${p.description.length} chars (70-170)`);
+  else if (p.description.length < 70 || p.description.length > 160) bad(f, `description is ${p.description.length} chars (70-160)`);
   if (!p.canonical) bad(f, 'no canonical');
   for (const k of ['title', 'description', 'canonical']) {
     if (!p[k]) continue;
