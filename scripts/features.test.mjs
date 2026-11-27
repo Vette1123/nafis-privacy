@@ -29,6 +29,23 @@ test('one page per feature per language, plus both hubs', () => {
   assert.ok(files.includes('features/index.html') && files.includes('features/en/index.html'));
 });
 
+test('optional steps render as an ordered How it works list, in both languages or neither', () => {
+  const pages = buildAll();
+  const withSteps = FEATURES.filter((f) => f.en.steps || f.ar.steps);
+  assert.ok(withSteps.length >= 1, 'no feature has steps');
+  for (const f of withSteps) {
+    assert.ok(f.en.steps?.length >= 3 && f.ar.steps?.length === f.en.steps.length, `${f.slug}: steps per language`);
+    for (const [lang, file, h] of [['en', `features/en/${f.slug}.html`, UI.en.howH], ['ar', `features/${f.slug}.html`, UI.ar.howH]]) {
+      const html = pages.get(file);
+      assert.ok(html.includes(`<h2>${h}</h2>`), `${file}: heading`);
+      assert.match(html, /<ol class="points steps">/);
+      for (const s of f[lang].steps) assert.ok(html.includes(s), `${file}: step ${s.slice(0, 30)}`);
+    }
+  }
+  const plain = FEATURES.find((f) => !f.en.steps);
+  if (plain) assert.doesNotMatch(pages.get(`features/en/${plain.slug}.html`), /class="points steps"/);
+});
+
 test('a page with an FAQ says so in JSON-LD, with the same questions it shows', () => {
   const html = buildAll().get('features/en/price-alerts.html');
   assert.match(html, /"@type":"FAQPage"/);

@@ -30,6 +30,13 @@ function head(lang, ui, { trail, h1, lede, campaign, shotFile, shotAlt }) {
       </div>`;
 }
 
+// Only pages with steps carry this, not partials/feature.css: the partial is inlined into every
+// page, and a change there re-dates all of them in lastmod.json (git dates), which tells Google
+// 20 untouched pages changed.
+const STEPS_CSS = '.steps{counter-reset:step}.steps li{counter-increment:step;display:flex;gap:12px;align-items:baseline}'
+  + '.steps li::before{content:counter(step);flex:none;display:inline-grid;place-items:center;width:28px;height:28px;'
+  + 'border-radius:50%;background:var(--gold);color:var(--bg);font-weight:700;line-height:1}';
+
 function featurePage(lang, f) {
   const ui = UI[lang];
   const c = f[lang];
@@ -44,7 +51,15 @@ function featurePage(lang, f) {
 ${c.points.map((p) => `          <li>${esc(p)}</li>`).join('\n')}
         </ul>
       </section>
-
+${c.steps ? `
+      <style>${STEPS_CSS}</style>
+      <section class="sec">
+        <h2>${esc(ui.howH)}</h2>
+        <ol class="points steps">
+${c.steps.map((s) => `          <li>${esc(s)}</li>`).join('\n')}
+        </ol>
+      </section>
+` : ''}
 ${faqHtml(ui, c.faq)}
 
       <section class="sec">
