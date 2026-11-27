@@ -35,13 +35,16 @@ test('optional steps render as an ordered How it works list, in both languages o
   assert.ok(withSteps.length >= 1, 'no feature has steps');
   for (const f of withSteps) {
     assert.ok(f.en.steps?.length >= 3 && f.ar.steps?.length === f.en.steps.length, `${f.slug}: steps per language`);
-    for (const [lang, file, h] of [['en', `features/en/${f.slug}.html`, UI.en.howH], ['ar', `features/${f.slug}.html`, UI.ar.howH]]) {
+    assert.equal(Boolean(f.en.stepsH), Boolean(f.ar.stepsH), `${f.slug}: stepsH in one language only`);
+    for (const [lang, file] of [['en', `features/en/${f.slug}.html`], ['ar', `features/${f.slug}.html`]]) {
       const html = pages.get(file);
+      const h = f[lang].stepsH ?? UI[lang].howH;
       assert.ok(html.includes(`<h2>${h}</h2>`), `${file}: heading`);
       assert.match(html, /<ol class="points steps">/);
       for (const s of f[lang].steps) assert.ok(html.includes(s), `${file}: step ${s.slice(0, 30)}`);
     }
   }
+  assert.ok(withSteps.some((f) => f.en.stepsH), 'no feature uses its own steps heading');
   const plain = FEATURES.find((f) => !f.en.steps);
   if (plain) assert.doesNotMatch(pages.get(`features/en/${plain.slug}.html`), /class="points steps"/);
 });

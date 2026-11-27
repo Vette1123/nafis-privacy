@@ -54,7 +54,7 @@ ${c.points.map((p) => `          <li>${esc(p)}</li>`).join('\n')}
 ${c.steps ? `
       <style>${STEPS_CSS}</style>
       <section class="sec">
-        <h2>${esc(ui.howH)}</h2>
+        <h2>${esc(c.stepsH ?? ui.howH)}</h2>
         <ol class="points steps">
 ${c.steps.map((s) => `          <li>${esc(s)}</li>`).join('\n')}
         </ol>
